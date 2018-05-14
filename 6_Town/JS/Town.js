@@ -18,7 +18,7 @@ Town.prototype =
 		let startY = 30;
 		for(let row = 0; row < 3; row += 1) {
 			for (let column = 0; column < 3; column += 1) {
-				var house = initHouse();
+				var house = initHouse(group_houses);
 			}
 		}
 
