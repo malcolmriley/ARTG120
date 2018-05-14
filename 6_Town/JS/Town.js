@@ -25,10 +25,10 @@ Town.prototype =
 		for(let row = 0; row < 3; row += 1) {
 			for (let column = 0; column < 3; column += 1) {
 				let house = group_houses.create(0, 0, "house");
-				house.scale.setTo(0.15, 0.15);
+				scaleDown(house, this); // Set initial sprite scaling
 				house.x = startX + row * (10 + house.width);
 				house.y = startY + column * (10 + house.width);
-				makeButton(house, this, goToInterior);
+				makeButton(house, this, goToInterior, scaleUp, scaleDown);
 			}
 		}
 
@@ -78,6 +78,14 @@ function initPlayer() {
 	instance.enableBody = true;
 	instance.body.collideWorldBounds=true;
 	return instance;
+}
+
+function scaleUp(passedSprite, passedReference) {
+	passedSprite.scale.setTo(0.185, 0.185);
+}
+
+function scaleDown(passedSprite, passedReference) {
+	passedSprite.scale.setTo(0.15, 0.15)
 }
 
 function goToInterior() {
