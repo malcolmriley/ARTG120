@@ -62,9 +62,9 @@ function goToInterior() {
 
 function initPlayer() {
 	let instance = game.add.sprite(0, 0, "character");
+  game.physics.arcade.enable(instance);
 	instance.scale.setTo(0.1, 0.1);
 	instance.enableBody = true;
-	instance.physicsBodyType = Phaser.Physics.ARCADE;
 	instance.body.collideWorldBounds=true;
 	return instance;
 }
