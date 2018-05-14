@@ -59,6 +59,10 @@ Town.prototype =
 			player.body.velocity.y = 0;
 		}
 	}
+
+	// TODO: Enable travel to individual house
+	// House is a "button" right now for the simple fact of testing the functionality thereof.
+	// More likely, for the final implementation, the player will use some other control for entering an individual house.
 }
 
 function initPlayer() {
