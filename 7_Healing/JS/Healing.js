@@ -4,9 +4,13 @@ MiniGame.prototype =
 	preload: function()
 	{
 		// loads images
-		this.load.path='assets/img/';
+		this.load.path='../Assets/Art/';
 		this.load.image('blank','blank.jpg');
 		this.load.image('flower','flower.jpg');
+
+		//load sound
+		this.load.path = '../Assets/Sound/';
+		this.load.audio('background', 'Midnightcem.ogg');
 	},
 
 	create: function()
@@ -27,20 +31,22 @@ MiniGame.prototype =
 		// what happens when you stop dragging/let go
 		this.flower.events.onDragStop.add(function(current){
 		    this.stopDrag(current,this.blank);},this);
-
-		game.add.text(0, 0, "MiniGame \n ENTER: GameOver \n SPACE: Town");
-		game.stage.backgroundColor = '#ffffff';
+		
+		this.add.audio('background');	
+		this.add.text(0, 0, "MiniGame \n ENTER: GameOver \n SPACE: Town");
+		this.stage.backgroundColor = '#ffffff';
 	},
 
 	update: function()
 	{
-		if(game.input.keyboard.isDown(Phaser.Keyboard.ENTER))
+		if(this.input.keyboard.isDown(Phaser.Keyboard.ENTER))
 		{
-			game.state.start('GameOver');
+			this.state.start('GameOver');
 		}
-		else if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR))
+		else if(this.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR))
 		{
-			game.state.start('Town');
+			this.sound.stopAll();
+			this.state.start('Town');
 		}
 	},
 
