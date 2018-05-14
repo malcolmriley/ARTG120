@@ -27,19 +27,44 @@ Town.prototype =
 		}
 
 		// Create Player
-		player = game.add.sprite(0, 0, "character");
-		player.scale.setTo(0.1, 0.1);
+		player = initPlayer();
 
 		// Create Text Overlay
 		game.add.text(0, 0, "Town \n Click to enter house.");
+
+		// Make cursors for player control
+		cursors = game.input.keyboard.createCursorKeys();
 	},
 
 	update: function()
 	{
+		// TODO: Better movement system. Right now, left takes precedence over right, and up over down
+		let playerSpeed = 5;
+		if (cursors.left.isDown) {
+			player.body.velocity.x = -playerSpeed;
+		}
+		else if (cursors.right.isDown) {
+				player.body.velocity.x = playerSpeed;
+		}
 
+		if (cursors.up.isDown) {
+			player.body.velocity.y = -playerSpeed;
+		}
+		else if (cursors.down.isDown) {
+				player.body.velocity.y = playerSpeed;
+		}
 	}
 }
 
 function goToInterior() {
 	game.state.start('MiniGame');
+}
+
+function initPlayer() {
+	let instance = game.add.sprite(0, 0, "character");
+	instance.scale.setTo(0.1, 0.1);
+	instance.enableBody = true;
+	instance.physicsBodyType = Phaser.Physics.ARCADE;
+	instance.body.collideWorldBounds=true;
+	return instance;
 }
