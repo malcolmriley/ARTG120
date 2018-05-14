@@ -39,7 +39,9 @@ Town.prototype =
 	update: function()
 	{
 		// TODO: Better movement system. Right now, left takes precedence over right, and up over down
-		let playerSpeed = 5;
+		// Also, velocity is preserved in a really dumb way (doesn't reset until ALL keys are released)
+		// For now, the Swensen Bubblegum and Shoestring Method will have to do.
+		let playerSpeed = 150;
 		if (cursors.left.isDown) {
 			player.body.velocity.x = -playerSpeed;
 		}
