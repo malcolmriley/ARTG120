@@ -6,11 +6,17 @@ Town.prototype =
 		// TODO: Swap for atlas version.
 		game.load.image("character", "../_Assets/images/character.png");
 		game.load.image("house", "../_Assets/images/house.png");
+
+		// Load door open sound
+		game.load.audio("fx_door_creak", "../_Assets/sounds/door_open.wav");
 	},
 
 	create: function()
 	{
 		game.stage.backgroundColor = '#f0f0f0';
+
+		// Load sounds
+		soundfx_door = game.add.audio("fx_door_creak");
 
 		// Create House Grid
 		group_houses = game.add.group();
@@ -75,5 +81,6 @@ function initPlayer() {
 }
 
 function goToInterior() {
+	soundfx_door.play();
 	game.state.start('MiniGame');
 }
