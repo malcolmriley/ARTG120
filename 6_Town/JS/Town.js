@@ -22,6 +22,7 @@ Town.prototype =
 				house.scale.setTo(0.15, 0.15);
 				house.x = startX + row * (10 + house.width);
 				house.y = startY + column * (10 + house.width);
+				makeButton(house, this, goToInterior);
 			}
 		}
 
@@ -35,9 +36,10 @@ Town.prototype =
 
 	update: function()
 	{
-		if(game.input.keyboard.isDown(Phaser.Keyboard.ENTER))
-		{
-			game.state.start('MiniGame');
-		}
+		
 	}
+}
+
+function goToInterior() {
+	game.state.start('MiniGame');
 }
