@@ -9,13 +9,13 @@
  * passedOutAction - The function to be executed when the cursor exits the button's bounds
  */
 function makeButton(passedSprite, passedReference, passedClickAction, passedOverAction, passedOutAction) {
-  passedButton.inputEnabled = true;
-  passedButton.events.onInputDown.add(passedClickAction, passedReference);
+  passedSprite.inputEnabled = true;
+  passedSprite.events.onInputDown.add(passedClickAction, passedReference);
   if (passedOverAction != undefined) {
-    passedButton.events.onInputOver.add(passedOverAction, passedReference);
+    passedSprite.events.onInputOver.add(passedOverAction, passedReference);
   }
   if (passedOutAction != undefined) {
-    passedButton.events.onInputOut.add(passedOutAction, passedReference);
+    passedSprite.events.onInputOut.add(passedOutAction, passedReference);
   }
   return passedSprite;
 }
