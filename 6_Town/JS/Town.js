@@ -50,7 +50,7 @@ Town.prototype =
 		}
 		else {
 			player.body.velocity.x = 0;
-			player.body.velocit.y = 0;
+			player.body.velocity.y = 0;
 		}
 	}
 }
