@@ -27,7 +27,7 @@ Town.prototype =
 		}
 
 		// Create Player
-		let player = game.add.sprite(0, 0, "character");
+		player = game.add.sprite(0, 0, "character");
 		player.scale.setTo(0.1, 0.1);
 
 		// Create Text Overlay
@@ -36,7 +36,7 @@ Town.prototype =
 
 	update: function()
 	{
-		
+
 	}
 }
 
