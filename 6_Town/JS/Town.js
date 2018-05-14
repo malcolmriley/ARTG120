@@ -18,11 +18,7 @@ Town.prototype =
 		let startY = 30;
 		for(let row = 0; row < 3; row += 1) {
 			for (let column = 0; column < 3; column += 1) {
-				var house = group_houses.create(0, 0, "house");
-				house.scale.setTo(0.15, 0.15);
-				house.x = startX + row * (10 + house.width);
-				house.y = startY + column * (10 + house.width);
-				makeButton(house, this, goToInterior);
+				var house = initHouse();
 			}
 		}
 
@@ -53,14 +49,18 @@ Town.prototype =
 				player.body.velocity.y = playerSpeed;
 		}
 		else {
-			player.body.velocit.x = 0;
-			player.body.velocity.y = 0;
+			player.body.velocity.x = 0;
+			player.body.velocit.y = 0;
 		}
 	}
 }
 
-function goToInterior() {
-	game.state.start('MiniGame');
+function initHouse(passedGroup) {
+	let instance = passedGroup.create(0, 0, "house");
+	instance.scale.setTo(0.15, 0.15);
+	instance.x = startX + row * (10 + house.width);
+	instance.y = startY + column * (10 + house.width);
+	makeButton(instance, this, goToInterior);
 }
 
 function initPlayer() {
@@ -70,4 +70,8 @@ function initPlayer() {
 	instance.enableBody = true;
 	instance.body.collideWorldBounds=true;
 	return instance;
+}
+
+function goToInterior() {
+	game.state.start('MiniGame');
 }
