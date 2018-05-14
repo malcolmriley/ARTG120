@@ -1,0 +1,6 @@
+# ASSET SOURCES LIST
+# If you add an outside asset, add a link to where it was found here.
+# We'll resolve proper citations on an as-needed basis for the final deliverable.
+
+FILE                  SOURCE
+door_open.wav         https://opengameart.org/content/door-open-door-close
