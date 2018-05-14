@@ -19,3 +19,13 @@ function makeButton(passedSprite, passedReference, passedClickAction, passedOver
   }
   return passedSprite;
 }
+
+/**
+ * Convenience function to center the anchor point on the passed sprite.
+ *
+ * passedSprite - The sprite to set the anchor of
+ */
+function centerAnchor(passedSprite) {
+  passedSprite.anchor.x = 0.5;
+  passedSprite.anchor.y = 0.5;
+}
