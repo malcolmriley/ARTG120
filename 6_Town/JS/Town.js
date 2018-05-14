@@ -46,12 +46,15 @@ Town.prototype =
 		else if (cursors.right.isDown) {
 				player.body.velocity.x = playerSpeed;
 		}
-
-		if (cursors.up.isDown) {
+		else if (cursors.up.isDown) {
 			player.body.velocity.y = -playerSpeed;
 		}
 		else if (cursors.down.isDown) {
 				player.body.velocity.y = playerSpeed;
+		}
+		else {
+			player.body.velocit.x = 0;
+			player.body.velocity.y = 0;
 		}
 	}
 }
