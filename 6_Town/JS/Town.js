@@ -11,7 +11,7 @@ Town.prototype =
 	create: function()
 	{
 		game.add.text(0, 0, "Town \n ENTER: MiniGame");
-	  game.stage.backgroundColor = '#ffffff';
+	  game.stage.backgroundColor = '#f0f0f0';
 
 		// Create houses
 		group_houses = game.add.group();
