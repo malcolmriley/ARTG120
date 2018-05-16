@@ -10,7 +10,7 @@ MiniGame.prototype =
 
 		//load sound
 		this.load.path = '../_Assets/sounds/';
-		this.load.audio('background', 'Midnightcem.ogg');
+		this.load.audio('background', ['Midnightcem.ogg', "Midnightcem.wav"]);
 	},
 
 	create: function()
