@@ -25,6 +25,7 @@ MiniGame.prototype =
 		// turns on input and then enables drag
 		this.flower.inputEnabled=true;
 		this.flower.input.enableDrag();
+		this.flower.scale.setTo(0.1, 0.1);
 
 		// saves position of flower
 		this.flower.ogPos=this.flower.position.clone();
