@@ -4,12 +4,12 @@ MiniGame.prototype =
 	preload: function()
 	{
 		// loads images
-		this.load.path='../Assets/Art/';
-		this.load.image('blank','blank.jpg');
-		this.load.image('flower','flower.jpg');
+		this.load.path='../_Assets/images/';
+		this.load.image("character", "character.png");
+		this.load.image('flower','flower_1.png');
 
 		//load sound
-		this.load.path = '../Assets/Sound/';
+		this.load.path = '../_Assets/sounds/';
 		this.load.audio('background', 'Midnightcem.ogg');
 	},
 
@@ -17,7 +17,7 @@ MiniGame.prototype =
 	{
 		// adds images and enables physics
 		this.game.physics.startSystem(Phaser.Physics.ARCADE);
-		this.blank=this.game.add.sprite(600,0,'blank');
+		this.blank=this.game.add.sprite(600,0,"character");
 		this.game.physics.arcade.enable(this.blank);
 		this.flower=this.game.add.sprite(0,0,'flower');
 		this.game.physics.arcade.enable(this.flower);
@@ -31,8 +31,8 @@ MiniGame.prototype =
 		// what happens when you stop dragging/let go
 		this.flower.events.onDragStop.add(function(current){
 		    this.stopDrag(current,this.blank);},this);
-		
-		this.add.audio('background');	
+
+		this.add.audio('background');
 		this.add.text(0, 0, "MiniGame \n ENTER: GameOver \n SPACE: Town");
 		this.stage.backgroundColor = '#ffffff';
 	},
