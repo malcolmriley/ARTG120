@@ -4,37 +4,40 @@ MiniGame.prototype =
 	preload: function()
 	{
 		// loads images
-		this.load.path='../Assets/Art/';
-		this.load.image('blank','blank.jpg');
-		this.load.image('flower','flower.jpg');
+		this.load.path='../_Assets/images/';
+		this.load.image("X", "X.png");
+		this.load.image('flower','flower_1.png');
 
 		//load sound
-		this.load.path = '../Assets/Sound/';
-		this.load.audio('background', 'Midnightcem.ogg');
+		this.load.path = '../_Assets/sounds/';
+		this.load.audio('background', ['Midnightcem.ogg', "Midnightcem.wav"]);
 	},
 
 	create: function()
 	{
 		// adds images and enables physics
 		this.game.physics.startSystem(Phaser.Physics.ARCADE);
-		this.blank=this.game.add.sprite(600,0,'blank');
+		this.blank=this.game.add.sprite(600,300,"X");
+		this.blank.scale.setTo(0.1, 0.1);
 		this.game.physics.arcade.enable(this.blank);
-		this.flower=this.game.add.sprite(0,0,'flower');
+		this.flower=this.game.add.sprite(0,300,'flower');
 		this.game.physics.arcade.enable(this.flower);
 
 		// turns on input and then enables drag
 		this.flower.inputEnabled=true;
 		this.flower.input.enableDrag();
+		this.flower.scale.setTo(0.1, 0.1);
 
 		// saves position of flower
 		this.flower.ogPos=this.flower.position.clone();
 		// what happens when you stop dragging/let go
 		this.flower.events.onDragStop.add(function(current){
 		    this.stopDrag(current,this.blank);},this);
-		
-		this.add.audio('background');	
+
 		this.add.text(0, 0, "MiniGame \n ENTER: GameOver \n SPACE: Town");
 		this.stage.backgroundColor = '#ffffff';
+		music_background = this.add.audio('background');
+		music_background.play();
 	},
 
 	update: function()
