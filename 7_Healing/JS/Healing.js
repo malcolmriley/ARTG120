@@ -32,9 +32,10 @@ MiniGame.prototype =
 		this.flower.events.onDragStop.add(function(current){
 		    this.stopDrag(current,this.blank);},this);
 
-		this.add.audio('background');
 		this.add.text(0, 0, "MiniGame \n ENTER: GameOver \n SPACE: Town");
 		this.stage.backgroundColor = '#ffffff';
+		music_background = this.add.audio('background');
+		music_background.play();
 	},
 
 	update: function()
