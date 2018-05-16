@@ -18,6 +18,7 @@ MiniGame.prototype =
 		// adds images and enables physics
 		this.game.physics.startSystem(Phaser.Physics.ARCADE);
 		this.blank=this.game.add.sprite(600,0,"X");
+		this.blank.scale.setTo(0.1, 0.1);
 		this.game.physics.arcade.enable(this.blank);
 		this.flower=this.game.add.sprite(0,0,'flower');
 		this.game.physics.arcade.enable(this.flower);
