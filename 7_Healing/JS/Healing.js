@@ -5,7 +5,7 @@ MiniGame.prototype =
 	{
 		// loads images
 		this.load.path='../_Assets/images/';
-		this.load.image("character", "character.png");
+		this.load.image("X", "X.png");
 		this.load.image('flower','flower_1.png');
 
 		//load sound
@@ -17,7 +17,7 @@ MiniGame.prototype =
 	{
 		// adds images and enables physics
 		this.game.physics.startSystem(Phaser.Physics.ARCADE);
-		this.blank=this.game.add.sprite(600,0,"character");
+		this.blank=this.game.add.sprite(600,0,"X");
 		this.game.physics.arcade.enable(this.blank);
 		this.flower=this.game.add.sprite(0,0,'flower');
 		this.game.physics.arcade.enable(this.flower);
