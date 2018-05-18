@@ -21,6 +21,27 @@ function makeButton(passedSprite, passedReference, passedClickAction, passedOver
 }
 
 /**
+ * Convenience function to convert a sprite into a draggable entity.
+ *
+ * passedSprite - The sprite to convert
+ * passedReference - A reference to the current context (typically "this");
+ * The remaining parameters are optional:
+ * passedDragStartAction - The function to be executed when dragging begins
+ * passedDragStopAction - The function to be exectuted when dragging ends
+ */
+function makeDraggable(passedSprite, passedReference, passedDragStartAction, passedDragStopAction) {
+  passedSprite.inputEnabled = true;
+  passedSprite.input.enableDrag();
+  if (passedDragStartAction != undefined) {
+    passedSprite.events.onDragStart.add(passedDragStartAction, passedReference);
+  }
+  if (passedDragStopAction != undefined) {
+    passedSprite.events.onDragStop.add(passedDragStopAction, passedReference);
+  }
+  return passedSprite;
+}
+
+/**
  * Convenience function to center the anchor point on the passed sprite.
  *
  * passedSprite - The sprite to set the anchor of
