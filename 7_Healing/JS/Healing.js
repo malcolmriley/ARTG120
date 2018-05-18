@@ -38,10 +38,23 @@ MiniGame.prototype =
 		this.stage.backgroundColor = '#ffffff';
 		music_background = this.add.audio('background');
 		music_background.play();
+
+		// local timer variable and prints
+		timer=10;
+		timerText=this.add.text(400, 20, 'Time left : '+timer);
 	},
 
 	update: function()
 	{
+		// updates timer
+		timer-=1/60;
+		timerText.text='Time left: '+timer.toFixed(2);
+
+		if(timer<0)
+		{
+			this.state.start('GameOver');
+		}
+
 		if(this.input.keyboard.isDown(Phaser.Keyboard.ENTER))
 		{
 			this.state.start('GameOver');
