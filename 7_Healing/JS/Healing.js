@@ -52,11 +52,13 @@ MiniGame.prototype =
 
 		if(timer<0)
 		{
+			this.sound.stopAll();
 			this.state.start('GameOver');
 		}
 
 		if(this.input.keyboard.isDown(Phaser.Keyboard.ENTER))
 		{
+			this.sound.stopAll();
 			this.state.start('GameOver');
 		}
 		else if(this.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR))
