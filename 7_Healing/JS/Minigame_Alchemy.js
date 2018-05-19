@@ -10,8 +10,15 @@ Minigame_Alchemy.prototype =
 
 	create: function()
 	{
-    // Add Backdrop
-    this.game.add.sprite(0, 0, "backdrop");
+		// Add render groups for use as "render layers"
+		layer_background = this.game.add.group();
+		layer_midground = this.game.add.group();
+		layer_foreground = this.game.add.group();
+		layer_paper = this.game.add.group();
+
+	  // Add Backdrop
+	  paper = layer_paper.create(0, 0, "backdrop");
+		paper.blendMode = 2;
 	},
 
 	update: function()
