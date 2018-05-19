@@ -15,9 +15,13 @@ MiniGame.prototype =
 
 	create: function()
 	{
-		// enables physics
+		// enables physics system
 		this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
+		// creates group of 'cuts' and enable physics
+		// change images to some kind of wound
+		// change bounding box to be smaller
+		// random spawn locations?
 		this.cuts=game.add.group()
 		this.cuts.enableBody=true;
 		for(i=0;i<5;i++)
@@ -26,6 +30,8 @@ MiniGame.prototype =
 			this.blank.scale.set(.1,.1);	
 		}
 
+		// creates group of flowers and enable physics
+		// should be bandages or something
 		this.flowers=game.add.group();
 		this.flowers.enableBody=true;
 		for(i=0;i<5;i++)
@@ -52,14 +58,17 @@ MiniGame.prototype =
 		timer-=1/60;
 		timerText.text='Time left: '+timer.toFixed(2);
 
+		// checks for overlap between groups
 		this.game.physics.arcade.overlap(this.flowers,this.cuts,this.remove);
 
+		// goes to game over screen when time runs out
 		if(timer<0)
 		{
 			this.sound.stopAll();
 			this.state.start('GameOver');
 		}
 
+		// goes back to town if cured
 		if(this.cuts.countLiving()==0)
 		{
 			this.sound.stopAll();
@@ -78,10 +87,10 @@ MiniGame.prototype =
 		}
 	},
 
-	// function that executes when player lets go of flower
-	remove: function(current,end)
+	// removes sprites when they touch
+	remove: function(sprite1,sprite2)
 	{
-		current.kill();
-		end.kill();
+		sprite1.kill();
+		sprite2.kill();
 	}
 }
