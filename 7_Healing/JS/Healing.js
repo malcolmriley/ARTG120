@@ -60,6 +60,12 @@ MiniGame.prototype =
 			this.state.start('GameOver');
 		}
 
+		if(this.cuts.countLiving()==0)
+		{
+			this.sound.stopAll();
+			this.state.start('Town');
+		}
+
 		if(this.input.keyboard.isDown(Phaser.Keyboard.ENTER))
 		{
 			this.sound.stopAll();
