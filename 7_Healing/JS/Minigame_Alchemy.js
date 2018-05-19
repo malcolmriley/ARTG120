@@ -64,6 +64,7 @@ function WorkArea(passedPositionX, passedPositionY, passedQuantity, passedLabel)
 		circleInstance.alpha = 0.3;
 		this.spaces[count] = circleInstance;
 	}
+	// TODO: Better font?
 	if (passedLabel != undefined) {
 		this.textLabel = game.add.text(passedPositionX, passedPositionY + (2 * padding), passedLabel);
 	}
