@@ -91,5 +91,6 @@ function WorkArea(passedPositionX, passedPositionY, passedQuantity, passedLabel)
 	// TODO: Better font?
 	if (passedLabel != undefined) {
 		this.textLabel = game.add.text(passedPositionX, passedPositionY + (2 * padding), passedLabel);
+		layer_background.add(this.textLabel);
 	}
 }
