@@ -35,6 +35,7 @@ Minigame_Alchemy.prototype =
 
 		// Add test container
 		bottle = new AlchemyContainer(0, 0, layer_foreground, "bottle_round", "liquid_bottle", Math.random() * 0xffffff, 3);
+		makeDraggable(bottle.container, this);
 	},
 
 	update: function()
