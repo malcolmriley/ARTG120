@@ -31,7 +31,7 @@ Minigame_Alchemy.prototype =
 		equipment = new WorkArea(50, 275, 3, "Equipment");
 
 		// Add "work area"
-		workzone = new WorkArea(50, 500, 5);
+		workzone = new WorkArea(50, 550, 5);
 
 		// Add test container
 		bottle = new AlchemyContainer(0, 0, layer_foreground, "bottle_round", "liquid_bottle", Math.random() * 0xffffff, 3);
@@ -84,7 +84,7 @@ function WorkArea(passedPositionX, passedPositionY, passedQuantity, passedLabel)
 		circleInstance.scale.setTo(spriteScale, spriteScale); // TODO: Remove when final asset size is determined
 		circleInstance.x = passedPositionX + (count * (padding + circleInstance.width)) + (circleInstance.width / 2);
 		circleInstance.y = passedPositionY + (circleInstance.height / 2);
-		circleInstance.alpha = 0.3;
+		circleInstance.alpha = 0.4;
 		this.spaces[count] = circleInstance;
 	}
 	// TODO: Better font?
