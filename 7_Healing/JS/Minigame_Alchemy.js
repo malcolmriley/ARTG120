@@ -22,13 +22,13 @@ Minigame_Alchemy.prototype =
 		paper.blendMode = 2;
 
 		// Add "ingredients" reserve
-		makeWorkArea(50, 100, 3, "Ingredients");
+		ingredients = new WorkArea(50, 100, 3, "Ingredients");
 
 		// Add "equipment" reserve
-		makeWorkArea(50, 250, 3, "Equipment");
+		equipment = new WorkArea(50, 250, 3, "Equipment");
 
 		// Add "work area"
-		makeWorkArea(50, 500, 5)
+		workzone = new WorkArea(50, 500, 5);
 	},
 
 	update: function()
@@ -37,16 +37,34 @@ Minigame_Alchemy.prototype =
 	}
 }
 
-function makeWorkArea(passedPositionX, passedPositionY, passedQuantity, passedLabel) {
+/**
+ * Constructor for WorkArea object.
+ *
+ * passedPositionX - The x position of the work area in total
+ * passedPositionY - The y position of the work area in total
+ * passedQuantity - The number of "spaces" in the work area
+ * The remaining parameters are optional:
+ * passedLabel - A textual lable for this work area
+ */
+function WorkArea(passedPositionX, passedPositionY, passedQuantity, passedLabel) {
+	// Initialize member fields
+	this.position = new Phaser.Point(passedPositionX, passedPositionY);
+	this.quantity = passedQuantity;
+	this.spaces = [];
+	this.apparatus = [];
+
+	// Initialize member objects
 	let padding = 20;
 	for (let count = 0; count < passedQuantity; count += 1) {
 		let circleInstance = layer_background.create(0, 0, "circle");
+		centerAnchor(circleInstance);
 		circleInstance.scale.setTo(0.3, 0.3);
-		circleInstance.x = passedPositionX + (count * (padding + circleInstance.width));
-		circleInstance.y = passedPositionY;
+		circleInstance.x = passedPositionX + (count * (padding + circleInstance.width)) + (circleInstance.width / 2);
+		circleInstance.y = passedPositionY + (circleInstance.height / 2);
 		circleInstance.alpha = 0.3;
+		this.spaces[count] = circleInstance;
 	}
 	if (passedLabel != undefined) {
-		let textInstance = game.add.text(passedPositionX, passedPositionY + (2 * padding), passedLabel);
+		this.textLabel = game.add.text(passedPositionX, passedPositionY + (2 * padding), passedLabel);
 	}
 }
