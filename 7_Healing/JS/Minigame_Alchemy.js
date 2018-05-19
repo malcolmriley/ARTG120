@@ -7,6 +7,8 @@ Minigame_Alchemy.prototype =
 		this.load.path = "../_Assets/images/";
 		this.load.image("backdrop", "old_paper.png");
 		this.load.image("circle", "circle.png");
+		this.load.image("bottle_round", "bottle_round.png");
+		this.load.spritesheet("liquid_bottle",  "liquid_bottle.png", 300, 450);
 	},
 
 	create: function()
@@ -29,12 +31,32 @@ Minigame_Alchemy.prototype =
 
 		// Add "work area"
 		workzone = new WorkArea(50, 500, 5);
+
+		// Add test container
+		bottle = new AlchemyContainer(0, 0, layer_foreground, "bottle_round", "liquid_bottle", Math.random() * 0xffffff, 3);
 	},
 
 	update: function()
 	{
 
 	}
+}
+
+function AlchemyContainer(passedPositionX, passedPositionY, passedGroup, passedContainer, passedFluid, passedColor, passedQuantity) {
+	this.container = passedGroup.create(passedPositionX, passedPositionY, passedContainer);
+	this.contents = passedGroup.create(passedPositionX, passedPositionY, passedFluid);
+	this.container.addChild(this.contents);
+	this.container.scale.setTo(0.3, 0.3);
+	if ((passedQuantity != undefined) && (passedColor != undefined)) {
+		this.setContents(passedQuantity, passedColor);
+	}
+}
+AlchemyContainer.prototype.setContents = function (passedQuantity, passedColor) {
+		this.quantity = passedQuantity;
+		if (passedColor != undefined) {
+			this.contents.tint = passedColor;
+		}
+		this.contents.frame = passedQuantity;
 }
 
 /**
