@@ -15,24 +15,26 @@ MiniGame.prototype =
 
 	create: function()
 	{
-		// adds images and enables physics
+		// enables physics
 		this.game.physics.startSystem(Phaser.Physics.ARCADE);
-		this.blank=this.game.add.sprite(600,300,"X");
-		this.blank.scale.setTo(0.1, 0.1);
-		this.game.physics.arcade.enable(this.blank);
-		this.flower=this.game.add.sprite(0,300,'flower');
-		this.game.physics.arcade.enable(this.flower);
 
-		// turns on input and then enables drag
-		this.flower.inputEnabled=true;
-		this.flower.input.enableDrag();
-		this.flower.scale.setTo(0.1, 0.1);
+		this.cuts=game.add.group()
+		this.cuts.enableBody=true;
+		for(i=0;i<5;i++)
+		{
+			this.blank=this.cuts.create(600,100*i,"X");
+			this.blank.scale.set(.1,.1);	
+		}
 
-		// saves position of flower
-		this.flower.ogPos=this.flower.position.clone();
-		// what happens when you stop dragging/let go
-		this.flower.events.onDragStop.add(function(current){
-		    this.stopDrag(current,this.blank);},this);
+		this.flowers=game.add.group();
+		this.flowers.enableBody=true;
+		for(i=0;i<5;i++)
+		{
+			this.flower=this.flowers.create(0,300,"flower");
+			this.flower.scale.set(.1,.1);
+			this.flower.inputEnabled=true;
+			this.flower.input.enableDrag();
+		}
 
 		this.add.text(0, 0, "MiniGame \n ENTER: GameOver \n SPACE: Town");
 		this.stage.backgroundColor = '#ffffff';
@@ -49,6 +51,8 @@ MiniGame.prototype =
 		// updates timer
 		timer-=1/60;
 		timerText.text='Time left: '+timer.toFixed(2);
+
+		this.game.physics.arcade.overlap(this.flowers,this.cuts,this.remove);
 
 		if(timer<0)
 		{
@@ -69,15 +73,9 @@ MiniGame.prototype =
 	},
 
 	// function that executes when player lets go of flower
-	stopDrag: function(current,end){
-		// if flower is not touching blank/end goal
-		if(!this.game.physics.arcade.overlap(current,end,function(){
-		    // if it does overlap, execute function which disables drag
-		    current.input.draggable=false;
-		    // also snaps to goal position
-		    current.position.copyFrom(end.position);})) {
-			// snaps back to original position
-			current.position.copyFrom(current.ogPos);
-		}
+	remove: function(current,end)
+	{
+		current.kill();
+		end.kill();
 	}
 }
