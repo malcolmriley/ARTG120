@@ -37,12 +37,6 @@ Minigame_Alchemy.prototype =
 	}
 }
 
-function AlchemyObject(passedPositionX, passedPositionY) {
-
-}
-AlchemyObject.prototype = Object.create(Phaser.Sprite.prototype);
-AlchemyObject.prototype.constructor = AlchemyObject;
-
 /**
  * Constructor for WorkArea object.
  *
@@ -70,7 +64,6 @@ function WorkArea(passedPositionX, passedPositionY, passedQuantity, passedLabel)
 		circleInstance.alpha = 0.3;
 		this.spaces[count] = circleInstance;
 	}
-	// TODO: Better font?
 	if (passedLabel != undefined) {
 		this.textLabel = game.add.text(passedPositionX, passedPositionY + (2 * padding), passedLabel);
 	}
