@@ -9,6 +9,7 @@ Minigame_Alchemy.prototype =
 		this.load.image("circle", "circle.png");
 		this.load.image("bottle_round", "bottle_round.png");
 		this.load.spritesheet("liquid_bottle",  "liquid_bottle.png", 300, 450);
+		spriteScale = 0.25; // TODO: Remove when final asset size is determined
 	},
 
 	create: function()
@@ -24,10 +25,10 @@ Minigame_Alchemy.prototype =
 		paper.blendMode = 2;
 
 		// Add "ingredients" reserve
-		ingredients = new WorkArea(50, 100, 3, "Ingredients");
+		ingredients = new WorkArea(50, 125, 3, "Ingredients");
 
 		// Add "equipment" reserve
-		equipment = new WorkArea(50, 250, 3, "Equipment");
+		equipment = new WorkArea(50, 275, 3, "Equipment");
 
 		// Add "work area"
 		workzone = new WorkArea(50, 500, 5);
@@ -46,7 +47,7 @@ function AlchemyContainer(passedPositionX, passedPositionY, passedGroup, passedC
 	this.container = passedGroup.create(passedPositionX, passedPositionY, passedContainer);
 	this.contents = passedGroup.create(passedPositionX, passedPositionY, passedFluid);
 	this.container.addChild(this.contents);
-	this.container.scale.setTo(0.3, 0.3);
+	this.container.scale.setTo(spriteScale, spriteScale); // TODO: Remove when final asset size is determined
 	if ((passedQuantity != undefined) && (passedColor != undefined)) {
 		this.setContents(passedQuantity, passedColor);
 	}
@@ -80,7 +81,7 @@ function WorkArea(passedPositionX, passedPositionY, passedQuantity, passedLabel)
 	for (let count = 0; count < passedQuantity; count += 1) {
 		let circleInstance = layer_background.create(0, 0, "circle");
 		centerAnchor(circleInstance);
-		circleInstance.scale.setTo(0.3, 0.3);
+		circleInstance.scale.setTo(spriteScale, spriteScale); // TODO: Remove when final asset size is determined
 		circleInstance.x = passedPositionX + (count * (padding + circleInstance.width)) + (circleInstance.width / 2);
 		circleInstance.y = passedPositionY + (circleInstance.height / 2);
 		circleInstance.alpha = 0.3;
