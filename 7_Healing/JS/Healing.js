@@ -28,6 +28,7 @@ MiniGame.prototype =
 		{
 			this.blank=this.cuts.create(600,100*i,"X");
 			this.blank.scale.set(.1,.1);
+			// change bounding box to be smaller and slightly centered
 			this.blank.body.setSize(100,100,200,250);	
 		}
 
@@ -39,11 +40,12 @@ MiniGame.prototype =
 		{
 			this.flower=this.flowers.create(0,300,"flower");
 			this.flower.scale.set(.1,.1);
+			// allows flower to be draggable
 			this.flower.inputEnabled=true;
 			this.flower.input.enableDrag();
 		}
 
-		this.add.text(0, 0, "MiniGame \n ENTER: GameOver \n SPACE: Town");
+		this.add.text(0, 0, "Drag flowers to Xs.");
 		this.stage.backgroundColor = '#ffffff';
 		music_background = this.add.audio('background');
 		music_background.play();
@@ -71,17 +73,6 @@ MiniGame.prototype =
 
 		// goes back to town if cured
 		if(this.cuts.countLiving()==0)
-		{
-			this.sound.stopAll();
-			this.state.start('Town');
-		}
-
-		if(this.input.keyboard.isDown(Phaser.Keyboard.ENTER))
-		{
-			this.sound.stopAll();
-			this.state.start('GameOver');
-		}
-		else if(this.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR))
 		{
 			this.sound.stopAll();
 			this.state.start('Town');
