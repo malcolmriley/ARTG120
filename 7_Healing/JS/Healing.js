@@ -27,7 +27,8 @@ MiniGame.prototype =
 		for(i=0;i<5;i++)
 		{
 			this.blank=this.cuts.create(600,100*i,"X");
-			this.blank.scale.set(.1,.1);	
+			this.blank.scale.set(.1,.1);
+			this.blank.body.setSize(100,100,200,250);	
 		}
 
 		// creates group of flowers and enable physics
