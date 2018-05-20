@@ -26,7 +26,7 @@ MiniGame.prototype =
 		this.cuts.enableBody=true;
 		for(i=0;i<5;i++)
 		{
-			this.blank=this.cuts.create(600,100*i,"X");
+			this.blank=this.cuts.create(Math.random()*500+100,Math.random()*400+50,"X");
 			this.blank.scale.set(.1,.1);
 			// change bounding box to be smaller and slightly centered
 			this.blank.body.setSize(100,100,200,250);	
