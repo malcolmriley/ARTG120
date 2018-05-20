@@ -45,6 +45,17 @@ Minigame_Alchemy.prototype =
 	}
 }
 
+/**
+ * Constructor for AlchemyContainer object.
+ *
+ * passedPositionX - The X position for the AlchemyContainer
+ * passedPositionY - The Y position for the AlchemyContainer
+ * passedGroup - The group to use for creating the AlchemyContainer
+ * passedFluid - The texture to use for the contained material (should be a spritesheet or equivalent)
+ * The following parameters are optional, but must be used in conjunction:
+ * passedColor - The tint to use for the contained material (should be a spritesheet or equivalent)
+ * passedQuantity - The initial quantity to fill this container with
+ */
 function AlchemyContainer(passedPositionX, passedPositionY, passedGroup, passedContainer, passedFluid, passedColor, passedQuantity) {
 	this.container = passedGroup.create(0, 0, passedContainer);
 	this.contents = passedGroup.create(0, 0, passedFluid);
