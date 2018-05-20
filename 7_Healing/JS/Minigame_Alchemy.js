@@ -35,14 +35,9 @@ Minigame_Alchemy.prototype =
 		// Add "work area"
 		workzone = new WorkArea(50, 550, 5);
 
-		// Add test container
-		bottle = new AlchemyBottle(0, 0, layer_foreground, Math.random() * 0xffffff, 3);
-		makeDraggable(bottle.container, this);
-		equipment.insert(bottle.container, 1);
-
-		bowl = new AlchemyBowl(0, 0, layer_foreground, Math.random() * 0xffffff, 2);
-		makeDraggable(bowl.container, this);
-		workzone.insert(bowl.container, 2);
+		// Add test containers
+		bottle = initObject(new AlchemyBottle(layer_foreground, Math.random() * 0xffffff, 3), workzone, 3, this);
+		bowl = initObject(new AlchemyBowl(layer_foreground, Math.random() * 0xffffff, 2), workzone, 2, this);
 	},
 
 	update: function()
@@ -52,10 +47,24 @@ Minigame_Alchemy.prototype =
 }
 
 /**
+ * Convenience function for initializing AlchemyObject instances.
+ *
+ * Makes them draggable, and adds them to the passed work area at the passed index.
+ *
+ * passedObject - The AlchemyObject to initialize
+ * passedWorkArea - The WorkArea object to add them to
+ * passedIndex - The index of the WorkArea to add them to
+ * passedReference - The context from which this AlchemyObject has been initialized (typically "this")
+ */
+function initObject(passedObject, passedWorkArea, passedIndex, passedReference) {
+	makeDraggable(passedObject.container, passedReference);
+	passedWorkArea.insert(passedObject.container, passedIndex);
+	return passedObject;
+}
+
+/**
  * AlchemyObject object.
  *
- * passedPositionX - The X position for the AlchemyObject
- * passedPositionY - The Y position for the AlchemyObject
  * passedGroup - The group to use for creating the AlchemyObject
  * passedFluid - The texture to use for the contained material (should be a spritesheet or equivalent)
  * The following parameters are optional, but must be used in conjunction:
@@ -63,7 +72,7 @@ Minigame_Alchemy.prototype =
  * passedQuantity - The initial quantity to fill this container with
  */
 class AlchemyObject {
-	constructor(passedPositionX, passedPositionY, passedGroup, passedContainer, passedFluid, passedColor, passedQuantity) {
+	constructor(passedGroup, passedContainer, passedFluid, passedColor, passedQuantity) {
 		this.container = passedGroup.create(0, 0, passedContainer);
 		this.contents = passedGroup.create(0, 0, passedFluid);
 		this.container.anchor.x = 0.5;
@@ -71,7 +80,6 @@ class AlchemyObject {
 		this.contents.anchor.x = 0.5;
 		this.contents.anchor.y = 1;
 		this.container.addChild(this.contents);
-		this.setPosition(passedPositionX, passedPositionY);
 		this.container.scale.setTo(spriteScale, spriteScale); // TODO: Remove when final asset size is determined
 		if ((passedQuantity != undefined) && (passedColor != undefined)) {
 			this.setContents(passedQuantity, passedColor);
@@ -93,14 +101,14 @@ class AlchemyObject {
 }
 
 class AlchemyBottle extends AlchemyObject {
-	constructor(passedPositionX, passedPositionY, passedGroup, passedColor, passedQuantity) {
-		super(passedPositionX, passedPositionY, passedGroup, "bottle_round", "liquid_bottle", passedColor, passedQuantity);
+	constructor(passedGroup, passedColor, passedQuantity) {
+		super(passedGroup, "bottle_round", "liquid_bottle", passedColor, passedQuantity);
 	}
 }
 
 class AlchemyBowl extends AlchemyObject {
-	constructor(passedPositionX, passedPositionY, passedGroup, passedColor, passedQuantity) {
-		super(passedPositionX, passedPositionY, passedGroup, "bowl", "liquid_bowl", passedColor, passedQuantity);
+	constructor(passedGroup, passedColor, passedQuantity) {
+		super(passedGroup, "bowl", "liquid_bowl", passedColor, passedQuantity);
 	}
 }
 
