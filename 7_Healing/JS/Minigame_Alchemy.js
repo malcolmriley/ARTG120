@@ -36,6 +36,7 @@ Minigame_Alchemy.prototype =
 		// Add test container
 		bottle = new AlchemyContainer(0, 0, layer_foreground, "bottle_round", "liquid_bottle", Math.random() * 0xffffff, 3);
 		makeDraggable(bottle.container, this);
+		equipment.insert(bottle.container, 1);
 	},
 
 	update: function()
@@ -45,9 +46,15 @@ Minigame_Alchemy.prototype =
 }
 
 function AlchemyContainer(passedPositionX, passedPositionY, passedGroup, passedContainer, passedFluid, passedColor, passedQuantity) {
-	this.container = passedGroup.create(passedPositionX, passedPositionY, passedContainer);
-	this.contents = passedGroup.create(passedPositionX, passedPositionY, passedFluid);
+	this.container = passedGroup.create(0, 0, passedContainer);
+	this.contents = passedGroup.create(0, 0, passedFluid);
+	this.container.anchor.x = 0.5;
+	this.container.anchor.y = 1;
+	this.contents.anchor.x = 0.5;
+	this.contents.anchor.y = 1;
 	this.container.addChild(this.contents);
+	this.container.x = passedPositionX;
+	this.container.y = passedPositionY;
 	this.container.scale.setTo(spriteScale, spriteScale); // TODO: Remove when final asset size is determined
 	if ((passedQuantity != undefined) && (passedColor != undefined)) {
 		this.setContents(passedQuantity, passedColor);
@@ -59,6 +66,10 @@ AlchemyContainer.prototype.setContents = function (passedQuantity, passedColor) 
 			this.contents.tint = passedColor;
 		}
 		this.contents.frame = passedQuantity;
+}
+AlchemyContainer.prototype.setPosition = function (passedXPosition, passedYPosition) {
+	this.container.x = passedXPosition;
+	this.container.y = passedYPosition;
 }
 
 /**
@@ -92,5 +103,17 @@ function WorkArea(passedPositionX, passedPositionY, passedQuantity, passedLabel)
 	if (passedLabel != undefined) {
 		this.textLabel = game.add.text(passedPositionX, passedPositionY + (2 * padding), passedLabel);
 		layer_background.add(this.textLabel);
+	}
+}
+WorkArea.prototype.insert = function(passedObject, passedIndex) {
+	this.apparatus[passedIndex] = passedObject;
+	let x_pos = this.spaces[passedIndex].x;
+	let y_pos = this.spaces[passedIndex].y;
+	if (passedObject instanceof Phaser.Sprite) {
+		passedObject.x = x_pos;
+		passedObject.y = y_pos;
+	}
+	if (passedObject instanceof AlchemyContainer) {
+		passedObject.setPosition(x_pos, y_pos);
 	}
 }
