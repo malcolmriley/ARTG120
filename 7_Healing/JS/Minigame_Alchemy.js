@@ -83,6 +83,9 @@ AlchemyObject.prototype.setPosition = function (passedXPosition, passedYPosition
 	this.container.y = passedYPosition;
 }
 
+// TODO: Switch to class-syntax approach
+// This is getting gross.
+
 /**
  * Constructor for WorkArea object.
  *
