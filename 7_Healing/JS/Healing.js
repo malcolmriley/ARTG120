@@ -20,8 +20,6 @@ MiniGame.prototype =
 
 		// creates group of 'cuts' and enable physics
 		// change images to some kind of wound
-		// change bounding box to be smaller
-		// random spawn locations?
 		this.cuts=game.add.group()
 		this.cuts.enableBody=true;
 		for(i=0;i<5;i++)
