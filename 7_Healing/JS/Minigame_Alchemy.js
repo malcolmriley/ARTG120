@@ -34,7 +34,7 @@ Minigame_Alchemy.prototype =
 		workzone = new WorkArea(50, 550, 5);
 
 		// Add test container
-		bottle = new AlchemyContainer(0, 0, layer_foreground, "bottle_round", "liquid_bottle", Math.random() * 0xffffff, 3);
+		bottle = new AlchemyObject(0, 0, layer_foreground, "bottle_round", "liquid_bottle", Math.random() * 0xffffff, 3);
 		makeDraggable(bottle.container, this);
 		equipment.insert(bottle.container, 1);
 	},
@@ -46,17 +46,17 @@ Minigame_Alchemy.prototype =
 }
 
 /**
- * Constructor for AlchemyContainer object.
+ * Constructor for AlchemyObject object.
  *
- * passedPositionX - The X position for the AlchemyContainer
- * passedPositionY - The Y position for the AlchemyContainer
- * passedGroup - The group to use for creating the AlchemyContainer
+ * passedPositionX - The X position for the AlchemyObject
+ * passedPositionY - The Y position for the AlchemyObject
+ * passedGroup - The group to use for creating the AlchemyObject
  * passedFluid - The texture to use for the contained material (should be a spritesheet or equivalent)
  * The following parameters are optional, but must be used in conjunction:
  * passedColor - The tint to use for the contained material (should be a spritesheet or equivalent)
  * passedQuantity - The initial quantity to fill this container with
  */
-function AlchemyContainer(passedPositionX, passedPositionY, passedGroup, passedContainer, passedFluid, passedColor, passedQuantity) {
+function AlchemyObject(passedPositionX, passedPositionY, passedGroup, passedContainer, passedFluid, passedColor, passedQuantity) {
 	this.container = passedGroup.create(0, 0, passedContainer);
 	this.contents = passedGroup.create(0, 0, passedFluid);
 	this.container.anchor.x = 0.5;
@@ -71,14 +71,14 @@ function AlchemyContainer(passedPositionX, passedPositionY, passedGroup, passedC
 		this.setContents(passedQuantity, passedColor);
 	}
 }
-AlchemyContainer.prototype.setContents = function (passedQuantity, passedColor) {
+AlchemyObject.prototype.setContents = function (passedQuantity, passedColor) {
 		this.quantity = passedQuantity;
 		if (passedColor != undefined) {
 			this.contents.tint = passedColor;
 		}
 		this.contents.frame = passedQuantity;
 }
-AlchemyContainer.prototype.setPosition = function (passedXPosition, passedYPosition) {
+AlchemyObject.prototype.setPosition = function (passedXPosition, passedYPosition) {
 	this.container.x = passedXPosition;
 	this.container.y = passedYPosition;
 }
@@ -124,7 +124,7 @@ WorkArea.prototype.insert = function(passedObject, passedIndex) {
 		passedObject.x = x_pos;
 		passedObject.y = y_pos;
 	}
-	if (passedObject instanceof AlchemyContainer) {
+	if (passedObject instanceof AlchemyObject) {
 		passedObject.setPosition(x_pos, y_pos);
 	}
 }
