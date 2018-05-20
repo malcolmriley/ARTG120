@@ -34,7 +34,7 @@ Minigame_Alchemy.prototype =
 		workzone = new WorkArea(50, 550, 5);
 
 		// Add test container
-		bottle = new AlchemyObject(0, 0, layer_foreground, "bottle_round", "liquid_bottle", Math.random() * 0xffffff, 3);
+		bottle = new AlchemyBottle(0, 0, layer_foreground, Math.random() * 0xffffff, 3);
 		makeDraggable(bottle.container, this);
 		equipment.insert(bottle.container, 1);
 	},
@@ -84,6 +84,12 @@ class AlchemyObject {
 	setPosition(passedXPosition, passedYPosition) {
 			this.container.x = passedXPosition;
 			this.container.y = passedYPosition;
+	}
+}
+
+class AlchemyBottle extends AlchemyObject {
+	constructor(passedPositionX, passedPositionY, passedGroup, passedColor, passedQuantity) {
+		super(passedPositionX, passedPositionY, passedGroup, "bottle_round", "liquid_bottle", passedColor, passedQuantity);
 	}
 }
 
