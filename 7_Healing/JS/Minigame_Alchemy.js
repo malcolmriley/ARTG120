@@ -7,7 +7,9 @@ Minigame_Alchemy.prototype =
 		this.load.path = "../_Assets/images/";
 		this.load.image("backdrop", "old_paper.png");
 		this.load.image("circle", "circle.png");
+		this.load.image("bowl", "bowl.png");
 		this.load.image("bottle_round", "bottle_round.png");
+		this.load.spritesheet("liquid_bowl", "liquid_bowl.png", 450, 300);
 		this.load.spritesheet("liquid_bottle",  "liquid_bottle.png", 300, 450);
 		spriteScale = 0.25; // TODO: Remove when final asset size is determined
 	},
@@ -37,6 +39,10 @@ Minigame_Alchemy.prototype =
 		bottle = new AlchemyBottle(0, 0, layer_foreground, Math.random() * 0xffffff, 3);
 		makeDraggable(bottle.container, this);
 		equipment.insert(bottle.container, 1);
+
+		bowl = new AlchemyBowl(0, 0, layer_foreground, Math.random() * 0xffffff, 2);
+		makeDraggable(bowl.container, this);
+		workzone.insert(bowl.container, 2);
 	},
 
 	update: function()
@@ -90,6 +96,12 @@ class AlchemyObject {
 class AlchemyBottle extends AlchemyObject {
 	constructor(passedPositionX, passedPositionY, passedGroup, passedColor, passedQuantity) {
 		super(passedPositionX, passedPositionY, passedGroup, "bottle_round", "liquid_bottle", passedColor, passedQuantity);
+	}
+}
+
+class AlchemyBowl extends AlchemyObject {
+	constructor(passedPositionX, passedPositionY, passedGroup, passedColor, passedQuantity) {
+		super(passedPositionX, passedPositionY, passedGroup, "bowl", "liquid_bowl", passedColor, passedQuantity);
 	}
 }
 
