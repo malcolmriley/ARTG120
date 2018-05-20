@@ -71,8 +71,7 @@ class AlchemyObject {
 		this.contents.anchor.x = 0.5;
 		this.contents.anchor.y = 1;
 		this.container.addChild(this.contents);
-		this.container.x = passedPositionX;
-		this.container.y = passedPositionY;
+		this.setPosition(passedPositionX, passedPositionY);
 		this.container.scale.setTo(spriteScale, spriteScale); // TODO: Remove when final asset size is determined
 		if ((passedQuantity != undefined) && (passedColor != undefined)) {
 			this.setContents(passedQuantity, passedColor);
