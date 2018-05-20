@@ -46,7 +46,7 @@ Minigame_Alchemy.prototype =
 }
 
 /**
- * Constructor for AlchemyObject object.
+ * AlchemyObject object.
  *
  * passedPositionX - The X position for the AlchemyObject
  * passedPositionY - The Y position for the AlchemyObject
@@ -56,38 +56,39 @@ Minigame_Alchemy.prototype =
  * passedColor - The tint to use for the contained material (should be a spritesheet or equivalent)
  * passedQuantity - The initial quantity to fill this container with
  */
-function AlchemyObject(passedPositionX, passedPositionY, passedGroup, passedContainer, passedFluid, passedColor, passedQuantity) {
-	this.container = passedGroup.create(0, 0, passedContainer);
-	this.contents = passedGroup.create(0, 0, passedFluid);
-	this.container.anchor.x = 0.5;
-	this.container.anchor.y = 1;
-	this.contents.anchor.x = 0.5;
-	this.contents.anchor.y = 1;
-	this.container.addChild(this.contents);
-	this.container.x = passedPositionX;
-	this.container.y = passedPositionY;
-	this.container.scale.setTo(spriteScale, spriteScale); // TODO: Remove when final asset size is determined
-	if ((passedQuantity != undefined) && (passedColor != undefined)) {
-		this.setContents(passedQuantity, passedColor);
+class AlchemyObject {
+	constructor(passedPositionX, passedPositionY, passedGroup, passedContainer, passedFluid, passedColor, passedQuantity) {
+		this.container = passedGroup.create(0, 0, passedContainer);
+		this.contents = passedGroup.create(0, 0, passedFluid);
+		this.container.anchor.x = 0.5;
+		this.container.anchor.y = 1;
+		this.contents.anchor.x = 0.5;
+		this.contents.anchor.y = 1;
+		this.container.addChild(this.contents);
+		this.container.x = passedPositionX;
+		this.container.y = passedPositionY;
+		this.container.scale.setTo(spriteScale, spriteScale); // TODO: Remove when final asset size is determined
+		if ((passedQuantity != undefined) && (passedColor != undefined)) {
+			this.setContents(passedQuantity, passedColor);
+		}
 	}
-}
-AlchemyObject.prototype.setContents = function (passedQuantity, passedColor) {
+
+	setContents(passedQuantity, passedColor) {
 		this.quantity = passedQuantity;
 		if (passedColor != undefined) {
 			this.contents.tint = passedColor;
 		}
 		this.contents.frame = passedQuantity;
-}
-AlchemyObject.prototype.setPosition = function (passedXPosition, passedYPosition) {
-	this.container.x = passedXPosition;
-	this.container.y = passedYPosition;
-}
+	}
 
-// TODO: Switch to class-syntax approach
-// This is getting gross.
+	setPosition(passedXPosition, passedYPosition) {
+			this.container.x = passedXPosition;
+			this.container.y = passedYPosition;
+	}
+}
 
 /**
- * Constructor for WorkArea object.
+ * WorkArea object.
  *
  * passedPositionX - The x position of the work area in total
  * passedPositionY - The y position of the work area in total
@@ -95,39 +96,42 @@ AlchemyObject.prototype.setPosition = function (passedXPosition, passedYPosition
  * The remaining parameters are optional:
  * passedLabel - A textual lable for this work area
  */
-function WorkArea(passedPositionX, passedPositionY, passedQuantity, passedLabel) {
-	// Initialize member fields
-	this.position = new Phaser.Point(passedPositionX, passedPositionY);
-	this.quantity = passedQuantity;
-	this.spaces = [];
-	this.apparatus = [];
+class WorkArea {
+	constructor(passedPositionX, passedPositionY, passedQuantity, passedLabel) {
+		// Initialize member fields
+		this.position = new Phaser.Point(passedPositionX, passedPositionY);
+		this.quantity = passedQuantity;
+		this.spaces = [];
+		this.apparatus = [];
 
-	// Initialize member objects
-	let padding = 20;
-	for (let count = 0; count < passedQuantity; count += 1) {
-		let circleInstance = layer_background.create(0, 0, "circle");
-		centerAnchor(circleInstance);
-		circleInstance.scale.setTo(spriteScale, spriteScale); // TODO: Remove when final asset size is determined
-		circleInstance.x = passedPositionX + (count * (padding + circleInstance.width)) + (circleInstance.width / 2);
-		circleInstance.y = passedPositionY + (circleInstance.height / 2);
-		circleInstance.alpha = 0.4;
-		this.spaces[count] = circleInstance;
+		// Initialize member objects
+		let padding = 20;
+		for (let count = 0; count < passedQuantity; count += 1) {
+			let circleInstance = layer_background.create(0, 0, "circle");
+			centerAnchor(circleInstance);
+			circleInstance.scale.setTo(spriteScale, spriteScale); // TODO: Remove when final asset size is determined
+			circleInstance.x = passedPositionX + (count * (padding + circleInstance.width)) + (circleInstance.width / 2);
+			circleInstance.y = passedPositionY + (circleInstance.height / 2);
+			circleInstance.alpha = 0.4;
+			this.spaces[count] = circleInstance;
+		}
+		// TODO: Better font?
+		if (passedLabel != undefined) {
+			this.textLabel = game.add.text(passedPositionX, passedPositionY + (2 * padding), passedLabel);
+			layer_background.add(this.textLabel);
+		}
 	}
-	// TODO: Better font?
-	if (passedLabel != undefined) {
-		this.textLabel = game.add.text(passedPositionX, passedPositionY + (2 * padding), passedLabel);
-		layer_background.add(this.textLabel);
-	}
-}
-WorkArea.prototype.insert = function(passedObject, passedIndex) {
-	this.apparatus[passedIndex] = passedObject;
-	let x_pos = this.spaces[passedIndex].x;
-	let y_pos = this.spaces[passedIndex].y;
-	if (passedObject instanceof Phaser.Sprite) {
-		passedObject.x = x_pos;
-		passedObject.y = y_pos;
-	}
-	if (passedObject instanceof AlchemyObject) {
-		passedObject.setPosition(x_pos, y_pos);
+
+	insert(passedObject, passedIndex) {
+		this.apparatus[passedIndex] = passedObject;
+		let x_pos = this.spaces[passedIndex].x;
+		let y_pos = this.spaces[passedIndex].y;
+		if (passedObject instanceof Phaser.Sprite) {
+			passedObject.x = x_pos;
+			passedObject.y = y_pos;
+		}
+		if (passedObject instanceof AlchemyObject) {
+			passedObject.setPosition(x_pos, y_pos);
+		}
 	}
 }
