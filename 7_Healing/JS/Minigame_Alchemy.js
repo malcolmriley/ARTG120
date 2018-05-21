@@ -73,8 +73,9 @@ function initObject(passedObject, passedWorkArea, passedIndex, passedReference) 
  */
 class AlchemyObject {
 	constructor(passedGroup, passedContainer, passedFluid, passedColor, passedQuantity) {
-		this.container = this.initElement(passedGroup, passedContainer);
-		this.contents = this.initElement(passedGroup, passedFluid);
+		this.group = passedGroup;
+		this.container = this.initElement(passedContainer);
+		this.contents = this.initElement(passedFluid);
 		this.container.addChild(this.contents);
 		this.container.scale.setTo(spriteScale, spriteScale); // TODO: Remove when final asset size is determined
 		if ((passedQuantity != undefined) && (passedColor != undefined)) {
@@ -82,8 +83,8 @@ class AlchemyObject {
 		}
 	}
 
-	initElement(passedGroup, passedKey) {
-		let instance = passedGroup.create(0, 0, passedKey);
+	initElement(passedKey) {
+		let instance = this.group.create(0, 0, passedKey);
 		instance.anchor.x = 0.5;
 		instance.anchor.y = 1;
 		return instance;
