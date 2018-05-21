@@ -9,6 +9,7 @@ Minigame_Alchemy.prototype =
 		this.load.image("circle", "circle.png");
 		this.load.image("bowl", "bowl.png");
 		this.load.image("bottle_round", "bottle_round.png");
+		this.load.image("bottle_cork", "cork.png");
 		this.load.spritesheet("liquid_bowl", "liquid_bowl.png", 450, 300);
 		this.load.spritesheet("liquid_bottle",  "liquid_bottle.png", 300, 450);
 		spriteScale = 0.25; // TODO: Remove when final asset size is determined
@@ -116,6 +117,7 @@ class AlchemyObject {
 class AlchemyBottle extends AlchemyObject {
 	constructor(passedGroup, passedColor, passedQuantity) {
 		super(passedGroup, "bottle_round", "liquid_bottle", passedColor, passedQuantity);
+		this.cork = this.addElement("bottle_cork", 0, -415);
 	}
 }
 
