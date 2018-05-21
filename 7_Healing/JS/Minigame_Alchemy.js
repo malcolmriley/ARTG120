@@ -81,15 +81,19 @@ class AlchemyObject {
 		}
 	}
 
-	initElement(passedKey) {
+	initElement(passedKey, passedXPosition, passedYPosition) {
 		let instance = this.group.create(0, 0, passedKey);
+		if ((passedXPosition != null) && (passedYPosition != null)) {
+			instance.x = passedXPosition;
+			instance.y = passedYPosition;
+		}
 		instance.anchor.x = 0.5;
 		instance.anchor.y = 1;
 		return instance;
 	}
 
-	addElement(passedKey) {
-		let instance = this.initElement(passedKey);
+	addElement(passedKey, passedXPosition, passedYPosition) {
+		let instance = this.initElement(passedKey, passedXPosition, passedYPosition);
 		this.container.addChild(instance);
 		this.container.scale.setTo(spriteScale, spriteScale); // TODO: Remove when final asset size is determined
 		return instance;
