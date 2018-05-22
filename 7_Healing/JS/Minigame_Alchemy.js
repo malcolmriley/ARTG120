@@ -78,7 +78,8 @@ class AlchemyObject {
 		this.container = this.initElement(passedContainer);
 		this.contents = this.addElement(passedFluid);
 		if ((passedQuantity != undefined) && (passedColor != undefined)) {
-			this.setContents(passedQuantity, passedColor);
+			this.setQuantity(passedQuantity);
+			this.setColor(passedColor);
 		}
 	}
 
