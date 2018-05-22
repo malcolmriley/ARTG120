@@ -50,3 +50,14 @@ function centerAnchor(passedSprite) {
   passedSprite.anchor.x = 0.5;
   passedSprite.anchor.y = 0.5;
 }
+
+/**
+ * Convenience function that returns true if the two passed Sprite objects are overlapping.
+ * Does NOT require physics to be enabled in order to work!
+ *
+ * passedFirstSprite - The first Sprite to test
+ * passedSecondSprite - The second Sprite to test
+ */
+function spritesOverlap(passedFirstSprite, passedSecondSprite) {
+    return Phaser.Rectangle.intersects(passedFirstSprite.getBounds(), passedSecondSprite.getBounds());
+}
