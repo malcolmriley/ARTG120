@@ -100,11 +100,12 @@ class AlchemyObject {
 		return instance;
 	}
 
-	setContents(passedQuantity, passedColor) {
-		this.quantity = passedQuantity;
-		if (passedColor != undefined) {
+	setColor(passedColor) {
 			this.contents.tint = passedColor;
-		}
+	}
+
+	setQuantity(passedQuantity) {
+		this.quantity = passedQuantity;
 		this.contents.frame = passedQuantity;
 	}
 
@@ -173,5 +174,11 @@ class WorkArea {
 		if (passedObject instanceof AlchemyObject) {
 			passedObject.setPosition(x_pos, y_pos);
 		}
+		this.addPositionData(passedObject);
+	}
+
+	addPositionData(passedSprite) {
+		passedSprite.oldPos = new Phaser.Point(passedSprite.x, passedSprite.y);
+		passedSprite.oldArea = this;
 	}
 }
