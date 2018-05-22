@@ -102,16 +102,19 @@ class AlchemyObject {
 
 	setColor(passedColor) {
 			this.contents.tint = passedColor;
+			return this;
 	}
 
 	setQuantity(passedQuantity) {
 		this.quantity = passedQuantity;
 		this.contents.frame = passedQuantity;
+		return this;
 	}
 
 	setPosition(passedXPosition, passedYPosition) {
 			this.container.x = passedXPosition;
 			this.container.y = passedYPosition;
+			return this;
 	}
 }
 
