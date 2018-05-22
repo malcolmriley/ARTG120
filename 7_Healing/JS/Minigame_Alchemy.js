@@ -47,6 +47,14 @@ Minigame_Alchemy.prototype =
 	}
 }
 
+function beginDragAlchemy(passedObject, passedPointer) {
+
+}
+
+function endDragAlchemy(passedObject, passedPointer) {
+	
+}
+
 /**
  * Convenience function for initializing AlchemyObject instances.
  *
@@ -58,7 +66,7 @@ Minigame_Alchemy.prototype =
  * passedReference - The context from which this AlchemyObject has been initialized (typically "this")
  */
 function initObject(passedObject, passedWorkArea, passedIndex, passedReference) {
-	makeDraggable(passedObject.container, passedReference);
+	makeDraggable(passedObject.container, passedReference, beginDragAlchemy, endDragAlchemy);
 	passedWorkArea.insert(passedObject.container, passedIndex);
 	return passedObject;
 }
