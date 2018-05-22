@@ -15,54 +15,72 @@ MiniGame.prototype =
 
 	create: function()
 	{
-		// adds images and enables physics
+		// enables physics system
 		this.game.physics.startSystem(Phaser.Physics.ARCADE);
-		this.blank=this.game.add.sprite(600,300,"X");
-		this.blank.scale.setTo(0.1, 0.1);
-		this.game.physics.arcade.enable(this.blank);
-		this.flower=this.game.add.sprite(0,300,'flower');
-		this.game.physics.arcade.enable(this.flower);
 
-		// turns on input and then enables drag
-		this.flower.inputEnabled=true;
-		this.flower.input.enableDrag();
-		this.flower.scale.setTo(0.1, 0.1);
+		// creates group of 'cuts' and enable physics
+		// change images to some kind of wound
+		this.cuts=game.add.group()
+		this.cuts.enableBody=true;
+		for(i=0;i<5;i++)
+		{
+			this.blank=this.cuts.create(Math.random()*500+100,Math.random()*400+50,"X");
+			this.blank.scale.set(.1,.1);
+			// change bounding box to be smaller and slightly centered
+			this.blank.body.setSize(100,100,200,250);	
+		}
 
-		// saves position of flower
-		this.flower.ogPos=this.flower.position.clone();
-		// what happens when you stop dragging/let go
-		this.flower.events.onDragStop.add(function(current){
-		    this.stopDrag(current,this.blank);},this);
+		// creates group of flowers and enable physics
+		// should be bandages or something
+		this.flowers=game.add.group();
+		this.flowers.enableBody=true;
+		for(i=0;i<5;i++)
+		{
+			this.flower=this.flowers.create(0,300,"flower");
+			this.flower.scale.set(.1,.1);
+			// allows flower to be draggable
+			this.flower.inputEnabled=true;
+			this.flower.input.enableDrag();
+		}
 
-		this.add.text(0, 0, "MiniGame \n ENTER: GameOver \n SPACE: Town");
+		this.add.text(0, 0, "Drag flowers to Xs.");
 		this.stage.backgroundColor = '#ffffff';
 		music_background = this.add.audio('background');
 		music_background.play();
+
+		// local timer variable and prints
+		timer=10;
+		timerText=this.add.text(400, 20, 'Time left : '+timer);
 	},
 
 	update: function()
 	{
-		if(this.input.keyboard.isDown(Phaser.Keyboard.ENTER))
+		// updates timer
+		timer-=1/60;
+		timerText.text='Time left: '+timer.toFixed(2);
+
+		// checks for overlap between groups
+		this.game.physics.arcade.overlap(this.flowers,this.cuts,this.remove);
+
+		// goes to game over screen when time runs out
+		if(timer<0)
 		{
+			this.sound.stopAll();
 			this.state.start('GameOver');
 		}
-		else if(this.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR))
+
+		// goes back to town if cured
+		if(this.cuts.countLiving()==0)
 		{
 			this.sound.stopAll();
 			this.state.start('Town');
 		}
 	},
 
-	// function that executes when player lets go of flower
-	stopDrag: function(current,end){
-		// if flower is not touching blank/end goal
-		if(!this.game.physics.arcade.overlap(current,end,function(){
-		    // if it does overlap, execute function which disables drag
-		    current.input.draggable=false;
-		    // also snaps to goal position
-		    current.position.copyFrom(end.position);})) {
-			// snaps back to original position
-			current.position.copyFrom(current.ogPos);
-		}
+	// removes sprites when they touch
+	remove: function(sprite1,sprite2)
+	{
+		sprite1.kill();
+		sprite2.kill();
 	}
 }
