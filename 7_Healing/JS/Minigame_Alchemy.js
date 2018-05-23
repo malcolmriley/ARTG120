@@ -88,6 +88,7 @@ function initObject(passedObject, passedWorkArea, passedIndex, passedReference) 
  * passedColor - The tint to use for the contained material (should be a spritesheet or equivalent)
  * passedQuantity - The initial quantity to fill this container with
  */
+ // TODO: Make AlchemyObject extend Sprite for improved integration with existing Phaser systems
 class AlchemyObject {
 	constructor(passedGroup, passedContainer, passedFluid, passedColor, passedQuantity) {
 		this.group = passedGroup;
@@ -157,6 +158,7 @@ class AlchemyBowl extends AlchemyObject {
  * The remaining parameters are optional:
  * passedLabel - A textual lable for this work area
  */
+ // TODO Make WorkArea extend Group for improved integration with existing Phaser systems
 class WorkArea {
 	constructor(passedPositionX, passedPositionY, passedQuantity, passedLabel) {
 		// Initialize member fields
