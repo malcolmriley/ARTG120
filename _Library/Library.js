@@ -10,12 +10,12 @@
  */
 function makeButton(passedSprite, passedReference, passedClickAction, passedOverAction, passedOutAction) {
   passedSprite.inputEnabled = true;
-  passedSprite.events.onInputDown.add(passedClickAction, passedReference);
+  passedSprite.events.onInputDown.add(passedClickAction.bind(passedReference), passedReference);
   if (passedOverAction != undefined) {
-    passedSprite.events.onInputOver.add(passedOverAction, passedReference);
+    passedSprite.events.onInputOver.add(passedOverAction.bind(passedReference), passedReference);
   }
   if (passedOutAction != undefined) {
-    passedSprite.events.onInputOut.add(passedOutAction, passedReference);
+    passedSprite.events.onInputOut.add(passedOutAction.bind(passedReference), passedReference);
   }
   return passedSprite;
 }
@@ -33,10 +33,10 @@ function makeDraggable(passedSprite, passedReference, passedDragStartAction, pas
   passedSprite.inputEnabled = true;
   passedSprite.input.enableDrag();
   if (passedDragStartAction != undefined) {
-    passedSprite.events.onDragStart.add(passedDragStartAction, passedReference);
+    passedSprite.events.onDragStart.add(passedDragStartAction.bind(passedReference), passedReference);
   }
   if (passedDragStopAction != undefined) {
-    passedSprite.events.onDragStop.add(passedDragStopAction, passedReference);
+    passedSprite.events.onDragStop.add(passedDragStopAction.bind(passedReference), passedReference);
   }
   return passedSprite;
 }
