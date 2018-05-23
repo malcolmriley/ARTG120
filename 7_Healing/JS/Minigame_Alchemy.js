@@ -17,6 +17,9 @@ Minigame_Alchemy.prototype =
 
 	create: function()
 	{
+		// Launch Physics
+		this.game.physics.startSystem(Phaser.Physics.ARCADE);
+
 		// Add render groups for use as "render layers"
 		layer_background = this.game.add.group();
 		layer_midground = this.game.add.group();
@@ -52,7 +55,11 @@ function beginDragAlchemy(passedObject, passedPointer) {
 }
 
 function endDragAlchemy(passedObject, passedPointer) {
+	game.physics.arcade.overlap(passedObject, layer_midground, onOverlap);
+}
 
+function onOverlap(passedFirstSprite, passedSecondSprite) {
+	console.log("OVERLAP ACHIEVED!");
 }
 
 /**
@@ -68,6 +75,7 @@ function endDragAlchemy(passedObject, passedPointer) {
 function initObject(passedObject, passedWorkArea, passedIndex, passedReference) {
 	makeDraggable(passedObject.container, passedReference, beginDragAlchemy, endDragAlchemy);
 	passedWorkArea.insert(passedObject.container, passedIndex);
+	game.physics.arcade.enable(passedObject.container);
 	return passedObject;
 }
 
