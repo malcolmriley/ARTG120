@@ -37,8 +37,8 @@ Minigame_Alchemy.prototype =
 		workzone = new WorkArea(50, 550, 5);
 
 		// Add test containers
-		bottle = initObject(new AlchemyBottle(layer_foreground, Math.random() * 0xffffff, 3), workzone, 3, this);
-		bowl = initObject(new AlchemyBowl(layer_foreground, Math.random() * 0xffffff, 2), workzone, 2, this);
+		bottle = initObject(new AlchemyBottle(layer_midground, Math.random() * 0xffffff, 3), workzone, 3, this);
+		bowl = initObject(new AlchemyBowl(layer_midground, Math.random() * 0xffffff, 2), workzone, 2, this);
 	},
 
 	update: function()
@@ -52,7 +52,7 @@ function beginDragAlchemy(passedObject, passedPointer) {
 }
 
 function endDragAlchemy(passedObject, passedPointer) {
-	
+
 }
 
 /**
