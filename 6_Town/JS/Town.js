@@ -1,3 +1,6 @@
+loc="start";
+health=[100,100,100];
+
 var Town = function(game) {};
 Town.prototype =
 {
@@ -25,12 +28,11 @@ Town.prototype =
 		{
 			house=houses.create(300*i+400,200,"house");
 			house.scale.set(.25);
-			house.hp=Math.random()*100;
+			house.num=i;
+			house.hp=game.add.text(300*i+470,160,'health: '+health[i]);
 		}
 
-		player=game.add.sprite(100,250,"character");
-		player.scale.set(.1);
-		player.anchor.set(.5,0);
+		player=initPlayer();
 		game.physics.arcade.enable([player,houses]);
 
 		game.camera.follow(player);
@@ -50,14 +52,45 @@ Town.prototype =
 			player.scale.set(.1);
 		}
 		game.physics.arcade.overlap(player,houses,this.checkInput);
+
+		houses.forEach(this.updateHouse,this);
+
+		if(Math.random()<.1)
+		{
+			health[Math.floor(Math.random()*3)]-=1;
+		}
 	},
 
 	checkInput: function(player,house)
 	{
 		if(game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR))
 		{
-			console.log(house.hp);
+			switch(house.num)
+			{
+				case 0:
+					loc="house0";
+					break;
+				case 1:
+					loc="house1";
+					break;
+				case 2:
+					loc="house2";
+					break;
+			}
 			goToInterior();
+		}
+	},
+
+	updateHouse: function(house)
+	{
+		if(health[house.num]<1)
+		{
+			house.body.enable=false;
+			house.hp.text='';
+		}
+		else
+		{
+			house.hp.text='health: '+health[house.num];
 		}
 	},
 
@@ -68,6 +101,27 @@ Town.prototype =
 	}
 }
 
+function initPlayer()
+{
+	switch(loc)
+	{
+		case "start":
+			instance=game.add.sprite(100,250,"character");
+			break;
+		case "house0":
+			instance=game.add.sprite(475,250,"character");
+			break;
+		case "house1":
+			instance=game.add.sprite(775,250,"character");
+			break;
+		case "house2":
+			instance=game.add.sprite(1075,250,"character");
+			break;
+	}
+	instance.scale.set(.1);
+	instance.anchor.set(.5,0);
+	return instance;
+}
 
 function goToInterior() {
 	soundfx_door.play();
