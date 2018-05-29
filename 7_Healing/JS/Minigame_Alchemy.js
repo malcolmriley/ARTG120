@@ -127,17 +127,17 @@ class AlchemyColors {
  * AlchemyObject object.
  *
  * passedGroup - The group to use for creating the AlchemyObject
- * passedFluid - The texture to use for the contained material (should be a spritesheet or equivalent)
+ * passedContents - The texture to use for the contained material (should be a spritesheet or equivalent)
  * The following parameters are optional, but must be used in conjunction:
  * passedColor - The tint to use for the contained material (should be a spritesheet or equivalent)
  * passedQuantity - The initial quantity to fill this container with
  */
  // TODO: Make AlchemyObject extend Sprite for improved integration with existing Phaser systems
 class AlchemyObject {
-	constructor(passedGroup, passedContainer, passedFluid, passedColor, passedQuantity) {
+	constructor(passedGroup, passedContainer, passedContents, passedColor, passedQuantity) {
 		this.group = passedGroup;
 		this.container = this.initElement(passedContainer);
-		this.contents = this.addElement(passedFluid);
+		this.contents = this.addElement(passedContents);
 		if ((passedQuantity != undefined) && (passedColor != undefined)) {
 			this.quantity = passedQuantity;
 			this.color = passedColor;
