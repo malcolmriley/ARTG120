@@ -80,11 +80,11 @@ function endDragAlchemy(passedObject, passedPointer) {
 	}
 }
 
-function onReact(passedFirstSprite, passedSecondSprite) {
+function onReact(passedDraggedObject, passedReactingObject) {
 	console.log("REACTION!");
 }
 
-function onDrop(passedFirstSprite, passedSecondSprite) {
+function onDrop(passedDraggedObject, passedCircleObject) {
 	console.log("DROP");
 }
 
