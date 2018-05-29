@@ -52,6 +52,22 @@ function centerAnchor(passedSprite) {
 }
 
 /**
+ * Utility function to store the current position data of the passed object in a new Phaser.Point
+ * field that will be called "oldPos".
+ *
+ * passedObject - The object whose position should be stored
+ */
+function storePositionData(passedObject) {
+	if (passedObject.oldPos == undefined) {
+		passedObject.oldPos = new Phaser.Point(passedObject.x, passedObject.y);
+	}
+	else {
+		passedObject.oldPos.x = passedObject.x;
+		passedObject.oldPos.y = passedObject.y;
+	}
+}
+
+/**
  * Convenience function that returns true if the two passed Sprite objects are overlapping.
  * Does NOT require physics to be enabled in order to work!
  *
