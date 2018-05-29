@@ -58,8 +58,12 @@ function beginDragAlchemy(passedObject, passedPointer) {
 }
 
 function endDragAlchemy(passedObject, passedPointer) {
-	let reaction = game.physics.arcade.overlap(passedObject, layer_midground, onReact);
-	let insert = game.physics.arcade.overlap(passedObject, layer_background, onDrop);
+	let reaction = false;
+	let insert = false;
+	reaction = game.physics.arcade.overlap(passedObject, layer_midground, onReact);
+	if (!reaction) {
+		insert = game.physics.arcade.overlap(passedObject, layer_background, onDrop);
+	}
 	if ((!reaction) && (!insert)) {
 		console.log("No overlap, and no drop!");
 	}
