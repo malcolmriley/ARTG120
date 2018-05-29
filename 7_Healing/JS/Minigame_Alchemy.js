@@ -231,6 +231,7 @@ class WorkArea {
 		let padding = 20;
 		for (let count = 0; count < passedQuantity; count += 1) {
 			let circleInstance = layer_background.create(0, 0, "circle");
+			game.physics.arcade.enable(circleInstance);
 			centerAnchor(circleInstance);
 			circleInstance.scale.setTo(spriteScale, spriteScale); // TODO: Remove when final asset size is determined
 			circleInstance.x = passedPositionX + (count * (padding + circleInstance.width)) + (circleInstance.width / 2);
