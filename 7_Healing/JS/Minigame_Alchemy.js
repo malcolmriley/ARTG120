@@ -249,7 +249,6 @@ class WorkArea {
 			circleInstance.x = passedPositionX + (count * (padding + circleInstance.width)) + (circleInstance.width / 2);
 			circleInstance.y = passedPositionY + (circleInstance.height / 2);
 			circleInstance.alpha = 0.4;
-			Object.freeze(circleInstance);
 			this.spaces[count] = circleInstance;
 		}
 		// TODO: Better font?
