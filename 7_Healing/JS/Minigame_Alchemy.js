@@ -86,11 +86,14 @@ function onReact(passedDraggedObject, passedReactingObject) {
 
 function onDrop(passedDraggedObject, passedCircleObject) {
 	console.log("DROP");
+	passedCircleObject.workArea.insert(passedDraggedObject, passedCircleObject.index);
+	let tween = game.add.tween(passedDraggedObject).to({x : passedCircleObject.x, y : passedCircleObject.y}, 250, Phaser.Easing.Circular.InOut, true);
+	tween.onComplete.add(function(){ storePosition(passedDraggedObject); });
 }
 
 function onReturn(passedSprite) {
 	console.log("RETURN!");
-	game.add.tween(passedSprite).to({x : passedSprite.oldPos.x, y: passedSprite.oldPos.y}, 500, Phaser.Easing.Circular.InOut, true);
+	let tween = game.add.tween(passedSprite).to({x : passedSprite.oldPos.x, y : passedSprite.oldPos.y}, 500, Phaser.Easing.Circular.InOut, true);
 }
 
 /**
@@ -105,7 +108,9 @@ function onReturn(passedSprite) {
  */
 function initObject(passedObject, passedWorkArea, passedIndex, passedReference) {
 	makeDraggable(passedObject.container, passedReference, beginDragAlchemy, endDragAlchemy);
-	passedWorkArea.insert(passedObject.container, passedIndex);
+	passedObject.setPosition(passedWorkArea.getArea(passedIndex).x, passedWorkArea.getArea(passedIndex).y);
+	passedWorkArea.insert(passedObject.container, passedIndex, true);
+	storePosition(passedObject);
 	return passedObject;
 }
 
@@ -254,6 +259,7 @@ class WorkArea {
 			game.physics.arcade.enable(circleInstance);
 			centerAnchor(circleInstance);
 			circleInstance.workArea = this;
+			circleInstance.index = count;
 			circleInstance.scale.setTo(spriteScale, spriteScale); // TODO: Remove when final asset size is determined
 			circleInstance.x = passedPositionX + (count * (padding + circleInstance.width)) + (circleInstance.width / 2);
 			circleInstance.y = passedPositionY + (circleInstance.height / 2);
@@ -267,22 +273,12 @@ class WorkArea {
 		}
 	}
 
-	insert(passedObject, passedIndex) {
-		this.apparatus[passedIndex] = passedObject;
-		let x_pos = this.spaces[passedIndex].x;
-		let y_pos = this.spaces[passedIndex].y;
-		if (passedObject instanceof Phaser.Sprite) {
-			passedObject.x = x_pos;
-			passedObject.y = y_pos;
-		}
-		if (passedObject instanceof AlchemyObject) {
-			passedObject.setPosition(x_pos, y_pos);
-		}
-		this.addPositionData(passedObject);
+	getArea(passedIndex) {
+		return this.spaces[passedIndex];
 	}
 
-	addPositionData(passedSprite) {
-		passedSprite.oldPos = new Phaser.Point(passedSprite.x, passedSprite.y);
-		passedSprite.oldArea = this;
+	insert(passedObject, passedIndex) {
+		this.apparatus[passedIndex] = passedObject;
+		passedObject.oldArea = this;
 	}
 }
