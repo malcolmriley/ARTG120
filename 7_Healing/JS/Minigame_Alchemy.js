@@ -85,14 +85,12 @@ function onReact(passedDraggedObject, passedReactingObject) {
 }
 
 function onDrop(passedDraggedObject, passedCircleObject) {
-	console.log("DROP");
 	passedCircleObject.workArea.insert(passedDraggedObject, passedCircleObject.index);
 	let tween = game.add.tween(passedDraggedObject).to({x : passedCircleObject.x, y : passedCircleObject.y}, 250, Phaser.Easing.Circular.InOut, true);
 	tween.onComplete.add(function(){ storePosition(passedDraggedObject); });
 }
 
 function onReturn(passedSprite) {
-	console.log("RETURN!");
 	let tween = game.add.tween(passedSprite).to({x : passedSprite.oldPos.x, y : passedSprite.oldPos.y}, 500, Phaser.Easing.Circular.InOut, true);
 }
 
