@@ -63,7 +63,8 @@ function endDragAlchemy(passedObject, passedPointer) {
 	// Return dragged sprite to midground
 	layer_midground.add(passedObject, false);
 	layer_foreground.remove(passedObject, false);
-	
+
+	// Perform reaction, or drop onto empty workspace
 	let reaction = false;
 	let insert = false;
 	reaction = game.physics.arcade.overlap(passedObject, layer_midground, onReact);
