@@ -86,7 +86,6 @@ function onDrop(passedFirstSprite, passedSecondSprite) {
 function initObject(passedObject, passedWorkArea, passedIndex, passedReference) {
 	makeDraggable(passedObject.container, passedReference, beginDragAlchemy, endDragAlchemy);
 	passedWorkArea.insert(passedObject.container, passedIndex);
-	game.physics.arcade.enable(passedObject.container);
 	return passedObject;
 }
 
@@ -146,6 +145,7 @@ class AlchemyObject {
 		this.group = passedGroup;
 		this.container = this.initElement(passedContainer);
 		this.contents = this.addElement(passedContents);
+		game.physics.arcade.enable(this.container);
 		if ((passedQuantity != undefined) && (passedColor != undefined)) {
 			this.quantity = passedQuantity;
 			this.color = passedColor;
