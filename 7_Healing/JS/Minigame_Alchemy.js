@@ -13,6 +13,9 @@ Minigame_Alchemy.prototype =
 		this.load.spritesheet("liquid_bowl", "liquid_bowl.png", 450, 300);
 		this.load.spritesheet("liquid_bottle",  "liquid_bottle.png", 300, 450);
 		spriteScale = 0.25; // TODO: Remove when final asset size is determined
+
+		// Define colors
+		AlchemyColor = Object.freeze(new AlchemyColors());
 	},
 
 	create: function()
@@ -77,6 +80,28 @@ function initObject(passedObject, passedWorkArea, passedIndex, passedReference) 
 	passedWorkArea.insert(passedObject.container, passedIndex);
 	game.physics.arcade.enable(passedObject.container);
 	return passedObject;
+}
+
+class AlchemyColors {
+	constructor() {
+		let init = function(passedIndex, passedColor) {
+			let instance = { index : passedIndex, tint : passedColor};
+			return instance;
+		};
+		this.RED = init(0, 0xB50000);
+		this.ORANGE = init(1, 0xC55500);
+		this.YELLOW = init(2, 0xFFBA1A);
+		this.GREEN = init(3, 0x5C8D1A);
+		this.BLUE = init(4, 0x0030B5);
+		this.INDIGO = init(5, 0x5956B5);
+		this.VIOLET = init(6, 0x8627FF);
+		this.MAGENTA = init(7, 0x862768);
+		this.colorArray = [this.RED, this.ORANGE, this.YELLOW, this.GREEN, this.BLUE, this.INDIGO, this.VIOLET, this.MAGENTA];
+	}
+
+	get(passedIndex) {
+		return this.colorArray[(passedIndex % this.colorArray.length)];
+	}
 }
 
 /**
