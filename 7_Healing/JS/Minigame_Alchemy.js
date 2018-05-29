@@ -43,8 +43,8 @@ Minigame_Alchemy.prototype =
 		workzone = new WorkArea(50, 550, 5);
 
 		// Add test containers
-		bottle = initObject(new AlchemyBottle(layer_midground, Color.RED.tint, 3), workzone, 3, this);
-		bowl = initObject(new AlchemyBowl(layer_midground, Color.BLUE.tint, 2), workzone, 2, this);
+		bottle = initObject(new AlchemyBottle(layer_midground, Color.RED, 3), workzone, 3, this);
+		bowl = initObject(new AlchemyBowl(layer_midground, Color.BLUE, 2), workzone, 2, this);
 	},
 
 	update: function()
@@ -120,8 +120,8 @@ class AlchemyObject {
 		this.container = this.initElement(passedContainer);
 		this.contents = this.addElement(passedFluid);
 		if ((passedQuantity != undefined) && (passedColor != undefined)) {
-			this.setQuantity(passedQuantity);
-			this.setColor(passedColor);
+			this.quantity = passedQuantity;
+			this.color = passedColor;
 		}
 	}
 
@@ -143,21 +143,29 @@ class AlchemyObject {
 		return instance;
 	}
 
-	setColor(passedColor) {
-			this.contents.tint = passedColor;
-			return this;
-	}
-
-	setQuantity(passedQuantity) {
-		this.quantity = passedQuantity;
-		this.contents.frame = passedQuantity;
-		return this;
-	}
-
 	setPosition(passedXPosition, passedYPosition) {
 			this.container.x = passedXPosition;
 			this.container.y = passedYPosition;
 			return this;
+	}
+
+	get color() {
+		return this.colorObject;
+	}
+
+	set color(passedColor) {
+		this.colorObject = passedColor;
+		this.contents.tint = passedColor.tint;
+	}
+
+	get quantity() {
+		return this.amount;
+	}
+
+	set quantity(passedQuantity) {
+		this.amount = passedQuantity;
+		this.contents.frame = passedQuantity;
+		return this;
 	}
 }
 
