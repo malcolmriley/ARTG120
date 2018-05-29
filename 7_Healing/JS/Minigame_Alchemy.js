@@ -15,7 +15,7 @@ Minigame_Alchemy.prototype =
 		spriteScale = 0.25; // TODO: Remove when final asset size is determined
 
 		// Define colors
-		AlchemyColor = Object.freeze(new AlchemyColors());
+		Color = Object.freeze(new AlchemyColors());
 	},
 
 	create: function()
@@ -43,8 +43,8 @@ Minigame_Alchemy.prototype =
 		workzone = new WorkArea(50, 550, 5);
 
 		// Add test containers
-		bottle = initObject(new AlchemyBottle(layer_midground, Math.random() * 0xffffff, 3), workzone, 3, this);
-		bowl = initObject(new AlchemyBowl(layer_midground, Math.random() * 0xffffff, 2), workzone, 2, this);
+		bottle = initObject(new AlchemyBottle(layer_midground, Color.RED.tint, 3), workzone, 3, this);
+		bowl = initObject(new AlchemyBowl(layer_midground, Color.BLUE.tint, 2), workzone, 2, this);
 	},
 
 	update: function()
