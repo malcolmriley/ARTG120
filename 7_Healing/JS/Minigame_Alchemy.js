@@ -67,21 +67,30 @@ function endDragAlchemy(passedObject, passedPointer) {
 	// Perform reaction, or drop onto empty workspace
 	let reaction = false;
 	let insert = false;
+
+	// If the object was dropped on another alchemy object, perform a reaction
 	reaction = game.physics.arcade.overlap(passedObject, layer_midground, onReact);
 	if (!reaction) {
+		// If the object was NOT dropped on another alchemy object, but was dropped on a workspace space, insert it there.
 		insert = game.physics.arcade.overlap(passedObject, layer_background, onDrop);
 	}
 	if ((!reaction) && (!insert)) {
-		console.log("No overlap, and no drop!");
+		// If the object was NOT dropped on another alchemy object or a workspace, return it to its previous position.
+		onReturn(passedObject);
 	}
 }
 
 function onReact(passedFirstSprite, passedSecondSprite) {
-	console.log("OVERLAP ACHIEVED!");
+	console.log("REACTION!");
 }
 
 function onDrop(passedFirstSprite, passedSecondSprite) {
-	console.log("DROP ACHIEVED");
+	console.log("DROP");
+}
+
+function onReturn(passedSprite) {
+	console.log("RETURN!");
+	game.add.tween(passedSprite).to({x : passedSprite.oldPos.x, y: passedSprite.oldPos.y}, 500, Phaser.Easing.Circular.InOut, true);
 }
 
 /**
