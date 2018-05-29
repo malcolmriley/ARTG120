@@ -54,10 +54,16 @@ Minigame_Alchemy.prototype =
 }
 
 function beginDragAlchemy(passedObject, passedPointer) {
-
+	// Bring dragged sprite to foreground
+	layer_foreground.add(passedObject, false);
+	layer_midground.remove(passedObject, false);
 }
 
 function endDragAlchemy(passedObject, passedPointer) {
+	// Return dragged sprite to midground
+	layer_midground.add(passedObject, false);
+	layer_foreground.remove(passedObject, false);
+	
 	let reaction = false;
 	let insert = false;
 	reaction = game.physics.arcade.overlap(passedObject, layer_midground, onReact);
