@@ -57,7 +57,7 @@ function centerAnchor(passedSprite) {
  *
  * passedObject - The object whose position should be stored
  */
-function storePositionData(passedObject) {
+function storePosition(passedObject) {
 	if (passedObject.oldPos == undefined) {
 		passedObject.oldPos = new Phaser.Point(passedObject.x, passedObject.y);
 	}
