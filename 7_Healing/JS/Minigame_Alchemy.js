@@ -9,6 +9,7 @@ Minigame_Alchemy.prototype =
 		this.load.image("circle", "circle.png");
 		this.load.image("bowl", "bowl.png");
 		this.load.image("bottle_round", "bottle_round.png");
+		this.load.image("retort", "retort.png");
 		this.load.image("bottle_cork", "cork.png");
 		this.load.spritesheet("liquid_bowl", "liquid_bowl.png", 450, 300);
 		this.load.spritesheet("liquid_bottle",  "liquid_bottle.png", 300, 450);
@@ -45,6 +46,7 @@ Minigame_Alchemy.prototype =
 		// Add test containers
 		bottle = initObject(new AlchemyBottle(layer_midground, Color.RED, 3), workzone, 3, this);
 		bowl = initObject(new AlchemyBowl(layer_midground, Color.BLUE, 2), workzone, 2, this);
+		retort = initObject(new AlchemyRetort(layer_midground, Color.GREEN, 4), workzone, 1, this);
 	},
 
 	update: function()
@@ -221,13 +223,24 @@ class AlchemyObject {
 class AlchemyBottle extends AlchemyObject {
 	constructor(passedGroup, passedColor, passedQuantity) {
 		super(passedGroup, "bottle_round", "liquid_bottle", passedColor, passedQuantity);
+		// Set bottle-specific properties
 		this.cork = this.addElement("bottle_cork", 0, -415);
+		this.container.body.setSize(300, 300, 0, 150);
 	}
 }
 
 class AlchemyBowl extends AlchemyObject {
 	constructor(passedGroup, passedColor, passedQuantity) {
 		super(passedGroup, "bowl", "liquid_bowl", passedColor, passedQuantity);
+	}
+}
+
+class AlchemyRetort extends AlchemyObject {
+	constructor(passedGroup, passedColor, passedQuantity) {
+		super(passedGroup, "retort", "liquid_bottle", passedColor, passedQuantity);
+		// Set retort-specific properties
+		this.container.anchor.x = 0.25;
+		this.container.body.setSize(300, 300, 0, 0);
 	}
 }
 
