@@ -13,6 +13,8 @@ Minigame_Alchemy.prototype =
 		this.load.image("bottle_cork", "cork.png");
 		this.load.spritesheet("liquid_bowl", "liquid_bowl.png", 450, 300);
 		this.load.spritesheet("liquid_bottle",  "liquid_bottle.png", 300, 450);
+		this.load.spritesheet("liquid_retort",  "liquid_retort.png", 600, 300);
+
 		spriteScale = 0.25; // TODO: Remove when final asset size is determined
 
 		// Define colors
@@ -239,10 +241,12 @@ class AlchemyBowl extends AlchemyObject {
 
 class AlchemyRetort extends AlchemyObject {
 	constructor(passedGroup, passedColor, passedQuantity) {
-		super(passedGroup, "retort", "liquid_bottle", passedColor, passedQuantity);
+		super(passedGroup, "retort", "liquid_retort", passedColor, passedQuantity);
 		// Set retort-specific properties
 		this.container.anchor.x = 0.25;
+		this.contents.anchor.x = 0.25;
 		this.container.body.setSize(300, 300, 0, 0);
+		this.facing = 1;
 	}
 }
 
