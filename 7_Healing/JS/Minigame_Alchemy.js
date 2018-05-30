@@ -110,7 +110,7 @@ function initObject(passedObject, passedWorkArea, passedIndex, passedReference) 
 	makeDraggable(passedObject.container, passedReference, beginDragAlchemy, endDragAlchemy);
 	passedObject.setPosition(passedWorkArea.getArea(passedIndex).x, passedWorkArea.getArea(passedIndex).y);
 	passedWorkArea.insert(passedObject.container, passedIndex, true);
-	storePosition(passedObject);
+	storePosition(passedObject.container);
 	return passedObject;
 }
 
@@ -232,6 +232,8 @@ class AlchemyBottle extends AlchemyObject {
 class AlchemyBowl extends AlchemyObject {
 	constructor(passedGroup, passedColor, passedQuantity) {
 		super(passedGroup, "bowl", "liquid_bowl", passedColor, passedQuantity);
+		// set bowl-specific properties
+		this.container.body.setSize(300, 300, 75, 0);
 	}
 }
 
