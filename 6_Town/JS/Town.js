@@ -90,5 +90,6 @@ function scaleDown(passedSprite, passedReference) {
 
 function goToInterior() {
 	soundfx_door.play();
-	game.state.start('MiniGame');
+	// TODO: Transition to other minigames as well
+	game.state.start("Minigame_Alchemy");
 }
