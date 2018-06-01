@@ -165,5 +165,12 @@ function initPlayer()
 
 function goToInterior(num) {
 	soundfx_door.play();
-	game.state.start('MiniGame',true,false,num);
+  if(Math.random()>.5)
+  {
+     game.state.start('MiniGame',true,false,num);
+  }
+  else
+  {
+    game.state.start("Minigame_Alchemy");
+  }
 }
