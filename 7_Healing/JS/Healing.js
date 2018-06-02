@@ -5,12 +5,12 @@ MiniGame.prototype =
 	{
 		// loads images
 		this.load.path='../_Assets/images/';
-		this.load.image("X", "X.png");
-		this.load.image('flower','flower_1.png');
+		this.load.image("X", "Misc/X.png");
+		this.load.image('flower','Flowers/flower_1.png');
 
 		//load sound
 		this.load.path = '../_Assets/sounds/';
-		this.load.audio('background', ['Midnightcem.ogg', "Midnightcem.wav"]);
+		this.load.audio('background', ['BackgroundMusic/Midnightcem.ogg', "BackgroundMusic/Midnightcem.wav"]);
 	},
 
 	create: function()
