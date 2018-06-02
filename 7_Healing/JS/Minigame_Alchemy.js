@@ -40,10 +40,10 @@ Minigame_Alchemy.prototype =
 		paper.blendMode = 2;
 
 		// Add "ingredients" reserve
-		ingredients = new WorkArea(50, 125, 3, "Ingredients");
+		ingredients = new WorkArea(50, 125, 3);
 
 		// Add "equipment" reserve
-		equipment = new WorkArea(50, 275, 3, "Equipment");
+		equipment = new WorkArea(50, 275, 3);
 
 		// Add "work area"
 		workzone = new WorkArea(50, 550, 5);
@@ -269,7 +269,7 @@ class AlchemyRetort extends AlchemyObject {
  * passedLabel - A textual lable for this work area
  */
 class WorkArea {
-	constructor(passedPositionX, passedPositionY, passedQuantity, passedLabel) {
+	constructor(passedPositionX, passedPositionY, passedQuantity) {
 		// Initialize member fields
 		this.position = new Phaser.Point(passedPositionX, passedPositionY);
 		this.quantity = passedQuantity;
@@ -289,11 +289,6 @@ class WorkArea {
 			circleInstance.y = passedPositionY + (circleInstance.height / 2);
 			circleInstance.alpha = 0.4;
 			this.spaces[count] = circleInstance;
-		}
-		// TODO: Better font?
-		if (passedLabel != undefined) {
-			this.textLabel = game.add.text(passedPositionX, passedPositionY + (2 * padding), passedLabel);
-			layer_background.add(this.textLabel);
 		}
 	}
 
