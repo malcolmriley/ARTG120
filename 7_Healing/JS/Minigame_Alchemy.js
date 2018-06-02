@@ -39,23 +39,20 @@ Minigame_Alchemy.prototype =
 	  paper = layer_paper.create(0, 0, "backdrop");
 		paper.blendMode = 2;
 
-		// Add "ingredients" reserve
-		ingredients = new WorkArea(50, 125, 3);
-
-		// Add "equipment" reserve
-		equipment = new WorkArea(50, 275, 3);
+		// Add "reagents" reserve
+		workzone_shelf = new WorkArea(145, 165, 5);
 
 		// Add "work area"
-		workzone = new WorkArea(50, 550, 5);
+		workzone_table = new WorkArea(50, 475, 3);
 
 		// Add table and shelves
 		table = layer_background.create(0, 415, "table");
 		shelf = layer_background.create(100, 150, "shelf");
 
 		// Add test containers
-		bottle = initObject(new AlchemyBottle(Color.RED, 3), workzone, 3, this);
-		bowl = initObject(new AlchemyBowl(Color.BLUE, 2), workzone, 2, this);
-		retort = initObject(new AlchemyRetort(Color.GREEN, 4), workzone, 1, this);
+		bottle = initObject(new AlchemyBottle(Color.RED, 3), workzone_shelf, 1, this);
+		bowl = initObject(new AlchemyBowl(Color.BLUE, 2), workzone_shelf, 2, this);
+		retort = initObject(new AlchemyRetort(Color.GREEN, 4), workzone_shelf, 3, this);
 	},
 
 	update: function()
