@@ -30,6 +30,7 @@ Minigame_Alchemy.prototype =
 
 		// Add render groups for use as "render layers"
 		layer_background = this.game.add.group();
+		layer_workzones = this.game.add.group();
 		layer_midground = this.game.add.group();
 		layer_foreground = this.game.add.group();
 		layer_paper = this.game.add.group();
@@ -278,7 +279,7 @@ class WorkArea {
 		// Initialize member objects
 		let padding = 20;
 		for (let count = 0; count < passedQuantity; count += 1) {
-			let circleInstance = layer_midground.create(0, 0, "circle");
+			let circleInstance = layer_workzones.create(0, 0, "circle");
 			game.physics.arcade.enable(circleInstance);
 			centerAnchor(circleInstance);
 			circleInstance.workArea = this;
