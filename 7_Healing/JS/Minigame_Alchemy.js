@@ -11,6 +11,8 @@ Minigame_Alchemy.prototype =
 		this.load.image("bottle_round", "bottle_round.png");
 		this.load.image("retort", "retort.png");
 		this.load.image("bottle_cork", "cork.png");
+		this.load.image("table", "table.png");
+		this.load.image("shelf", "shelf.png");
 		this.load.spritesheet("liquid_bowl", "liquid_bowl.png", 450, 300);
 		this.load.spritesheet("liquid_bottle",  "liquid_bottle.png", 300, 450);
 		this.load.spritesheet("liquid_retort",  "liquid_retort.png", 600, 300);
@@ -44,6 +46,10 @@ Minigame_Alchemy.prototype =
 
 		// Add "work area"
 		workzone = new WorkArea(50, 550, 5);
+
+		// Add table and shelves
+		table = layer_background.create(0, 415, "table");
+		shelf = layer_background.create(100, 150, "shelf");
 
 		// Add test containers
 		bottle = initObject(new AlchemyBottle(layer_midground, Color.RED, 3), workzone, 3, this);
