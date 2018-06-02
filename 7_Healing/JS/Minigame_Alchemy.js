@@ -276,7 +276,7 @@ class WorkArea {
 		// Initialize member objects
 		let padding = 20;
 		for (let count = 0; count < passedQuantity; count += 1) {
-			let circleInstance = layer_background.create(0, 0, "circle");
+			let circleInstance = layer_midground.create(0, 0, "circle");
 			game.physics.arcade.enable(circleInstance);
 			centerAnchor(circleInstance);
 			circleInstance.workArea = this;
