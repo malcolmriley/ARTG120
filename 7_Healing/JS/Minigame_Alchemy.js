@@ -31,7 +31,7 @@ Minigame_Alchemy.prototype =
 		// Add render groups for use as "render layers"
 		layer_background = this.game.add.group();
 		layer_workzones = this.game.add.group();
-		layer_midground = this.game.add.group();
+		layer_apparatus = this.game.add.group();
 		layer_foreground = this.game.add.group();
 		layer_paper = this.game.add.group();
 
@@ -53,9 +53,9 @@ Minigame_Alchemy.prototype =
 		shelf = layer_background.create(100, 150, "shelf");
 
 		// Add test containers
-		bottle = initObject(new AlchemyBottle(layer_midground, Color.RED, 3), workzone, 3, this);
-		bowl = initObject(new AlchemyBowl(layer_midground, Color.BLUE, 2), workzone, 2, this);
-		retort = initObject(new AlchemyRetort(layer_midground, Color.GREEN, 4), workzone, 1, this);
+		bottle = initObject(new AlchemyBottle(Color.RED, 3), workzone, 3, this);
+		bowl = initObject(new AlchemyBowl(Color.BLUE, 2), workzone, 2, this);
+		retort = initObject(new AlchemyRetort(Color.GREEN, 4), workzone, 1, this);
 	},
 
 	update: function()
@@ -67,12 +67,12 @@ Minigame_Alchemy.prototype =
 function beginDragAlchemy(passedObject, passedPointer) {
 	// Bring dragged sprite to foreground
 	layer_foreground.add(passedObject, false);
-	layer_midground.remove(passedObject, false);
+	layer_apparatus.remove(passedObject, false);
 }
 
 function endDragAlchemy(passedObject, passedPointer) {
 	// Return dragged sprite to midground
-	layer_midground.add(passedObject, false);
+	layer_apparatus.add(passedObject, false);
 	layer_foreground.remove(passedObject, false);
 
 	// Perform reaction, or drop onto empty workspace
@@ -80,10 +80,10 @@ function endDragAlchemy(passedObject, passedPointer) {
 	let insert = false;
 
 	// If the object was dropped on another alchemy object, perform a reaction
-	reaction = game.physics.arcade.overlap(passedObject, layer_midground, onReact);
+	reaction = game.physics.arcade.overlap(passedObject, layer_apparatus, onReact);
 	if (!reaction) {
 		// If the object was NOT dropped on another alchemy object, but was dropped on a workspace space, insert it there.
-		insert = game.physics.arcade.overlap(passedObject, layer_background, onDrop);
+		insert = game.physics.arcade.overlap(passedObject, layer_workzones, onDrop);
 	}
 	if ((!reaction) && (!insert)) {
 		// If the object was NOT dropped on another alchemy object or a workspace, return it to its previous position.
@@ -232,8 +232,8 @@ class AlchemyObject {
 }
 
 class AlchemyBottle extends AlchemyObject {
-	constructor(passedGroup, passedColor, passedQuantity) {
-		super(passedGroup, "bottle_round", "liquid_bottle", passedColor, passedQuantity);
+	constructor(passedColor, passedQuantity) {
+		super(layer_apparatus, "bottle_round", "liquid_bottle", passedColor, passedQuantity);
 		// Set bottle-specific properties
 		this.cork = this.addElement("bottle_cork", 0, -415);
 		this.container.body.setSize(300, 300, 0, 150);
@@ -241,16 +241,16 @@ class AlchemyBottle extends AlchemyObject {
 }
 
 class AlchemyBowl extends AlchemyObject {
-	constructor(passedGroup, passedColor, passedQuantity) {
-		super(passedGroup, "bowl", "liquid_bowl", passedColor, passedQuantity);
+	constructor(passedColor, passedQuantity) {
+		super(layer_apparatus, "bowl", "liquid_bowl", passedColor, passedQuantity);
 		// set bowl-specific properties
 		this.container.body.setSize(300, 300, 75, 0);
 	}
 }
 
 class AlchemyRetort extends AlchemyObject {
-	constructor(passedGroup, passedColor, passedQuantity) {
-		super(passedGroup, "retort", "liquid_retort", passedColor, passedQuantity);
+	constructor(passedColor, passedQuantity) {
+		super(layer_apparatus, "retort", "liquid_retort", passedColor, passedQuantity);
 		// Set retort-specific properties
 		this.container.anchor.x = 0.25;
 		this.contents.anchor.x = 0.25;
