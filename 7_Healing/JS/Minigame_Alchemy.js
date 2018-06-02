@@ -40,14 +40,14 @@ Minigame_Alchemy.prototype =
 		paper.blendMode = 2;
 
 		// Add "reagents" reserve
-		workzone_shelf = new WorkArea(145, 165, 5);
+		workzone_shelf = new WorkArea(140, 135, 5);
 
 		// Add "work area"
-		workzone_table = new WorkArea(50, 475, 3);
+		workzone_table = new WorkArea(140, 475, 5);
 
 		// Add table and shelves
 		table = layer_background.create(0, 415, "table");
-		shelf = layer_background.create(100, 150, "shelf");
+		shelf = layer_background.create(100, 120, "shelf");
 
 		// Add test containers
 		bottle = initObject(new AlchemyBottle(Color.RED, 3), workzone_shelf, 1, this);
