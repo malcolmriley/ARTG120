@@ -92,6 +92,8 @@ function endDragAlchemy(passedObject, passedPointer) {
 
 function onReact(passedDraggedObject, passedReactingObject) {
 	console.log("REACTION!");
+	console.log(passedDraggedObject.key);
+	console.log(passedReactingObject.key);
 }
 
 function onDrop(passedDraggedObject, passedCircleObject) {
