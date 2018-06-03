@@ -96,11 +96,7 @@ function endDragAlchemy(passedObject, passedPointer) {
 }
 
 function onReact(passedDraggedObject, passedReactingObject) {
-	console.log("REACTION!");
-	console.log(passedDraggedObject.key);
-	console.log(passedReactingObject.key);
-
-	console.log(sound_pour);
+	// Play pour sound
 	sound_pour.play();
 
 	// Return dragged object to original location
