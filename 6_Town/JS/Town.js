@@ -1,25 +1,38 @@
-var Town = function(game) {};
+var world = [
+	[0, 0, 0, 0, 0, 0, 0],
+	[0, 2, 2, 2, 2, 2, 0],
+	[0, 1, 2, 1, 2, 1, 0],
+	[0, 1, 2, 1, 2, 1, 0],
+	[0, 1, 2, 1, 2, 1, 0],
+	[0, 2, 2, 2, 2, 2, 0],
+	[0, 0, 0, 0, 0, 0, 0]
+]; 
+
+var Town = function(game) {
+	this.house = null;
+};
 Town.prototype =
 {
 	preload: function()
 	{
 		// TODO: Swap for atlas version.
-		game.load.image("character", "../_Assets/images/character.png");
-		game.load.image("house", "../_Assets/images/house.png");
+		game.load.image("character", "../_Assets/images/Character/character.png");
+		game.load.image("house", "../_Assets/images/Houses/house.png");
 
 		// Load door open sound
-		game.load.audio("fx_door_creak", "../_Assets/sounds/door_open.wav");
+		game.load.audio("fx_door_creak", "../_Assets/sounds/SFX/door_open.wav");
 	},
 
 	create: function()
 	{
 		game.stage.backgroundColor = '#f0f0f0';
+		this.house = game.sprite.add("House");
 
 		// Load sounds
 		soundfx_door = game.add.audio("fx_door_creak");
 
 		// Create House Grid
-		group_houses = game.add.group();
+		/*group_houses = game.add.group();
 		let startX = 200;
 		let startY = 30;
 		for(let row = 0; row < 3; row += 1) {
@@ -29,6 +42,20 @@ Town.prototype =
 				house.x = startX + row * (10 + house.width);
 				house.y = startY + column * (10 + house.width);
 				makeButton(house, this, goToInterior, scaleUp, scaleDown);
+			}*/
+		this.houseGroup = game.add.group();
+
+		for(var i in world)
+		{
+			for(var j in i)
+			{
+				if(world[i][j] == 1)
+				{
+					var xCoord = j * this.house.width;
+					var yCoord = i * this.house.length;
+					var spriteType = "House";
+					placeSprite(spriteType, xCoord, yCoord);
+				}
 			}
 		}
 
@@ -91,4 +118,9 @@ function scaleDown(passedSprite, passedReference) {
 function goToInterior() {
 	soundfx_door.play();
 	game.state.start('MiniGame');
+}
+
+function placePiece(sprite, x, y)
+{
+
 }
