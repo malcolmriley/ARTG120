@@ -78,6 +78,7 @@ Minigame_Alchemy.prototype =
 
 function onReact(passedDraggedObject, passedReactingObject) {
 	let shouldReturn = true;
+	let sound = null;
 	// If the dragged object has contents...
 	if (passedDraggedObject.quantity > 0) {
 		// If the receiving object has contents, perform a reaction
@@ -85,7 +86,7 @@ function onReact(passedDraggedObject, passedReactingObject) {
 			switch(passedDraggedObject.objectType) {
 				case "bottle_round":
 					// Play pour sound
-					sound_pour.play();
+					sound = sound_pour;
 					break;
 			}
 			passedReactingObject.color = Color.combine(passedDraggedObject.color, passedReactingObject.color);
@@ -112,6 +113,11 @@ function onReact(passedDraggedObject, passedReactingObject) {
 	// If the dragged object does not have contents...
 	else {
 
+	}
+
+	// Play sound if appropriate
+	if (sound) {
+		sound.play();
 	}
 
 	// Return dragged object to original location
