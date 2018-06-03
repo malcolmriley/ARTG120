@@ -20,6 +20,7 @@ Minigame_Alchemy.prototype =
 		// Load Sounds
 		this.load.path = "../_Assets/sounds/";
 		this.load.audio("pour", "water_pour.wav");
+		this.load.audio("cork", "cork_out.wav");
 
 		spriteScale = 0.25; // TODO: Remove when final asset size is determined
 
@@ -58,8 +59,9 @@ Minigame_Alchemy.prototype =
 		bowl = initObject(new AlchemyBowl(Color.BLUE, 2), workzone_shelf, 2, this);
 		retort = initObject(new AlchemyRetort(Color.GREEN, 4), workzone_shelf, 3, this);
 
-		// Create sound
+		// Create Sounds
 		sound_pour = game.add.audio("pour");
+		sound_uncork = game.add.audio("cork");
 	},
 
 	update: function()
