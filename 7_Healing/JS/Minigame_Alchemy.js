@@ -182,6 +182,10 @@ class AlchemyObject extends Phaser.Sprite {
 			// Do tilt effect
 			let randomAngle = (0.5 - Math.random()) * 10;
 			let tween = game.add.tween(this).from({angle : randomAngle}, 50, Phaser.Easing.Linear.None, true);
+			let resetAngle = function() {
+				this.angle = 0;
+			}
+			tween.onComplete.add(resetAngle, this);
 		}
 		let mouseOut = function() {
 			// TODO:
