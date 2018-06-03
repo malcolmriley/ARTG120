@@ -129,7 +129,9 @@ function onFall(passedSprite) {
 		passedSprite.body.gravity.y = 1200;
 		passedSprite.inputEnabled = false;
 		let breakIt = function() {
-			passedSprite.workarea.reference.remove(passedSprite.workarea.index);
+			if (passedSprite.workarea) {
+				passedSprite.workarea.reference.remove(passedSprite.workarea.index);
+			}
 			passedSprite.kill();
 			sound_break.play();
 		}
@@ -380,6 +382,7 @@ class WorkArea {
 	}
 
 	remove(passedIndex) {
+		this.apparatus.workarea = null;
 		this.apparatus[passedIndex] = null;
 	}
 }
