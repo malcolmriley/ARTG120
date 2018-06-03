@@ -73,31 +73,9 @@ Minigame_Alchemy.prototype =
 	}
 }
 
-function beginDragAlchemy(passedObject, passedPointer) {
-
-}
-
-function endDragAlchemy(passedObject, passedPointer) {
-	// Perform reaction, or drop onto empty workspace
-	let reaction = false;
-	let insert = false;
-
-	// If the object was dropped on another alchemy object, perform a reaction
-	reaction = game.physics.arcade.overlap(passedObject, layer_apparatus, onReact);
-	if (!reaction) {
-		// If the object was NOT dropped on another alchemy object, but was dropped on a workspace space, insert it there.
-		insert = game.physics.arcade.overlap(passedObject, layer_workzones, onDrop);
-	}
-	if ((!reaction) && (!insert)) {
-		// If the object was NOT dropped on another alchemy object or a workspace, return it to its previous position.
-		onReturn(passedObject);
-	}
-}
-
 function onReact(passedDraggedObject, passedReactingObject) {
 	// Play pour sound
 	sound_pour.play();
-	sound_clink.play();
 
 	// Return dragged object to original location
 	onReturn(passedDraggedObject);
@@ -124,7 +102,6 @@ function onReturn(passedSprite) {
  * passedReference - The context from which this AlchemyObject has been initialized (typically "this")
  */
 function initObject(passedObject, passedWorkArea, passedIndex, passedReference) {
-	makeDraggable(passedObject.container, passedReference, beginDragAlchemy, endDragAlchemy);
 	passedObject.setPosition(passedWorkArea.getArea(passedIndex).x, passedWorkArea.getArea(passedIndex).y);
 	passedWorkArea.insert(passedObject.container, passedIndex, true);
 	storePosition(passedObject.container);
