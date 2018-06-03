@@ -58,8 +58,8 @@ Minigame_Alchemy.prototype =
 		shelf = layer_background.create(100, 120, "shelf");
 
 		// Add test containers
-		bottle = workzone_shelf.insert(new AlchemyBottle(Color.RED, 3), 1, true);
-		bowl = workzone_shelf.insert(new AlchemyBowl(Color.BLUE, 2), 2, true);
+		bottle = workzone_shelf.insert(new AlchemyBottle(Color.RED, 4), 1, true);
+		bowl = workzone_shelf.insert(new AlchemyBowl(Color.BLUE, 4), 2, true);
 		retort = workzone_shelf.insert(new AlchemyRetort(Color.GREEN, 4), 3, true);
 
 		// Create Sounds
@@ -76,10 +76,19 @@ Minigame_Alchemy.prototype =
 }
 
 function onReact(passedDraggedObject, passedReactingObject) {
-	// Play pour sound
-	sound_pour.play();
+	if (passedDraggedObject.quantity > 0) {
+		switch(passedDraggedObject.containerType) {
+			case "bottle_round":
+				// Play pour sound
+				sound_pour.play();
+				break;
+		}
+		passedReactingObject.color = Color.combine(passedDraggedObject.color, passedReactingObject.color);
 
-	passedReactingObject.color = Color.combine(passedDraggedObject.color, passedReactingObject.color);
+		// Set Quantitites
+		passedDraggedObject.quantity -= 1;
+		passedReactingObject.quantity += 1;
+	}
 
 	// Return dragged object to original location
 	onReturn(passedDraggedObject);
@@ -174,7 +183,6 @@ class AlchemyObject extends Phaser.Sprite {
 		this.anchor.y = 1.0;
 		this.group = passedGroup;
 		this.contents = this.addElement(passedContents);
-		this.containerType = passedContainer;
 
 		// Define callbacks
 		let beginDrag = function(passedObject, passedPointer) {
@@ -251,16 +259,12 @@ class AlchemyObject extends Phaser.Sprite {
 
 	set quantity(passedQuantity) {
 		this.amount = passedQuantity;
-		this.contents.frame = passedQuantity;
+		this.contents.frame = (passedQuantity <= 4) ? passedQuantity : 4;
 		return this;
 	}
 
 	get containerType() {
-		return this.containerType;
-	}
-
-	set containerType(passedValue) {
-		// Don't set it.
+		return this.key;
 	}
 }
 
