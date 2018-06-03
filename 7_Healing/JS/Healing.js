@@ -1,6 +1,12 @@
+diff=0;
+
 var MiniGame = function(game) {};
 MiniGame.prototype =
 {
+	init: function(x)
+	{
+		num=x;
+	},
 	preload: function()
 	{
 		// loads images
@@ -22,8 +28,9 @@ MiniGame.prototype =
 		// change images to some kind of wound
 		this.cuts=game.add.group()
 		this.cuts.enableBody=true;
-		for(i=0;i<5;i++)
+		for(i=0;i<diff+5;i++)
 		{
+			// creates cuts randomly within an area
 			this.blank=this.cuts.create(Math.random()*500+100,Math.random()*400+50,"X");
 			this.blank.scale.set(.1,.1);
 			// change bounding box to be smaller and slightly centered
@@ -34,7 +41,7 @@ MiniGame.prototype =
 		// should be bandages or something
 		this.flowers=game.add.group();
 		this.flowers.enableBody=true;
-		for(i=0;i<5;i++)
+		for(i=0;i<diff+5;i++)
 		{
 			this.flower=this.flowers.create(0,300,"flower");
 			this.flower.scale.set(.1,.1);
@@ -59,19 +66,33 @@ MiniGame.prototype =
 		timer-=1/60;
 		timerText.text='Time left: '+timer.toFixed(2);
 
-		// checks for overlap between groups
+		// checks for overlap between groups and calls functions
 		this.game.physics.arcade.overlap(this.flowers,this.cuts,this.remove);
 
-		// goes to game over screen when time runs out
+		// goes back to town when time runs out
 		if(timer<0)
 		{
+			diff--;
+			health[num]-=Math.floor(Math.random()*10)+10;
+			// add to dead if happen to fail during minigame
+			if(health[num]<1)
+			{
+				dead++;	
+			}
 			this.sound.stopAll();
-			this.state.start('GameOver');
+			this.state.start('Town');
 		}
 
-		// goes back to town if cured
+		// goes back to town when minigame is completed
 		if(this.cuts.countLiving()==0)
 		{
+			Math.random()>.7 ? diff+=2 : diff++;
+			health[num]+=Math.floor(Math.random()*10)+5;
+			// set a cap for mamximum health
+			if(health[num]>100)
+			{
+				health[num]=100;
+			}
 			this.sound.stopAll();
 			this.state.start('Town');
 		}
