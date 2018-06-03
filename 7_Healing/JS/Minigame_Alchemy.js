@@ -376,6 +376,15 @@ class AlchemyRetort extends AlchemyContainer {
 		this.body.setSize(75, 75, 0, 0);
 		this.facing = 1;
 	}
+
+	get direction() {
+		return this.facing;
+	}
+
+	set direction(passedValue) {
+		this.facing = (passedValue < 0) ? -1 : 1;
+		this.scale.x = this.facing;
+	}
 }
 
 /**
