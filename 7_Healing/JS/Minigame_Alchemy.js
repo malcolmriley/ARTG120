@@ -91,6 +91,7 @@ function onReact(passedDraggedObject, passedReactingObject) {
 					break;
 			}
 			passedReactingObject.color = Color.combine(passedDraggedObject.color, passedReactingObject.color);
+			shouldReturn = true;
 		}
 		// Otherwise, fill it from the dragged object
 		else {
