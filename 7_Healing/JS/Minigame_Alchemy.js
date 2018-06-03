@@ -125,6 +125,10 @@ function onDrop(passedDraggedObject, passedCircleObject) {
 	passedCircleObject.workArea.insert(passedDraggedObject, passedCircleObject.index);
 	let tween = game.add.tween(passedDraggedObject).to({x : passedCircleObject.x, y : passedCircleObject.y}, 250, Phaser.Easing.Circular.InOut, true);
 	tween.onComplete.add(function(){ storePosition(passedDraggedObject); });
+	// Process:
+	// Record translated world coordinates
+	// Remove from parent object
+	// Tween from translated world coordinates to destination, then add as child of destination object
 }
 
 function onReturn(passedSprite) {
