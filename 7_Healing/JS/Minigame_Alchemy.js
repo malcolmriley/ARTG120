@@ -260,6 +260,8 @@ class AlchemyBowl extends AlchemyObject {
 		super(passedReference, layer_apparatus, "bowl", "liquid_bowl", passedColor, passedQuantity);
 		// set bowl-specific properties
 		this.container.body.setSize(300, 300, 75, 0);
+		this.container.anchor.y = 0.9;
+		this.contents.anchor.y = 0.9;
 	}
 }
 
