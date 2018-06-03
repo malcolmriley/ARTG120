@@ -57,9 +57,9 @@ Minigame_Alchemy.prototype =
 		shelf = layer_background.create(100, 120, "shelf");
 
 		// Add test containers
-		bottle = initObject(new AlchemyBottle(Color.RED, 3), workzone_shelf, 1, this);
-		bowl = initObject(new AlchemyBowl(Color.BLUE, 2), workzone_shelf, 2, this);
-		retort = initObject(new AlchemyRetort(Color.GREEN, 4), workzone_shelf, 3, this);
+		bottle = workzone_shelf.insert(new AlchemyBottle(Color.RED, 3), 1, true);
+		bowl = workzone_shelf.insert(new AlchemyBowl(Color.BLUE, 2), 2, true);
+		retort = workzone_shelf.insert(new AlchemyRetort(Color.GREEN, 4), 3, true);
 
 		// Create Sounds
 		sound_clink = new RandomizedSound(game, "clink_0", "clink_1");
@@ -89,24 +89,6 @@ function onDrop(passedDraggedObject, passedCircleObject) {
 
 function onReturn(passedSprite) {
 	let tween = game.add.tween(passedSprite).to({x : passedSprite.oldPos.x, y : passedSprite.oldPos.y}, 500, Phaser.Easing.Circular.InOut, true);
-}
-
-/**
- * Convenience function for initializing AlchemyObject instances.
- *
- * Makes them draggable, and adds them to the passed work area at the passed index.
- *
- * passedObject - The AlchemyObject to initialize
- * passedWorkArea - The WorkArea object to add them to
- * passedIndex - The index of the WorkArea to add them to
- * passedReference - The context from which this AlchemyObject has been initialized (typically "this")
- */
-function initObject(passedObject, passedWorkArea, passedIndex, passedReference) {
-	passedObject.x = passedWorkArea.getArea(passedIndex).x;
-	passedObject.y = passedWorkArea.getArea(passedIndex).y;
-	passedWorkArea.insert(passedObject, passedIndex, true);
-	storePosition(passedObject);
-	return passedObject;
 }
 
 class AlchemyColors {
@@ -166,11 +148,14 @@ class AlchemyObject extends Phaser.Sprite {
 		game.add.existing(this);
 		passedGroup.add(this);
 		game.physics.arcade.enable(this);
+
+		// Set local properties
 		this.anchor.x = 0.5;
 		this.anchor.y = 1.0;
-
 		this.group = passedGroup;
 		this.contents = this.addElement(passedContents);
+
+		// Define callbacks
 		let beginDrag = function(passedObject, passedPointer) {
 			// TODO:
 		}
@@ -201,8 +186,12 @@ class AlchemyObject extends Phaser.Sprite {
 		let mouseOut = function() {
 			// TODO:
 		}
+
+		// Attach callbacks
 		makeDraggable(this, this, beginDrag, endDrag);
 		makeMouseover(this, this, mouseOver, mouseOut);
+
+		// Set properties of contents if defined
 		if ((passedQuantity != undefined) && (passedColor != undefined)) {
 			this.quantity = passedQuantity;
 			this.color = passedColor;
@@ -309,8 +298,13 @@ class WorkArea {
 		return this.spaces[passedIndex];
 	}
 
-	insert(passedObject, passedIndex) {
+	insert(passedObject, passedIndex, passedSetPosition) {
 		this.apparatus[passedIndex] = passedObject;
 		passedObject.oldArea = this;
+		if (passedSetPosition) {
+			passedObject.x = this.spaces[passedIndex].x;
+			passedObject.y = this.spaces[passedIndex].y;
+		}
+		return passedObject;
 	}
 }
