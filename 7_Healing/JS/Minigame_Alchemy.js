@@ -77,7 +77,7 @@ Minigame_Alchemy.prototype =
 }
 
 function onReact(passedDraggedObject, passedReactingObject) {
-	let shouldReturn = false;
+	let shouldReturn = true;
 	// If the dragged object has contents...
 	if (passedDraggedObject.quantity > 0) {
 		// If the receiving object has contents, perform a reaction
@@ -89,7 +89,6 @@ function onReact(passedDraggedObject, passedReactingObject) {
 					break;
 			}
 			passedReactingObject.color = Color.combine(passedDraggedObject.color, passedReactingObject.color);
-			shouldReturn = true;
 		}
 		// Otherwise, fill it from the dragged object
 		else {
