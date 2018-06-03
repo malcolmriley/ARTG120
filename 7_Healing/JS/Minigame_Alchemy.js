@@ -62,10 +62,11 @@ Minigame_Alchemy.prototype =
 		shelf = layer_background.create(100, 120, "shelf");
 
 		// Add test containers
-		bottle = workzone_shelf.insert(new AlchemyBottle(Color.RED, 4), 1, true);
+		bottle = new AlchemyBottle(Color.RED, 4);
 		bowl = workzone_shelf.insert(new AlchemyBowl(Color.BLUE, 4), 2, true);
 		retort = workzone_shelf.insert(new AlchemyRetort(Color.GREEN, 4), 3, true);
 		burner = workzone_table.insert(new AlchemyStand(), 1, true);
+		burner.install(bottle);
 
 		// Create Sounds
 		sound_clink = new RandomizedSound(game, "clink_0", "clink_1");
