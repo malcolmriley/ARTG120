@@ -57,9 +57,9 @@ Minigame_Alchemy.prototype =
 		shelf = layer_background.create(100, 120, "shelf");
 
 		// Add test containers
-		bottle = initObject(new AlchemyBottle(Color.RED, 3), workzone_shelf, 1, this);
-		bowl = initObject(new AlchemyBowl(Color.BLUE, 2), workzone_shelf, 2, this);
-		retort = initObject(new AlchemyRetort(Color.GREEN, 4), workzone_shelf, 3, this);
+		bottle = initObject(new AlchemyBottle(this, Color.RED, 3), workzone_shelf, 1, this);
+		bowl = initObject(new AlchemyBowl(this, Color.BLUE, 2), workzone_shelf, 2, this);
+		retort = initObject(new AlchemyRetort(this, Color.GREEN, 4), workzone_shelf, 3, this);
 
 		// Create Sounds
 		sound_clink = new RandomizedSound(game, "clink_0", "clink_1");
@@ -182,10 +182,37 @@ class AlchemyColors {
  * passedQuantity - The initial quantity to fill this container with
  */
 class AlchemyObject {
-	constructor(passedGroup, passedContainer, passedContents, passedColor, passedQuantity) {
+	constructor(passedReference, passedGroup, passedContainer, passedContents, passedColor, passedQuantity) {
 		this.group = passedGroup;
 		this.container = this.initElement(passedContainer);
 		this.contents = this.addElement(passedContents);
+		let beginDrag = function(passedObject, passedPointer) {
+			// TODO:
+		}
+		let endDrag = function(passedObject, passedPointer) {
+			// Perform reaction, or drop onto empty workspace
+			let reaction = false;
+			let insert = false;
+
+			// If the object was dropped on another alchemy object, perform a reaction
+			reaction = game.physics.arcade.overlap(passedObject, layer_apparatus, onReact);
+			if (!reaction) {
+				// If the object was NOT dropped on another alchemy object, but was dropped on a workspace space, insert it there.
+				insert = game.physics.arcade.overlap(passedObject, layer_workzones, onDrop);
+			}
+			if ((!reaction) && (!insert)) {
+				// If the object was NOT dropped on another alchemy object or a workspace, return it to its previous position.
+				onReturn(passedObject);
+			}
+		}
+		let mouseOver = function() {
+			// TODO:
+		}
+		let mouseOut = function() {
+			// TODO:
+		}
+		makeDraggable(this.container, passedReference, beginDrag, endDrag);
+		makeMouseover(this.container, passedReference, mouseOver, mouseOut);
 		game.physics.arcade.enable(this.container);
 		if ((passedQuantity != undefined) && (passedColor != undefined)) {
 			this.quantity = passedQuantity;
@@ -238,8 +265,8 @@ class AlchemyObject {
 }
 
 class AlchemyBottle extends AlchemyObject {
-	constructor(passedColor, passedQuantity) {
-		super(layer_apparatus, "bottle_round", "liquid_bottle", passedColor, passedQuantity);
+	constructor(passedReference, passedColor, passedQuantity) {
+		super(passedReference, layer_apparatus, "bottle_round", "liquid_bottle", passedColor, passedQuantity);
 		// Set bottle-specific properties
 		this.cork = this.addElement("bottle_cork", 0, -415);
 		this.container.body.setSize(300, 300, 0, 150);
@@ -247,16 +274,16 @@ class AlchemyBottle extends AlchemyObject {
 }
 
 class AlchemyBowl extends AlchemyObject {
-	constructor(passedColor, passedQuantity) {
-		super(layer_apparatus, "bowl", "liquid_bowl", passedColor, passedQuantity);
+	constructor(passedReference, passedColor, passedQuantity) {
+		super(passedReference, layer_apparatus, "bowl", "liquid_bowl", passedColor, passedQuantity);
 		// set bowl-specific properties
 		this.container.body.setSize(300, 300, 75, 0);
 	}
 }
 
 class AlchemyRetort extends AlchemyObject {
-	constructor(passedColor, passedQuantity) {
-		super(layer_apparatus, "retort", "liquid_retort", passedColor, passedQuantity);
+	constructor(passedReference, passedColor, passedQuantity) {
+		super(passedReference, layer_apparatus, "retort", "liquid_retort", passedColor, passedQuantity);
 		// Set retort-specific properties
 		this.container.anchor.x = 0.25;
 		this.contents.anchor.x = 0.25;
