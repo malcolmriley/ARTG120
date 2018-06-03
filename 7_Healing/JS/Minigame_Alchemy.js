@@ -117,6 +117,7 @@ function onFall(passedSprite) {
 	}
 	else {
 		passedSprite.body.gravity.y = 1200;
+		passedSprite.inputEnabled = false;
 		let breakIt = function() {
 			passedSprite.kill();
 			sound_break.play();
