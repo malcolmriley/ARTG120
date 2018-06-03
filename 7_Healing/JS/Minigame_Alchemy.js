@@ -60,11 +60,10 @@ Minigame_Alchemy.prototype =
 		shelf = layer_background.create(100, 120, "shelf");
 
 		// Add test containers
-		bottle = new AlchemyBottle(Color.RED, 4);
+		bottle = workzone_shelf.insert(new AlchemyBottle(Color.RED, 4), 1, true);
 		bowl = workzone_shelf.insert(new AlchemyBowl(Color.BLUE, 4), 2, true);
 		retort = workzone_shelf.insert(new AlchemyRetort(Color.GREEN, 4), 3, true);
 		burner = workzone_table.insert(new AlchemyStand(), 1, true);
-		burner.install(bottle);
 
 		// Create Sounds
 		sound_clink = new RandomizedSound(game, "clink_0", "clink_1");
@@ -80,6 +79,7 @@ Minigame_Alchemy.prototype =
 }
 
 function onReact(passedDraggedObject, passedReactingObject) {
+	let shouldReturn = false;
 	// If the dragged object has contents...
 	if (passedDraggedObject.quantity > 0) {
 		// If the receiving object has contents, perform a reaction
@@ -94,12 +94,22 @@ function onReact(passedDraggedObject, passedReactingObject) {
 		}
 		// Otherwise, fill it from the dragged object
 		else {
-			passedReactingObject.color = passedDraggedObject.color;
+			switch(passedReactingObject.objectType) {
+				case "stand_background":
+					if (!passedReactingObject.installed) {
+						passedDraggedObject.x = 0;
+						passedDraggedObject.y = -70;
+						passedReactingObject.addElement(passedDraggedObject);
+						shouldReturn = false;
+					}
+					break;
+				default: // Fill container
+					passedReactingObject.color = passedDraggedObject.color;
+					passedDraggedObject.quantity -= 1;
+					passedReactingObject.quantity += 1;
+					break;
+			}
 		}
-
-		// Set Quantitites
-		passedDraggedObject.quantity -= 1;
-		passedReactingObject.quantity += 1;
 	}
 	// If the dragged object does not have contents...
 	else {
@@ -107,7 +117,9 @@ function onReact(passedDraggedObject, passedReactingObject) {
 	}
 
 	// Return dragged object to original location
-	onReturn(passedDraggedObject);
+	if (shouldReturn) {
+		onReturn(passedDraggedObject);
+	}
 }
 
 function onDrop(passedDraggedObject, passedCircleObject) {
@@ -244,15 +256,24 @@ class AlchemyObject extends Phaser.Sprite {
 		makeMouseover(this, this, mouseOver, mouseOut);
 	}
 
-	addElement(passedKey, passedXPosition, passedYPosition) {
+	initElement(passedKey, passedXPosition, passedYPosition) {
 		let instance = this.group.create(0, 0, passedKey);
 		if ((passedXPosition != null) && (passedYPosition != null)) {
 			instance.x = passedXPosition;
 			instance.y = passedYPosition;
 		}
 		instance.anchor.setTo(this.anchor.x, this.anchor.y);
-		this.addChild(instance);
 		return instance;
+	}
+
+	addElement(passedObject, passedXPosition, passedYPosition) {
+		this.addChild(passedObject);
+		return passedObject;
+	}
+
+	removeElement(passedObject) {
+		this.removeChild(passedObject);
+		return passedObject;
 	}
 
 	get objectType() {
@@ -264,7 +285,7 @@ class AlchemyContainer extends AlchemyObject {
 	constructor(passedGroup, passedContainer, passedContents, passedColor, passedQuantity) {
 		super(passedGroup, passedContainer);
 
-		this.contents = this.addElement(passedContents);
+		this.contents = this.addChild(this.initElement(passedContents));
 
 		// Set properties of contents if defined
 		if ((passedQuantity != undefined) && (passedColor != undefined)) {
@@ -297,28 +318,20 @@ class AlchemyStand extends AlchemyObject {
 	constructor() {
 		super(layer_apparatus, "stand_background");
 		this.body.setSize(75, 75, 19, 50);
-		this.burner = this.addElement("burner", 0, 0);
+		this.burner = this.addChild(this.initElement("burner"));
 		this.anchor.y = 0.8;
-		this.frontlegs = this.addElement("stand_foreground");
+		this.frontlegs = this.addChild(this.initElement("stand_foreground"));
+		this.installed = false;
 	}
 
-	install(passedObject) {
-		this.installed = passedObject;
-		storePosition(passedObject);
-		passedObject.y -= 70;
-		passedObject.x = 0;
-		this.addChild(passedObject);
-		/*
-		 ! Ordinarily, I'd use this.frontlegs.bringToTop(). But that doesn't work here:
-		 If a sprite is a child of another sprite, bringToTop only brings it to the top of the list of child sprites, even if all sprites are part of the same group.
-		 Inconvenient!
-		 */
-		this.addChild(this.frontlegs);
+	addElement(passedObject) {
+		super.addElement(passedObject);
+		this.installed = true;
 	}
 
-	uninstall() {
-		this.removeChild(this.installed);
-		this.installed = null;
+	removeElement(passedObject) {
+		super.removeElement(passedObject);
+		this.installed = false;
 	}
 }
 
@@ -326,7 +339,7 @@ class AlchemyBottle extends AlchemyContainer {
 	constructor(passedColor, passedQuantity) {
 		super(layer_apparatus, "bottle_round", "liquid_bottle", passedColor, passedQuantity);
 		// Set bottle-specific properties
-		this.cork = this.addElement("bottle_cork", 0, -95);
+		this.cork = this.addChild(this.initElement("bottle_cork", 0, -95));
 		this.body.setSize(75, 75, 0, 38);
 	}
 }
