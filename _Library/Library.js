@@ -32,6 +32,8 @@ function makeButton(passedSprite, passedReference, passedClickAction, passedOver
 function makeDraggable(passedSprite, passedReference, passedDragStartAction, passedDragStopAction) {
   passedSprite.inputEnabled = true;
   passedSprite.input.enableDrag();
+  passedSprite.input.useHandCursor = true;
+  passedSprite.input.bringToTop = true;
   if (passedDragStartAction != undefined) {
     passedSprite.events.onDragStart.add(passedDragStartAction.bind(passedReference), passedReference);
   }
