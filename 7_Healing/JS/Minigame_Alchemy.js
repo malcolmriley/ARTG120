@@ -28,8 +28,6 @@ Minigame_Alchemy.prototype =
 		this.load.audio("clink_1", "bottle_clink_1.wav");
 		this.load.audio("bottle_break", "bottle_break.wav");
 
-		spriteScale = 0.25; // TODO: Remove when final asset size is determined
-
 		// Define colors
 		Color = Object.freeze(new AlchemyColors());
 	},
@@ -252,7 +250,6 @@ class AlchemyObject extends Phaser.Sprite {
 		}
 		instance.anchor.setTo(this.anchor.x, this.anchor.y);
 		this.addChild(instance);
-		this.scale.setTo(spriteScale, spriteScale); // TODO: Remove when final asset size is determined
 		return instance;
 	}
 
@@ -370,7 +367,6 @@ class WorkArea {
 			centerAnchor(circleInstance);
 			circleInstance.workArea = this;
 			circleInstance.index = count;
-			circleInstance.scale.setTo(spriteScale, spriteScale); // TODO: Remove when final asset size is determined
 			circleInstance.x = passedPositionX + (count * (padding + circleInstance.width)) + (circleInstance.width / 2);
 			circleInstance.y = passedPositionY + (circleInstance.height / 2);
 			circleInstance.alpha = 0.4;
