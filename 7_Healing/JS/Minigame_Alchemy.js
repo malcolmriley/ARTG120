@@ -23,6 +23,7 @@ Minigame_Alchemy.prototype =
 		this.load.audio("cork", "cork_out.wav");
 		this.load.audio("clink_0", "bottle_clink_0.wav");
 		this.load.audio("clink_1", "bottle_clink_1.wav");
+		this.load.audio("bottle_break", "bottle_break.wav");
 
 		spriteScale = 0.25; // TODO: Remove when final asset size is determined
 
@@ -65,6 +66,7 @@ Minigame_Alchemy.prototype =
 		sound_clink = new RandomizedSound(game, "clink_0", "clink_1");
 		sound_pour = game.add.audio("pour");
 		sound_uncork = game.add.audio("cork");
+		sound_break = game.add.audio("bottle_break");
 	},
 
 	update: function()
@@ -91,6 +93,22 @@ function onDrop(passedDraggedObject, passedCircleObject) {
 
 function onReturn(passedSprite) {
 	let tween = game.add.tween(passedSprite).to({x : passedSprite.oldPos.x, y : passedSprite.oldPos.y}, 500, Phaser.Easing.Circular.InOut, true);
+}
+
+function onFall(passedSprite) {
+	if (spritesOverlap(passedSprite, table) || spritesOverlap(passedSprite, shelf)) {
+		onReturn(passedSprite);
+	}
+	else {
+		passedSprite.body.gravity.y = 1200;
+		let breakIt = function() {
+			passedSprite.kill();
+			sound_break.play();
+			passedSprite.workarea.reference.remove(passedSprite.workarea.index);
+		}
+		passedSprite.checkWorldBounds = true;
+		passedSprite.events.onOutOfBounds.add(breakIt, this);
+	}
 }
 
 class AlchemyColors {
@@ -175,7 +193,7 @@ class AlchemyObject extends Phaser.Sprite {
 			}
 			if ((!reaction) && (!insert)) {
 				// If the object was NOT dropped on another alchemy object or a workspace, return it to its previous position.
-				onReturn(passedObject);
+				onFall(passedObject);
 			}
 		}
 		let mouseOver = function() {
@@ -315,12 +333,16 @@ class WorkArea {
 
 	insert(passedObject, passedIndex, passedSetPosition) {
 		this.apparatus[passedIndex] = passedObject;
-		passedObject.oldArea = this;
+		passedObject.workarea = { reference : this, index : passedIndex };
 		if (passedSetPosition) {
 			passedObject.x = this.spaces[passedIndex].x;
 			passedObject.y = this.spaces[passedIndex].y;
 			storePosition(passedObject);
 		}
 		return passedObject;
+	}
+
+	remove(passedIndex) {
+		this.apparatus[passedIndex] = null;
 	}
 }
