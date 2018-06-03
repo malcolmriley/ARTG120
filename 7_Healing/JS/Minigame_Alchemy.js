@@ -333,6 +333,9 @@ class WorkArea {
 
 	insert(passedObject, passedIndex, passedSetPosition) {
 		this.apparatus[passedIndex] = passedObject;
+		if (passedObject.workarea) {
+			passedObject.workarea.reference.remove(passedObject.workarea.index);
+		}
 		passedObject.workarea = { reference : this, index : passedIndex };
 		if (passedSetPosition) {
 			passedObject.x = this.spaces[passedIndex].x;
