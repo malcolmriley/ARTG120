@@ -211,7 +211,7 @@ class AlchemyObject extends Phaser.Sprite {
 				onFall(passedObject);
 			}
 		}
-		let mouseOver = function() {
+		let mouseOver = function(passedObject, passedPointer)  {
 			// Play clinking sound
 			sound_clink.play();
 
@@ -223,7 +223,7 @@ class AlchemyObject extends Phaser.Sprite {
 			}
 			tween.onComplete.add(resetAngle, this);
 		}
-		let mouseOut = function() {
+		let mouseOut = function(passedObject, passedPointer)  {
 			// TODO:
 		}
 
