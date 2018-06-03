@@ -65,6 +65,7 @@ Minigame_Alchemy.prototype =
 		bottle = workzone_shelf.insert(new AlchemyBottle(Color.RED, 4), 1, true);
 		bowl = workzone_shelf.insert(new AlchemyBowl(Color.BLUE, 4), 2, true);
 		retort = workzone_shelf.insert(new AlchemyRetort(Color.GREEN, 4), 3, true);
+		burner = workzone_table.insert(new AlchemyStand(), 1, true);
 
 		// Create Sounds
 		sound_clink = new RandomizedSound(game, "clink_0", "clink_1");
@@ -287,6 +288,16 @@ class AlchemyContainer extends AlchemyObject {
 		this.amount = passedQuantity;
 		this.contents.frame = (passedQuantity <= 4) ? passedQuantity : 4;
 		return this;
+	}
+}
+
+class AlchemyStand extends AlchemyObject {
+	constructor() {
+		super(layer_midground, "stand_background");
+		this.anchor.y = 0.8;
+		this.burner = this.addElement("burner", 0, 0);
+		this.burner.anchor.y = 0.9;
+		this.frontlegs = this.addElement("stand_foreground");
 	}
 }
 
