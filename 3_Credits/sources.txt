@@ -5,4 +5,5 @@
 FILE                  SOURCE
 door_open.wav         https://opengameart.org/content/door-open-door-close
 water_pour.wav        https://opengameart.org/content/running-water
+cork_out.wav          https://freesound.org/people/Kyster/sounds/140615/
 old_paper.png         http://www.wildtextures.com/wp-content/uploads/2011/11/wildtextures-old-paper-texture-3.jpg
