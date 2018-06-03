@@ -77,6 +77,7 @@ Minigame_Alchemy.prototype =
 
 function onReact(passedDraggedObject, passedReactingObject) {
 	if (passedDraggedObject.quantity > 0) {
+		// If the receiving object has contents, perform a reaction
 		if (passedReactingObject.quantity > 0) {
 			switch(passedDraggedObject.containerType) {
 				case "bottle_round":
@@ -86,6 +87,7 @@ function onReact(passedDraggedObject, passedReactingObject) {
 			}
 			passedReactingObject.color = Color.combine(passedDraggedObject.color, passedReactingObject.color);
 		}
+		// Otherwise, fill it from the dragged object
 		else {
 			passedReactingObject.color = passedDraggedObject.color;
 		}
