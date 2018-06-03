@@ -108,26 +108,26 @@ class AlchemyColors {
 		this.colorArray = [this.RED, this.ORANGE, this.YELLOW, this.GREEN, this.BLUE, this.INDIGO, this.VIOLET, this.MAGENTA];
 	}
 
-	static get(passedIndex) {
+	get(passedIndex) {
 		return this.colorArray[(passedIndex % this.colorArray.length)];
 	}
 
-	static invert(passedColor) {
+	invert(passedColor) {
 		let calculatedIndex = passedColor.index + (Math.floor(this.colorArray.length / 2));
 		return this.get(calculatedIndex);
 	}
 
-	static combine(passedFirstColor, passedSecondColor) {
+	combine(passedFirstColor, passedSecondColor) {
 		let calculatedIndex = Math.floor((passedFirstColor.index + passedSecondColor.index) / 2);
 		return this.get(calculatedIndex);
 	}
 
-	static split(passedColor) {
+	split(passedColor) {
 		let instance = { first : this.get(passedColor.index - 1), second : this.get(passedColor.index + 1)};
 		return instance;
 	}
 
-	static rotate(passedColor, passedDirection) {
+	rotate(passedColor, passedDirection) {
 		return this.get(passedColor.index + passedDirection);
 	}
 }
