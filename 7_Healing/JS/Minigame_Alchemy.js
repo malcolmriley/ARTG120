@@ -76,6 +76,7 @@ Minigame_Alchemy.prototype =
 }
 
 function onReact(passedDraggedObject, passedReactingObject) {
+	// If the dragged object has contents...
 	if (passedDraggedObject.quantity > 0) {
 		// If the receiving object has contents, perform a reaction
 		if (passedReactingObject.quantity > 0) {
@@ -95,6 +96,10 @@ function onReact(passedDraggedObject, passedReactingObject) {
 		// Set Quantitites
 		passedDraggedObject.quantity -= 1;
 		passedReactingObject.quantity += 1;
+	}
+	// If the dragged object does not have contents...
+	else {
+
 	}
 
 	// Return dragged object to original location
