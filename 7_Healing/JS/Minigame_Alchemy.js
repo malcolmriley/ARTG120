@@ -302,7 +302,7 @@ class AlchemyStand extends AlchemyObject {
 	install(passedObject) {
 		this.installed = passedObject;
 		storePosition(passedObject);
-		passedObject.y -= this.height;
+		passedObject.y -= this.height * 0.55;
 		passedObject.x = 0;
 		this.addChild(passedObject);
 		layer_apparatus.bringToTop(this.frontlegs);
