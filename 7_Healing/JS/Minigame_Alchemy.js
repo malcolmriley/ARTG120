@@ -183,13 +183,18 @@ class AlchemyObject {
 			}
 		}
 		let mouseOver = function() {
-			// TODO:
+			// Play clinking sound
+			sound_clink.play();
+
+			// Do tilt effect
+			let randomAngle = (0.5 - Math.random()) * 10;
+			let tween = game.add.tween(this.container).from({angle : randomAngle}, 50, Phaser.Easing.Linear.None, true);
 		}
 		let mouseOut = function() {
 			// TODO:
 		}
-		makeDraggable(this.container, passedReference, beginDrag, endDrag);
-		makeMouseover(this.container, passedReference, mouseOver, mouseOut);
+		makeDraggable(this.container, this, beginDrag, endDrag);
+		makeMouseover(this.container, this, mouseOver, mouseOut);
 		game.physics.arcade.enable(this.container);
 		if ((passedQuantity != undefined) && (passedColor != undefined)) {
 			this.quantity = passedQuantity;
