@@ -369,8 +369,6 @@ class AlchemyRetort extends AlchemyContainer {
  * passedPositionX - The x position of the work area in total
  * passedPositionY - The y position of the work area in total
  * passedQuantity - The number of "spaces" in the work area
- * The remaining parameters are optional:
- * passedLabel - A textual lable for this work area
  */
 class WorkArea {
 	constructor(passedPositionX, passedPositionY, passedQuantity) {
