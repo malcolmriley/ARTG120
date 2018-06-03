@@ -39,6 +39,7 @@ Minigame_Alchemy.prototype =
 		// Add render groups for use as "render layers"
 		layer_background = this.game.add.group();
 		layer_workzones = this.game.add.group();
+		layer_midground = this.game.add.group();
 		layer_apparatus = this.game.add.group();
 		layer_foreground = this.game.add.group();
 		layer_paper = this.game.add.group();
