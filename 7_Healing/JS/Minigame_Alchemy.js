@@ -332,6 +332,7 @@ class AlchemyStand extends AlchemyObject {
 
 	addElement(passedObject) {
 		super.addElement(passedObject);
+		super.addChild(this.frontlegs);
 		this.installed = true;
 	}
 
