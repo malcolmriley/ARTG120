@@ -92,6 +92,9 @@ function onReact(passedDraggedObject, passedReactingObject) {
 	console.log("REACTION!");
 	console.log(passedDraggedObject.key);
 	console.log(passedReactingObject.key);
+
+	// Return dragged object to original location
+	onReturn(passedDraggedObject);
 }
 
 function onDrop(passedDraggedObject, passedCircleObject) {
