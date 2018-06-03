@@ -4,19 +4,10 @@
  * passedSprite - The sprite to convert
  * passedReference - A reference to the current context (typically "this")
  * passedClickAction - The function to be executed when the button is clicked
- * The remaining paramters are optional:
- * passedOverAction - The function to be executed when the cursor enters the button's bounds
- * passedOutAction - The function to be executed when the cursor exits the button's bounds
  */
-function makeButton(passedSprite, passedReference, passedClickAction, passedOverAction, passedOutAction) {
+function makeButton(passedSprite, passedReference, passedClickAction) {
   passedSprite.inputEnabled = true;
   passedSprite.events.onInputDown.add(passedClickAction.bind(passedReference), passedReference);
-  if (passedOverAction != undefined) {
-    passedSprite.events.onInputOver.add(passedOverAction.bind(passedReference), passedReference);
-  }
-  if (passedOutAction != undefined) {
-    passedSprite.events.onInputOut.add(passedOutAction.bind(passedReference), passedReference);
-  }
   return passedSprite;
 }
 
