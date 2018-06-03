@@ -71,16 +71,9 @@ Minigame_Alchemy.prototype =
 }
 
 function beginDragAlchemy(passedObject, passedPointer) {
-	// Bring dragged sprite to foreground
-	layer_foreground.add(passedObject, false);
-	layer_apparatus.remove(passedObject, false);
 }
 
 function endDragAlchemy(passedObject, passedPointer) {
-	// Return dragged sprite to midground
-	layer_apparatus.add(passedObject, false);
-	layer_foreground.remove(passedObject, false);
-
 	// Perform reaction, or drop onto empty workspace
 	let reaction = false;
 	let insert = false;
