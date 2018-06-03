@@ -216,7 +216,12 @@ class AlchemyObject extends Phaser.Sprite {
 
 		// Define callbacks
 		let beginDrag = function(passedObject, passedPointer) {
-			passedObject.parent.removeChild(passedObject);
+			if (passedObject.parent.removeElement) {
+				passedObject.parent.removeElement(passedObject);
+			}
+			else {
+				passedObject.parent.removeChild(passedObject);
+			}
 			passedGroup.add(passedObject);
 		}
 		let endDrag = function(passedObject, passedPointer) {
