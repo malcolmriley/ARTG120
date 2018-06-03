@@ -111,24 +111,10 @@ function onReact(passedDraggedObject, passedReactingObject) {
 }
 
 function onDrop(passedDraggedObject, passedCircleObject) {
-	/*
-	BIG TODO:
-	There's a conflict of paradigm between the WorkArea and AlchemyStand types.
-	Basically, when tweening to their "location", for the WorkArea it doesn't make the object a child of the WorkArea.
-	However, inserting the thing into the AlchemyStand DOES. Therefore when tweening around it switches between coordinates (relative to world versus relative to parent)
-	and it looks like poopoo.
-
-	Process might look like:
-		On mouse release -> is it a good target?
-			If so, unbind from "last known parent", then tween (position will still be goofy, so tween from last parent's position)?
-	*/
-	passedCircleObject.workArea.insert(passedDraggedObject, passedCircleObject.index);
 	let tween = game.add.tween(passedDraggedObject).to({x : passedCircleObject.x, y : passedCircleObject.y}, 250, Phaser.Easing.Circular.InOut, true);
-	tween.onComplete.add(function(){ storePosition(passedDraggedObject); });
-	// Process:
-	// Record translated world coordinates
-	// Remove from parent object
-	// Tween from translated world coordinates to destination, then add as child of destination object
+	tween.onComplete.add(function(){
+		passedCircleObject.workArea.insert(passedDraggedObject, passedCircleObject.index, true);
+	});
 }
 
 function onReturn(passedSprite) {
