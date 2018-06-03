@@ -77,14 +77,16 @@ Minigame_Alchemy.prototype =
 
 function onReact(passedDraggedObject, passedReactingObject) {
 	if (passedDraggedObject.quantity > 0) {
-		switch(passedDraggedObject.containerType) {
-			case "bottle_round":
-				// Play pour sound
-				sound_pour.play();
-				break;
+		if (passedReactingObject.quantity > 0) {
+			switch(passedDraggedObject.containerType) {
+				case "bottle_round":
+					// Play pour sound
+					sound_pour.play();
+					break;
+			}
+			passedReactingObject.color = Color.combine(passedDraggedObject.color, passedReactingObject.color);
 		}
-		passedReactingObject.color = Color.combine(passedDraggedObject.color, passedReactingObject.color);
-
+		
 		// Set Quantitites
 		passedDraggedObject.quantity -= 1;
 		passedReactingObject.quantity += 1;
