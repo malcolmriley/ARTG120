@@ -300,6 +300,20 @@ class AlchemyStand extends AlchemyObject {
 		this.anchor.y = 0.8;
 		this.frontlegs = this.addElement("stand_foreground");
 	}
+
+	install(passedObject) {
+		this.installed = passedObject;
+		storePosition(passedObject);
+		passedObject.y -= this.height;
+		passedObject.x = 0;
+		this.addChild(passedObject);
+		layer_apparatus.bringToTop(this.frontlegs);
+	}
+
+	uninstall() {
+		this.removeChild(this.installed);
+		this.installed = null;
+	}
 }
 
 class AlchemyBottle extends AlchemyContainer {
