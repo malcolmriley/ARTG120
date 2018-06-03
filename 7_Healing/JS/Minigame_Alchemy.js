@@ -57,9 +57,9 @@ Minigame_Alchemy.prototype =
 		shelf = layer_background.create(100, 120, "shelf");
 
 		// Add test containers
-		bottle = initObject(new AlchemyBottle(this, Color.RED, 3), workzone_shelf, 1, this);
-		bowl = initObject(new AlchemyBowl(this, Color.BLUE, 2), workzone_shelf, 2, this);
-		retort = initObject(new AlchemyRetort(this, Color.GREEN, 4), workzone_shelf, 3, this);
+		bottle = initObject(new AlchemyBottle(Color.RED, 3), workzone_shelf, 1, this);
+		bowl = initObject(new AlchemyBowl(Color.BLUE, 2), workzone_shelf, 2, this);
+		retort = initObject(new AlchemyRetort(Color.GREEN, 4), workzone_shelf, 3, this);
 
 		// Create Sounds
 		sound_clink = new RandomizedSound(game, "clink_0", "clink_1");
@@ -159,7 +159,7 @@ class AlchemyColors {
  * passedQuantity - The initial quantity to fill this container with
  */
 class AlchemyObject {
-	constructor(passedReference, passedGroup, passedContainer, passedContents, passedColor, passedQuantity) {
+	constructor(passedGroup, passedContainer, passedContents, passedColor, passedQuantity) {
 		this.group = passedGroup;
 		this.container = this.initElement(passedContainer);
 		this.contents = this.addElement(passedContents);
@@ -247,8 +247,8 @@ class AlchemyObject {
 }
 
 class AlchemyBottle extends AlchemyObject {
-	constructor(passedReference, passedColor, passedQuantity) {
-		super(passedReference, layer_apparatus, "bottle_round", "liquid_bottle", passedColor, passedQuantity);
+	constructor(passedColor, passedQuantity) {
+		super(layer_apparatus, "bottle_round", "liquid_bottle", passedColor, passedQuantity);
 		// Set bottle-specific properties
 		this.cork = this.addElement("bottle_cork", 0, -415);
 		this.container.body.setSize(300, 300, 0, 150);
@@ -256,8 +256,8 @@ class AlchemyBottle extends AlchemyObject {
 }
 
 class AlchemyBowl extends AlchemyObject {
-	constructor(passedReference, passedColor, passedQuantity) {
-		super(passedReference, layer_apparatus, "bowl", "liquid_bowl", passedColor, passedQuantity);
+	constructor(passedColor, passedQuantity) {
+		super(layer_apparatus, "bowl", "liquid_bowl", passedColor, passedQuantity);
 		// set bowl-specific properties
 		this.container.body.setSize(300, 300, 75, 0);
 		this.container.anchor.y = 0.9;
@@ -266,8 +266,8 @@ class AlchemyBowl extends AlchemyObject {
 }
 
 class AlchemyRetort extends AlchemyObject {
-	constructor(passedReference, passedColor, passedQuantity) {
-		super(passedReference, layer_apparatus, "retort", "liquid_retort", passedColor, passedQuantity);
+	constructor(passedColor, passedQuantity) {
+		super(layer_apparatus, "retort", "liquid_retort", passedColor, passedQuantity);
 		// Set retort-specific properties
 		this.container.anchor.x = 0.25;
 		this.contents.anchor.x = 0.25;
