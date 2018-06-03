@@ -331,7 +331,6 @@ class AlchemyContainer extends AlchemyObject {
 class AlchemyStand extends AlchemyObject {
 	constructor() {
 		super(layer_apparatus, "stand_background");
-		this.body.setSize(75, 75, 19, 50);
 		this.burner = this.addChild(this.initElement("burner"));
 		this.anchor.y = 0.8;
 		this.frontlegs = this.addChild(this.initElement("stand_foreground"));
@@ -340,12 +339,14 @@ class AlchemyStand extends AlchemyObject {
 
 	addElement(passedObject) {
 		super.addElement(passedObject);
+		this.body.setSize(75, 75, 19, 50);
 		super.addChild(this.frontlegs);
 		this.installed = true;
 	}
 
 	removeElement(passedObject) {
 		super.removeElement(passedObject);
+		this.body.setSize(113, 125, 0, 0);
 		this.installed = false;
 	}
 }
