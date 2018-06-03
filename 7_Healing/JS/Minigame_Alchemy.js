@@ -86,7 +86,10 @@ function onReact(passedDraggedObject, passedReactingObject) {
 			}
 			passedReactingObject.color = Color.combine(passedDraggedObject.color, passedReactingObject.color);
 		}
-		
+		else {
+			passedReactingObject.color = passedDraggedObject.color;
+		}
+
 		// Set Quantitites
 		passedDraggedObject.quantity -= 1;
 		passedReactingObject.quantity += 1;
