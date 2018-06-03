@@ -102,9 +102,10 @@ function onReturn(passedSprite) {
  * passedReference - The context from which this AlchemyObject has been initialized (typically "this")
  */
 function initObject(passedObject, passedWorkArea, passedIndex, passedReference) {
-	passedObject.setPosition(passedWorkArea.getArea(passedIndex).x, passedWorkArea.getArea(passedIndex).y);
-	passedWorkArea.insert(passedObject.container, passedIndex, true);
-	storePosition(passedObject.container);
+	passedObject.x = passedWorkArea.getArea(passedIndex).x;
+	passedObject.y = passedWorkArea.getArea(passedIndex).y;
+	passedWorkArea.insert(passedObject, passedIndex, true);
+	storePosition(passedObject);
 	return passedObject;
 }
 
@@ -158,10 +159,17 @@ class AlchemyColors {
  * passedColor - The tint to use for the contained material (should be a spritesheet or equivalent)
  * passedQuantity - The initial quantity to fill this container with
  */
-class AlchemyObject {
+class AlchemyObject extends Phaser.Sprite {
 	constructor(passedGroup, passedContainer, passedContents, passedColor, passedQuantity) {
+		// Due Diligence
+		super(game, 0, 0, passedContainer);
+		game.add.existing(this);
+		passedGroup.add(this);
+		game.physics.arcade.enable(this);
+		this.anchor.x = 0.5;
+		this.anchor.y = 1.0;
+
 		this.group = passedGroup;
-		this.container = this.initElement(passedContainer);
 		this.contents = this.addElement(passedContents);
 		let beginDrag = function(passedObject, passedPointer) {
 			// TODO:
@@ -188,21 +196,20 @@ class AlchemyObject {
 
 			// Do tilt effect
 			let randomAngle = (0.5 - Math.random()) * 10;
-			let tween = game.add.tween(this.container).from({angle : randomAngle}, 50, Phaser.Easing.Linear.None, true);
+			let tween = game.add.tween(this).from({angle : randomAngle}, 50, Phaser.Easing.Linear.None, true);
 		}
 		let mouseOut = function() {
 			// TODO:
 		}
-		makeDraggable(this.container, this, beginDrag, endDrag);
-		makeMouseover(this.container, this, mouseOver, mouseOut);
-		game.physics.arcade.enable(this.container);
+		makeDraggable(this, this, beginDrag, endDrag);
+		makeMouseover(this, this, mouseOver, mouseOut);
 		if ((passedQuantity != undefined) && (passedColor != undefined)) {
 			this.quantity = passedQuantity;
 			this.color = passedColor;
 		}
 	}
 
-	initElement(passedKey, passedXPosition, passedYPosition) {
+	addElement(passedKey, passedXPosition, passedYPosition) {
 		let instance = this.group.create(0, 0, passedKey);
 		if ((passedXPosition != null) && (passedYPosition != null)) {
 			instance.x = passedXPosition;
@@ -210,20 +217,9 @@ class AlchemyObject {
 		}
 		instance.anchor.x = 0.5;
 		instance.anchor.y = 1;
+		this.addChild(instance);
+		this.scale.setTo(spriteScale, spriteScale); // TODO: Remove when final asset size is determined
 		return instance;
-	}
-
-	addElement(passedKey, passedXPosition, passedYPosition) {
-		let instance = this.initElement(passedKey, passedXPosition, passedYPosition);
-		this.container.addChild(instance);
-		this.container.scale.setTo(spriteScale, spriteScale); // TODO: Remove when final asset size is determined
-		return instance;
-	}
-
-	setPosition(passedXPosition, passedYPosition) {
-			this.container.x = passedXPosition;
-			this.container.y = passedYPosition;
-			return this;
 	}
 
 	get color() {
@@ -251,7 +247,7 @@ class AlchemyBottle extends AlchemyObject {
 		super(layer_apparatus, "bottle_round", "liquid_bottle", passedColor, passedQuantity);
 		// Set bottle-specific properties
 		this.cork = this.addElement("bottle_cork", 0, -415);
-		this.container.body.setSize(300, 300, 0, 150);
+		this.body.setSize(300, 300, 0, 150);
 	}
 }
 
@@ -259,8 +255,8 @@ class AlchemyBowl extends AlchemyObject {
 	constructor(passedColor, passedQuantity) {
 		super(layer_apparatus, "bowl", "liquid_bowl", passedColor, passedQuantity);
 		// set bowl-specific properties
-		this.container.body.setSize(300, 300, 75, 0);
-		this.container.anchor.y = 0.9;
+		this.body.setSize(300, 300, 75, 0);
+		this.anchor.y = 0.9;
 		this.contents.anchor.y = 0.9;
 	}
 }
@@ -269,9 +265,9 @@ class AlchemyRetort extends AlchemyObject {
 	constructor(passedColor, passedQuantity) {
 		super(layer_apparatus, "retort", "liquid_retort", passedColor, passedQuantity);
 		// Set retort-specific properties
-		this.container.anchor.x = 0.25;
+		this.anchor.x = 0.25;
 		this.contents.anchor.x = 0.25;
-		this.container.body.setSize(300, 300, 0, 0);
+		this.body.setSize(300, 300, 0, 0);
 		this.facing = 1;
 	}
 }
