@@ -96,8 +96,6 @@ function onReact(passedDraggedObject, passedReactingObject) {
 			switch(passedReactingObject.objectType) {
 				case "stand_background":
 					if (!passedReactingObject.installed) {
-						passedDraggedObject.x = 0;
-						passedDraggedObject.y = -70;
 						passedReactingObject.addElement(passedDraggedObject);
 						shouldReturn = false;
 					}
@@ -276,6 +274,8 @@ class AlchemyObject extends Phaser.Sprite {
 	}
 
 	addElement(passedObject, passedXPosition, passedYPosition) {
+		passedObject.x = 0;
+		passedObject.y = -70;
 		this.addChild(passedObject);
 		return passedObject;
 	}
