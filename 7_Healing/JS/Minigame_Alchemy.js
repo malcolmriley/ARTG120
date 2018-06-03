@@ -21,6 +21,8 @@ Minigame_Alchemy.prototype =
 		this.load.path = "../_Assets/sounds/";
 		this.load.audio("pour", "water_pour.wav");
 		this.load.audio("cork", "cork_out.wav");
+		this.load.audio("clink_0", "bottle_clink_0.wav");
+		this.load.audio("clink_1", "bottle_clink_1.wav");
 
 		spriteScale = 0.25; // TODO: Remove when final asset size is determined
 
@@ -60,6 +62,7 @@ Minigame_Alchemy.prototype =
 		retort = initObject(new AlchemyRetort(Color.GREEN, 4), workzone_shelf, 3, this);
 
 		// Create Sounds
+		sound_clink = new RandomizedSound(game, "clink_0", "clink_1");
 		sound_pour = game.add.audio("pour");
 		sound_uncork = game.add.audio("cork");
 	},
@@ -71,6 +74,7 @@ Minigame_Alchemy.prototype =
 }
 
 function beginDragAlchemy(passedObject, passedPointer) {
+
 }
 
 function endDragAlchemy(passedObject, passedPointer) {
@@ -93,6 +97,7 @@ function endDragAlchemy(passedObject, passedPointer) {
 function onReact(passedDraggedObject, passedReactingObject) {
 	// Play pour sound
 	sound_pour.play();
+	sound_clink.play();
 
 	// Return dragged object to original location
 	onReturn(passedDraggedObject);
