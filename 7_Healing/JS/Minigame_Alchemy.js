@@ -119,9 +119,9 @@ function onFall(passedSprite) {
 		passedSprite.body.gravity.y = 1200;
 		passedSprite.inputEnabled = false;
 		let breakIt = function() {
+			passedSprite.workarea.reference.remove(passedSprite.workarea.index);
 			passedSprite.kill();
 			sound_break.play();
-			passedSprite.workarea.reference.remove(passedSprite.workarea.index);
 		}
 		passedSprite.checkWorldBounds = true;
 		passedSprite.events.onOutOfBounds.add(breakIt, this);
