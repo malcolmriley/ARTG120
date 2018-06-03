@@ -246,8 +246,7 @@ class AlchemyObject extends Phaser.Sprite {
 			instance.x = passedXPosition;
 			instance.y = passedYPosition;
 		}
-		instance.anchor.x = 0.5;
-		instance.anchor.y = 1;
+		instance.anchor.setTo(this.anchor.x, this.anchor.y);
 		this.addChild(instance);
 		this.scale.setTo(spriteScale, spriteScale); // TODO: Remove when final asset size is determined
 		return instance;
