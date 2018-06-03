@@ -294,6 +294,7 @@ class AlchemyContainer extends AlchemyObject {
 class AlchemyStand extends AlchemyObject {
 	constructor() {
 		super(layer_apparatus, "stand_background");
+		this.body.setSize(75, 75, 19, 50);
 		this.burner = this.addElement("burner", 0, 0);
 		this.anchor.y = 0.8;
 		this.frontlegs = this.addElement("stand_foreground");
@@ -302,10 +303,15 @@ class AlchemyStand extends AlchemyObject {
 	install(passedObject) {
 		this.installed = passedObject;
 		storePosition(passedObject);
-		passedObject.y -= this.height * 0.55;
+		passedObject.y -= 70;
 		passedObject.x = 0;
 		this.addChild(passedObject);
-		this.frontlegs.bringToTop();
+		/*
+		 ! Ordinarily, I'd use this.frontlegs.bringToTop(). But that doesn't work here:
+		 If a sprite is a child of another sprite, bringToTop only brings it to the top of the list of child sprites, even if all sprites are part of the same group.
+		 Inconvenient!
+		 */
+		this.addChild(this.frontlegs);
 	}
 
 	uninstall() {
