@@ -13,6 +13,9 @@ Minigame_Alchemy.prototype =
 		this.load.image("bottle_cork", "cork.png");
 		this.load.image("table", "table.png");
 		this.load.image("shelf", "shelf.png");
+		this.load.image("stand_background", "stand_background.png");
+		this.load.image("stand_foreground", "stand_foreground.png");
+		this.load.image("burner", "burner.png");
 		this.load.spritesheet("liquid_bowl", "liquid_bowl.png", 450, 300);
 		this.load.spritesheet("liquid_bottle",  "liquid_bottle.png", 300, 450);
 		this.load.spritesheet("liquid_retort",  "liquid_retort.png", 600, 300);
