@@ -26,6 +26,9 @@ Minigame_Alchemy.prototype =
 		this.load.audio("cork", "cork_out.wav");
 		this.load.audio("clink_0", "bottle_clink_0.wav");
 		this.load.audio("clink_1", "bottle_clink_1.wav");
+		this.load.audio("metal_ping_1", "metal_ping_1.wav");
+		this.load.audio("metal_ping_2", "metal_ping_2.wav");
+		this.load.audio("metal_ping_3", "metal_ping_3.wav");
 		this.load.audio("bottle_break", "bottle_break.wav");
 
 		// Define colors
@@ -58,13 +61,14 @@ Minigame_Alchemy.prototype =
 		shelf = layer_background.create(100, 120, "shelf");
 
 		// Add test containers
-		bottle = workzone_shelf.insert(new AlchemyBottle(Color.RED, 4), 1, true);
-		bowl = workzone_shelf.insert(new AlchemyBowl(Color.BLUE, 4), 2, true);
-		retort = workzone_shelf.insert(new AlchemyRetort(Color.GREEN, 4), 3, true);
-		burner = workzone_table.insert(new AlchemyStand(), 1, true);
+		bottle = workzone_shelf.insert(new AlchemyBottle(Color.RED, 4), 1);
+		bowl = workzone_shelf.insert(new AlchemyBowl(Color.BLUE, 4), 2);
+		retort = workzone_shelf.insert(new AlchemyRetort(Color.GREEN, 4), 3);
+		burner = workzone_table.insert(new AlchemyStand(), 1);
 
 		// Create Sounds
 		sound_clink = new RandomizedSound(game, "clink_0", "clink_1");
+		sound_ping = new RandomizedSound(game, "metal_ping_1", "metal_ping_2", "metal_ping_3");
 		sound_pour = game.add.audio("pour");
 		sound_uncork = game.add.audio("cork");
 		sound_break = game.add.audio("bottle_break");
@@ -97,6 +101,7 @@ function onReact(passedDraggedObject, passedReactingObject) {
 				case "stand_background":
 					if (!passedReactingObject.installed) {
 						passedReactingObject.addElement(passedDraggedObject);
+						sound = sound_ping;
 						shouldReturn = false;
 					}
 					break;
@@ -127,7 +132,7 @@ function onReact(passedDraggedObject, passedReactingObject) {
 function onDrop(passedDraggedObject, passedCircleObject) {
 	let tween = game.add.tween(passedDraggedObject).to({x : passedCircleObject.x, y : passedCircleObject.y}, 250, Phaser.Easing.Circular.InOut, true);
 	tween.onComplete.add(function(){
-		passedCircleObject.workArea.insert(passedDraggedObject, passedCircleObject.index, true);
+		passedCircleObject.workArea.insert(passedDraggedObject, passedCircleObject.index);
 	});
 }
 
