@@ -42,6 +42,23 @@ function makeDraggable(passedSprite, passedReference, passedDragStartAction, pas
 }
 
 /**
+ * Convenience function to add mouseover events to the passed sprite.
+ *
+ * passedSprite - The sprite to add the events to
+ * passedReference - A reference to the current context (typically "this");
+ * passedMouseOverAction - The function to be executed when the mouse is over passedSprite
+ * The remaining parameter is optional:
+ * passedMouseOutAction - The function to be executed when the mouse exits passedSprite
+ */
+function makeMouseover(passedSprite, passedReference, passedMouseOverAction, passedMouseOutAction) {
+  passedSprite.events.onInputOver(passedMouseOverAction.bind(passedReference));
+  if (passedMouseOutAction != undefined) {
+    passedSprite.events.onInputOut(passedMouseOutAction.bind(passedReference));
+  }
+  return passedSprite;
+}
+
+/**
  * Convenience function to center the anchor point on the passed sprite.
  *
  * passedSprite - The sprite to set the anchor of
