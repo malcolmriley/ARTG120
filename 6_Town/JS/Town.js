@@ -28,7 +28,8 @@ Town.prototype =
 				scaleDown(house, this); // Set initial sprite scaling
 				house.x = startX + row * (10 + house.width);
 				house.y = startY + column * (10 + house.width);
-				makeButton(house, this, goToInterior, scaleUp, scaleDown);
+				makeButton(house, this, goToInterior);
+				makeMouseover(house, this, scaleUp, scaleDown);
 			}
 		}
 
