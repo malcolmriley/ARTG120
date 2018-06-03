@@ -197,7 +197,7 @@ class AlchemyObject extends Phaser.Sprite {
 		game.physics.arcade.enable(this);
 
 		// Set local properties
-		this.anchor.setTo(0.5, 1.0);
+		this.anchor.setTo(0.5, 0.9);
 		this.group = passedGroup;
 
 		// Define callbacks
@@ -294,9 +294,8 @@ class AlchemyContainer extends AlchemyObject {
 class AlchemyStand extends AlchemyObject {
 	constructor() {
 		super(layer_midground, "stand_background");
-		this.anchor.y = 0.8;
 		this.burner = this.addElement("burner", 0, 0);
-		this.burner.anchor.y = 0.9;
+		this.anchor.y = 0.8;
 		this.frontlegs = this.addElement("stand_foreground");
 	}
 }
@@ -305,7 +304,7 @@ class AlchemyBottle extends AlchemyContainer {
 	constructor(passedColor, passedQuantity) {
 		super(layer_apparatus, "bottle_round", "liquid_bottle", passedColor, passedQuantity);
 		// Set bottle-specific properties
-		this.cork = this.addElement("bottle_cork", 0, -415);
+		this.cork = this.addElement("bottle_cork", 0, -385);
 		this.body.setSize(300, 300, 0, 150);
 	}
 }
@@ -315,8 +314,6 @@ class AlchemyBowl extends AlchemyContainer {
 		super(layer_apparatus, "bowl", "liquid_bowl", passedColor, passedQuantity);
 		// set bowl-specific properties
 		this.body.setSize(300, 300, 75, 0);
-		this.anchor.y = 0.9;
-		this.contents.anchor.y = 0.9;
 	}
 }
 
