@@ -81,7 +81,7 @@ function onReact(passedDraggedObject, passedReactingObject) {
 	if (passedDraggedObject.quantity > 0) {
 		// If the receiving object has contents, perform a reaction
 		if (passedReactingObject.quantity > 0) {
-			switch(passedDraggedObject.containerType) {
+			switch(passedDraggedObject.objectType) {
 				case "bottle_round":
 					// Play pour sound
 					sound_pour.play();
@@ -193,10 +193,8 @@ class AlchemyObject extends Phaser.Sprite {
 		game.physics.arcade.enable(this);
 
 		// Set local properties
-		this.anchor.x = 0.5;
-		this.anchor.y = 1.0;
+		this.anchor.setTo(0.5, 1.0);
 		this.group = passedGroup;
-		this.contents = this.addElement(passedContents);
 
 		// Define callbacks
 		let beginDrag = function(passedObject, passedPointer) {
@@ -237,12 +235,6 @@ class AlchemyObject extends Phaser.Sprite {
 		// Attach callbacks
 		makeDraggable(this, this, beginDrag, endDrag);
 		makeMouseover(this, this, mouseOver, mouseOut);
-
-		// Set properties of contents if defined
-		if ((passedQuantity != undefined) && (passedColor != undefined)) {
-			this.quantity = passedQuantity;
-			this.color = passedColor;
-		}
 	}
 
 	addElement(passedKey, passedXPosition, passedYPosition) {
@@ -256,6 +248,24 @@ class AlchemyObject extends Phaser.Sprite {
 		this.addChild(instance);
 		this.scale.setTo(spriteScale, spriteScale); // TODO: Remove when final asset size is determined
 		return instance;
+	}
+
+	get objectType() {
+		return this.key;
+	}
+}
+
+class AlchemyContainer extends AlchemyObject {
+	constructor(passedGroup, passedContainer, passedContents, passedColor, passedQuantity) {
+		super(passedGroup, passedContainer);
+
+		this.contents = this.addElement(passedContents);
+
+		// Set properties of contents if defined
+		if ((passedQuantity != undefined) && (passedColor != undefined)) {
+			this.quantity = passedQuantity;
+			this.color = passedColor;
+		}
 	}
 
 	get color() {
@@ -276,13 +286,9 @@ class AlchemyObject extends Phaser.Sprite {
 		this.contents.frame = (passedQuantity <= 4) ? passedQuantity : 4;
 		return this;
 	}
-
-	get containerType() {
-		return this.key;
-	}
 }
 
-class AlchemyBottle extends AlchemyObject {
+class AlchemyBottle extends AlchemyContainer {
 	constructor(passedColor, passedQuantity) {
 		super(layer_apparatus, "bottle_round", "liquid_bottle", passedColor, passedQuantity);
 		// Set bottle-specific properties
@@ -291,7 +297,7 @@ class AlchemyBottle extends AlchemyObject {
 	}
 }
 
-class AlchemyBowl extends AlchemyObject {
+class AlchemyBowl extends AlchemyContainer {
 	constructor(passedColor, passedQuantity) {
 		super(layer_apparatus, "bowl", "liquid_bowl", passedColor, passedQuantity);
 		// set bowl-specific properties
@@ -301,7 +307,7 @@ class AlchemyBowl extends AlchemyObject {
 	}
 }
 
-class AlchemyRetort extends AlchemyObject {
+class AlchemyRetort extends AlchemyContainer {
 	constructor(passedColor, passedQuantity) {
 		super(layer_apparatus, "retort", "liquid_retort", passedColor, passedQuantity);
 		// Set retort-specific properties
