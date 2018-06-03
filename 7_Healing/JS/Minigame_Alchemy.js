@@ -16,9 +16,9 @@ Minigame_Alchemy.prototype =
 		this.load.image("stand_background", "stand_background.png");
 		this.load.image("stand_foreground", "stand_foreground.png");
 		this.load.image("burner", "burner.png");
-		this.load.spritesheet("liquid_bowl", "liquid_bowl.png", 450, 300);
-		this.load.spritesheet("liquid_bottle",  "liquid_bottle.png", 300, 450);
-		this.load.spritesheet("liquid_retort",  "liquid_retort.png", 600, 300);
+		this.load.spritesheet("liquid_bowl", "liquid_bowl.png", 113, 75);
+		this.load.spritesheet("liquid_bottle",  "liquid_bottle.png", 75, 113);
+		this.load.spritesheet("liquid_retort",  "liquid_retort.png", 150, 75);
 
 		// Load Sounds
 		this.load.path = "../_Assets/sounds/";
@@ -318,8 +318,8 @@ class AlchemyBottle extends AlchemyContainer {
 	constructor(passedColor, passedQuantity) {
 		super(layer_apparatus, "bottle_round", "liquid_bottle", passedColor, passedQuantity);
 		// Set bottle-specific properties
-		this.cork = this.addElement("bottle_cork", 0, -385);
-		this.body.setSize(300, 300, 0, 150);
+		this.cork = this.addElement("bottle_cork", 0, -95);
+		this.body.setSize(75, 75, 0, 38);
 	}
 }
 
@@ -327,7 +327,7 @@ class AlchemyBowl extends AlchemyContainer {
 	constructor(passedColor, passedQuantity) {
 		super(layer_apparatus, "bowl", "liquid_bowl", passedColor, passedQuantity);
 		// set bowl-specific properties
-		this.body.setSize(300, 300, 75, 0);
+		this.body.setSize(75, 75, 20, 0);
 	}
 }
 
@@ -337,7 +337,7 @@ class AlchemyRetort extends AlchemyContainer {
 		// Set retort-specific properties
 		this.anchor.x = 0.25;
 		this.contents.anchor.x = 0.25;
-		this.body.setSize(300, 300, 0, 0);
+		this.body.setSize(75, 75, 0, 0);
 		this.facing = 1;
 	}
 }
