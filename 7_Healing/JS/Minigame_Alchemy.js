@@ -77,6 +77,8 @@ function onReact(passedDraggedObject, passedReactingObject) {
 	// Play pour sound
 	sound_pour.play();
 
+	passedReactingObject.color = Color.combine(passedDraggedObject.color, passedReactingObject.color);
+
 	// Return dragged object to original location
 	onReturn(passedDraggedObject);
 }
@@ -154,6 +156,7 @@ class AlchemyObject extends Phaser.Sprite {
 		this.anchor.y = 1.0;
 		this.group = passedGroup;
 		this.contents = this.addElement(passedContents);
+		this.containerType = passedContainer;
 
 		// Define callbacks
 		let beginDrag = function(passedObject, passedPointer) {
@@ -232,6 +235,14 @@ class AlchemyObject extends Phaser.Sprite {
 		this.amount = passedQuantity;
 		this.contents.frame = passedQuantity;
 		return this;
+	}
+
+	get containerType() {
+		return this.containerType;
+	}
+
+	set containerType(passedValue) {
+		// Don't set it.
 	}
 }
 
