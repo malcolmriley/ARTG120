@@ -17,6 +17,10 @@ Minigame_Alchemy.prototype =
 		this.load.spritesheet("liquid_bottle",  "liquid_bottle.png", 300, 450);
 		this.load.spritesheet("liquid_retort",  "liquid_retort.png", 600, 300);
 
+		// Load Sounds
+		this.load.path = "../_Assets/sounds/";
+		this.load.audio("pour", "water_pour.wav");
+
 		spriteScale = 0.25; // TODO: Remove when final asset size is determined
 
 		// Define colors
@@ -53,6 +57,9 @@ Minigame_Alchemy.prototype =
 		bottle = initObject(new AlchemyBottle(Color.RED, 3), workzone_shelf, 1, this);
 		bowl = initObject(new AlchemyBowl(Color.BLUE, 2), workzone_shelf, 2, this);
 		retort = initObject(new AlchemyRetort(Color.GREEN, 4), workzone_shelf, 3, this);
+
+		// Create sound
+		sound_pour = game.add.audio("pour");
 	},
 
 	update: function()
@@ -92,6 +99,9 @@ function onReact(passedDraggedObject, passedReactingObject) {
 	console.log("REACTION!");
 	console.log(passedDraggedObject.key);
 	console.log(passedReactingObject.key);
+
+	console.log(sound_pour);
+	sound_pour.play();
 
 	// Return dragged object to original location
 	onReturn(passedDraggedObject);
