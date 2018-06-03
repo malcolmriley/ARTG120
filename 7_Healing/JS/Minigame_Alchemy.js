@@ -293,7 +293,7 @@ class AlchemyContainer extends AlchemyObject {
 
 class AlchemyStand extends AlchemyObject {
 	constructor() {
-		super(layer_midground, "stand_background");
+		super(layer_apparatus, "stand_background");
 		this.burner = this.addElement("burner", 0, 0);
 		this.anchor.y = 0.8;
 		this.frontlegs = this.addElement("stand_foreground");
