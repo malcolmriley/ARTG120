@@ -26,25 +26,31 @@ Town.prototype =
 	create: function()
 	{
 		game.stage.backgroundColor = '#f0f0f0';
-		this.house = game.sprite.add("House");
 
 		// Load sounds
 		soundfx_door = game.add.audio("fx_door_creak");
 
 		// Create House Grid
-		//group_houses = game.add.group();
+		this.houseGroup = game.add.group();
+
+		var width = game.cache.getImage("house").width;
+		var height = game.cache.getImage("house").height;
+
 		var xOffset = 200;
 		var yOffset = 30;
-		for(var i in world) 
+		for(var i = 0; i < world.lenght; i++) 
 		{
-			for(var j in i) {
+			for(var j = 0; j < i.lenght; j++) 
+			{
 				if(world[i][j] == 1)
 				{
-					let house = House(game, "house", xOffset, yOffset, i, j);
+					let houseSprite = new House(game, "house", xOffset, yOffset, i, j, this.house.width, this.house.height);
+					game.add.existing(houseSprite);
 					makeButton(house, this, goToInterior, scaleUp, scaleDown);
+					this.houseGroup.add(houseSprite);
 				}
 			}
-
+		}
 		// Create Player
 		player = initPlayer();
 
@@ -61,19 +67,24 @@ Town.prototype =
 		// Also, velocity is preserved in a really dumb way (doesn't reset until ALL keys are released)
 		// For now, the Swensen Bubblegum and Shoestring Method will have to do.
 		let playerSpeed = 150;
-		if (cursors.left.isDown) {
+		if (cursors.left.isDown) 
+		{
 			player.body.velocity.x = -playerSpeed;
 		}
-		else if (cursors.right.isDown) {
+		else if (cursors.right.isDown) 
+		{
 				player.body.velocity.x = playerSpeed;
 		}
-		else if (cursors.up.isDown) {
+		else if (cursors.up.isDown) 
+		{
 			player.body.velocity.y = -playerSpeed;
 		}
-		else if (cursors.down.isDown) {
+		else if (cursors.down.isDown) 
+		{
 				player.body.velocity.y = playerSpeed;
 		}
-		else {
+		else 
+		{
 			player.body.velocity.x = 0;
 			player.body.velocity.y = 0;
 		}
@@ -86,7 +97,7 @@ Town.prototype =
 
 function initPlayer() {
 	let instance = game.add.sprite(0, 0, "character");
-  game.physics.arcade.enable(instance);
+  	game.physics.arcade.enable(instance);
 	instance.scale.setTo(0.1, 0.1);
 	instance.enableBody = true;
 	instance.body.collideWorldBounds=true;
@@ -106,21 +117,14 @@ function goToInterior() {
 	game.state.start('MiniGame');
 }
 
-function placePiece(sprite, x, y)
+function House(game, key, xOffset, yOffset, i, j, width, length)
 {
-
-}
-
-function House(game, key, xOffset, yOffset, i, j)
-{
-	var xPos = xOffset + (j * house.width);
-	var yPos = yOffset + (i * house.length);
-	Phaser.Sprite.call(this, game, xPos, yPos, key);
+	Phaser.Sprite.call(this, game, (xOffset + (j * width)), (yOffset + (i * length)), key);
 
 	this.anchor.set(0.5);
 	scaleDown(this);
 
-	game.physics.eanable(this);
+	game.physics.enable(this);
 	this.body.collideWorldBounds = true;
 }
 
