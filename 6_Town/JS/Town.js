@@ -38,15 +38,16 @@ Town.prototype =
 
 		var xOffset = 200;
 		var yOffset = 30;
-		for(var i = 0; i < world.lenght; i++) 
+		for(var i = 0; i < world.length; i++) 
 		{
-			for(var j = 0; j < i.lenght; j++) 
+			var row = world[i];
+			for(var j = 0; j < row.length; j++) 
 			{
 				if(world[i][j] == 1)
 				{
-					let houseSprite = new House(game, "house", xOffset, yOffset, i, j, this.house.width, this.house.height);
+					let houseSprite = new House(game, "house", xOffset, yOffset, i, j, width, height);
 					game.add.existing(houseSprite);
-					makeButton(house, this, goToInterior, scaleUp, scaleDown);
+					makeButton(houseSprite, this, goToInterior, scaleUp, scaleDown);
 					this.houseGroup.add(houseSprite);
 				}
 			}
