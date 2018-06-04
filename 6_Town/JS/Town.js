@@ -1,14 +1,26 @@
+var world = [
+	[0, 0, 0, 0, 0, 0, 0],
+	[0, 2, 2, 2, 2, 2, 0],
+	[0, 1, 2, 1, 2, 1, 0],
+	[0, 2, 2, 2, 2, 2, 0],
+	[0, 1, 2, 1, 2, 1, 0],
+	[0, 2, 2, 2, 2, 2, 0],
+	[0, 1, 2, 1, 2, 1, 0],
+	[0, 2, 2, 2, 2, 2, 0],
+	[0, 0, 0, 0, 0, 0, 0]
+]; 
+
 var Town = function(game) {};
 Town.prototype =
 {
 	preload: function()
 	{
 		// TODO: Swap for atlas version.
-		game.load.image("character", "../_Assets/images/character.png");
-		game.load.image("house", "../_Assets/images/house.png");
+		game.load.image("character", "../_Assets/images/Character/character.png");
+		game.load.image("house", "../_Assets/images/Houses/house.png");
 
 		// Load door open sound
-		game.load.audio("fx_door_creak", "../_Assets/sounds/door_open.wav");
+		game.load.audio("fx_door_creak", "../_Assets/sounds/SFX/door_open.wav");
 	},
 
 	create: function()
@@ -19,19 +31,27 @@ Town.prototype =
 		soundfx_door = game.add.audio("fx_door_creak");
 
 		// Create House Grid
-		group_houses = game.add.group();
-		let startX = 200;
-		let startY = 30;
-		for(let row = 0; row < 3; row += 1) {
-			for (let column = 0; column < 3; column += 1) {
-				let house = group_houses.create(0, 0, "house");
-				scaleDown(house, this); // Set initial sprite scaling
-				house.x = startX + row * (10 + house.width);
-				house.y = startY + column * (10 + house.width);
-				makeButton(house, this, goToInterior, scaleUp, scaleDown);
+		this.houseGroup = game.add.group();
+
+		var width = game.cache.getImage("house").width;
+		var height = game.cache.getImage("house").height;
+
+		var xOffset = 200;
+		var yOffset = 30;
+		for(var i = 0; i < world.length; i++) 
+		{
+			var row = world[i];
+			for(var j = 0; j < row.length; j++) 
+			{
+				if(world[i][j] == 1)
+				{
+					let houseSprite = new House(game, "house", xOffset, yOffset, i, j, width, height);
+					game.add.existing(houseSprite);
+					makeButton(houseSprite, this, goToInterior, scaleUp, scaleDown);
+					this.houseGroup.add(houseSprite);
+				}
 			}
 		}
-
 		// Create Player
 		player = initPlayer();
 
@@ -48,19 +68,24 @@ Town.prototype =
 		// Also, velocity is preserved in a really dumb way (doesn't reset until ALL keys are released)
 		// For now, the Swensen Bubblegum and Shoestring Method will have to do.
 		let playerSpeed = 150;
-		if (cursors.left.isDown) {
+		if (cursors.left.isDown) 
+		{
 			player.body.velocity.x = -playerSpeed;
 		}
-		else if (cursors.right.isDown) {
+		else if (cursors.right.isDown) 
+		{
 				player.body.velocity.x = playerSpeed;
 		}
-		else if (cursors.up.isDown) {
+		else if (cursors.up.isDown) 
+		{
 			player.body.velocity.y = -playerSpeed;
 		}
-		else if (cursors.down.isDown) {
+		else if (cursors.down.isDown) 
+		{
 				player.body.velocity.y = playerSpeed;
 		}
-		else {
+		else 
+		{
 			player.body.velocity.x = 0;
 			player.body.velocity.y = 0;
 		}
@@ -73,7 +98,7 @@ Town.prototype =
 
 function initPlayer() {
 	let instance = game.add.sprite(0, 0, "character");
-  game.physics.arcade.enable(instance);
+  	game.physics.arcade.enable(instance);
 	instance.scale.setTo(0.1, 0.1);
 	instance.enableBody = true;
 	instance.body.collideWorldBounds=true;
@@ -90,6 +115,19 @@ function scaleDown(passedSprite, passedReference) {
 
 function goToInterior() {
 	soundfx_door.play();
-	// TODO: Transition to other minigames as well
-	game.state.start("Minigame_Alchemy");
+	game.state.start('MiniGame');
 }
+
+function House(game, key, xOffset, yOffset, i, j, width, length)
+{
+	Phaser.Sprite.call(this, game, (xOffset + (j * width)), (yOffset + (i * length)), key);
+
+	this.anchor.set(0.5);
+	scaleDown(this);
+
+	game.physics.enable(this);
+	this.body.collideWorldBounds = true;
+}
+
+House.prototype = Object.create(Phaser.Sprite.prototype);
+House.prototype.constructor = House;

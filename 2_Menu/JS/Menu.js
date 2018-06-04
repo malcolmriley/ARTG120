@@ -8,15 +8,15 @@ Menu.prototype =
 
 	create: function()
 	{
-		game.add.text(0, 0, 'Menu. \n ENTER: Start Game \n C: Credits \n Z: Controls');
+		game.add.text(0, 0, 'Menu. \n SPACE: Start Game \n C: Credits \n Z: Controls');
 		game.stage.backgroundColor = '#ffffff';
 	},
 
 	update: function()
 	{
-		if(game.input.keyboard.isDown(Phaser.Keyboard.ENTER))
+		if(game.input.keyboard.isDown(Phaser.Keyboard.SPACEBAR))
 		{
-			game.state.start('Cinematic');
+			game.state.start('Town');
 		}
 		else if(game.input.keyboard.isDown(Phaser.Keyboard.C))
 		{
