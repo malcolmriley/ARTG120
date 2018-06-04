@@ -16,10 +16,12 @@ GameOver.prototype =
 	{
 		if(game.input.keyboard.isDown(Phaser.Keyboard.ENTER))
 		{
+			diff=0;
 			game.state.start('Menu');
 		}
 		else if(game.input.keyboard.isDown(Phaser.Keyboard.R))
 		{
+			diff=0;
 			game.state.start('Town');
 		}
 	}
