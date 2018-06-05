@@ -96,7 +96,6 @@ function initPlayer() {
 function makeHouse(group)
 {
 	let house = new House(game, "house", this.player, 100);
-	scaleDown(house, this);
 	game.add.existing(house);
 	group.add(house);
 }
@@ -105,7 +104,7 @@ function scaleUp(passedSprite, passedReference) {
 	passedSprite.scale.setTo(0.185, 0.185);
 }
 
-function scaleDown(passedSprite, passedReference) {
+function scaleDown(passedSprite) {
 	passedSprite.scale.setTo(0.15, 0.15)
 }
 
@@ -124,7 +123,9 @@ function House(game, key, player, health)
 	game.physics.enable(this);
 	this.body.collideWorldBounds = true;
 
-	this.hp = game.add.text(this.x, (this.y - (this.width / 2) + 20),'health: ' + health);
+	scaleDown(this);
+
+	this.hp = game.add.text(this.x, (this.y - (this.width / 2) - 20),'Health: ' + health);
 }
 
 House.prototype = Object.create(Phaser.Sprite.prototype);
