@@ -13,13 +13,20 @@ Town.prototype =
 
 	create: function()
 	{
+		game.physics.startSystem(Phaser.Physics.ARCADE);
+		//game.world.setBounds(0, 0, 1920, 600);
 		game.stage.backgroundColor = '#f0f0f0';
 
 		// Load sounds
 		soundfx_door = game.add.audio("fx_door_creak");
 
+		// Create Player
+		this.player = initPlayer();
+
+
 		// Create House Grid
 		group_houses = game.add.group();
+		/*
 		let startX = 200;
 		let startY = 30;
 		for(let row = 0; row < 3; row += 1) {
@@ -30,16 +37,15 @@ Town.prototype =
 				house.y = startY + column * (10 + house.width);
 				makeButton(house, this, goToInterior, scaleUp, scaleDown);
 			}
-		}
+		}*/
 
-		// Create Player
-		player = initPlayer();
+		makeHouse(group_houses);
 
 		// Create Text Overlay
 		game.add.text(0, 0, "Town \n Click to enter house.");
 
 		// Make cursors for player control
-		cursors = game.input.keyboard.createCursorKeys();
+		this.cursors = game.input.keyboard.createCursorKeys();
 	},
 
 	update: function()
@@ -48,24 +54,31 @@ Town.prototype =
 		// Also, velocity is preserved in a really dumb way (doesn't reset until ALL keys are released)
 		// For now, the Swensen Bubblegum and Shoestring Method will have to do.
 		let playerSpeed = 150;
-		if (cursors.left.isDown) {
-			player.body.velocity.x = -playerSpeed;
+		if(game.input.keyboard.isDown(Phaser.Keyboard.A))
+		{
+			this.player.x -= 5;
+			//player.scale.set(-.1,.1);
 		}
-		else if (cursors.right.isDown) {
-				player.body.velocity.x = playerSpeed;
+		else if(game.input.keyboard.isDown(Phaser.Keyboard.D))
+		{
+			this.player.x += 5;
+			//player.scale.set(.1);
 		}
-		else if (cursors.up.isDown) {
-			player.body.velocity.y = -playerSpeed;
+		if(game.input.keyboard.isDown(Phaser.Keyboard.W))
+		{
+			this.player.y -= 5;
+			//player.scale.set(-.1,.1);
 		}
-		else if (cursors.down.isDown) {
-				player.body.velocity.y = playerSpeed;
+		else if(game.input.keyboard.isDown(Phaser.Keyboard.S))
+		{
+			this.player.y += 5;
+			//player.scale.set(.1);
 		}
 		else {
-			player.body.velocity.x = 0;
-			player.body.velocity.y = 0;
+			this.player.body.velocity.x = 0;
+			this.player.body.velocity.y = 0;
 		}
 	}
-
 	// TODO: Enable travel to individual house
 	// House is a "button" right now for the simple fact of testing the functionality thereof.
 	// More likely, for the final implementation, the player will use some other control for entering an individual house.
@@ -73,11 +86,19 @@ Town.prototype =
 
 function initPlayer() {
 	let instance = game.add.sprite(0, 0, "character");
-  game.physics.arcade.enable(instance);
+  	game.physics.arcade.enable(instance);
 	instance.scale.setTo(0.1, 0.1);
 	instance.enableBody = true;
 	instance.body.collideWorldBounds=true;
 	return instance;
+}
+
+function makeHouse(group)
+{
+	let house = new House(game, "house", this.player, 100);
+	scaleDown(house, this);
+	game.add.existing(house);
+	group.add(house);
 }
 
 function scaleUp(passedSprite, passedReference) {
@@ -93,3 +114,18 @@ function goToInterior() {
 	// TODO: Transition to other minigames as well
 	game.state.start("Minigame_Wound");
 }
+
+function House(game, key, player, health)
+{
+	Phaser.Sprite.call(this, game, (game.rnd.integerInRange(64, game.width - 64)), (game.rnd.integerInRange(64, game.height - 64)), key);
+
+	this.anchor.set(0.5);
+	
+	game.physics.enable(this);
+	this.body.collideWorldBounds = true;
+
+	this.hp = game.add.text(this.x, (this.y - (this.width / 2) + 20),'health: ' + health);
+}
+
+House.prototype = Object.create(Phaser.Sprite.prototype);
+House.prototype.constructor = House;
