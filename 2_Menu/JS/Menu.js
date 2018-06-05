@@ -16,7 +16,7 @@ Menu.prototype =
 	{
 		if(game.input.keyboard.isDown(Phaser.Keyboard.ENTER))
 		{
-			game.state.start('Cinematic');
+			game.state.start('Town');
 		}
 		else if(game.input.keyboard.isDown(Phaser.Keyboard.C))
 		{
