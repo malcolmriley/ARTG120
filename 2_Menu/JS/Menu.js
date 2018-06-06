@@ -30,13 +30,15 @@ Menu.prototype =
 		button_play = createMenuButton(this, center_x, (title.y + elementPadding + (title.height / 2)), layer_background, "text_play", "Town");
 		button_credits = createMenuButton(this, center_x, (button_play.y + elementPadding + button_play.height), layer_background, "text_credits", "Credits");
 
+		// TODO: Add names/course title to screen?
+
 	  // Add Backdrop
 		createBackdrop(this, "backdrop");
 	},
 
 	update: function()
 	{
-		
+
 	}
 }
 
