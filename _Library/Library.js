@@ -3,11 +3,12 @@
  *
  * NOTE: This MUST be called AFTER creating all other needed groups, otherwise it won't work!
  *
- * passedGameReference - A reference to the current Phaser.Game object
+ * passedContext - A reference to the current context (typically "this")
+ * passedSpriteKey - The key to use for the backdrop sprite
  */
-function createBackdrop(passedGameReference) {
-  layer_paper = passedGameReference.add.group();
-  paper = layer_paper.create(0, 0, "backdrop");
+function createBackdrop(passedContext, passedSpriteKey) {
+  passedContext.layer_paper = passedContext.game.add.group();
+  let paper = layer_paper.create(0, 0, passedSpriteKey);
   paper.blendMode = 2;
 }
 
