@@ -239,6 +239,7 @@ class AlchemyObject extends Phaser.Sprite {
 		let beginDrag = function(passedObject, passedPointer) {
 			if (passedObject.workarea) {
 				passedObject.workarea.reference.remove(passedObject.workarea.index);
+				passedObject.workarea = null;
 			}
 			if (passedObject.parent.removeElement) {
 				passedObject.parent.removeElement(passedObject);
