@@ -8,7 +8,7 @@
  */
 function createBackdrop(passedContext, passedSpriteKey) {
   passedContext.layer_paper = passedContext.game.add.group();
-  let paper = layer_paper.create(0, 0, passedSpriteKey);
+  let paper = passedContext.layer_paper.create(0, 0, passedSpriteKey);
   paper.blendMode = 2;
 }
 
