@@ -396,7 +396,7 @@ class AlchemyStand extends AlchemyObject {
 									apparatus.color = Color.combine(Color.invert(color), apparatus.color);
 								}
 								else {
-									apparatus.color = color;
+									apparatus.color = Color.invert(color);
 								}
 								apparatus.quantity += 1;
 							}
