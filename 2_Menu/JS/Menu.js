@@ -17,7 +17,7 @@ Menu.prototype =
 
 		// Make title Sprite
 		title = layer_background.create((game.camera.width / 2), (game.camera.height / 2), "title");
-		title.anchor.setTo(0.5, 0.5);
+		centerAnchor(title);
 
 	  // Add Backdrop
 		createBackdrop(this, "backdrop");
