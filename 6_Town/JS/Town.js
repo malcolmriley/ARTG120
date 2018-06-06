@@ -1,3 +1,10 @@
+var town = [
+	[0, 0, 0, 0, 0, 0, 0],
+	[0, 1, 2, 1, 2, 1, 0],
+	[0, 1, 2, 1, 2, 1, 0],
+	[0, 1, 2, 1, 2, 1, 0],
+	[0, 0, 0, 0, 0, 0, 0]
+];
 var Town = function(game) {};
 Town.prototype =
 {
@@ -14,7 +21,7 @@ Town.prototype =
 	create: function()
 	{
 		game.physics.startSystem(Phaser.Physics.ARCADE);
-		//game.world.setBounds(0, 0, 1920, 600);
+		game.world.setBounds(0, 0, 1920, 600);
 		game.stage.backgroundColor = '#f0f0f0';
 
 		// Load sounds
@@ -23,6 +30,10 @@ Town.prototype =
 		// Create Player
 		this.player = initPlayer();
 
+		var width = game.cache.getImage("house").width;
+		width = Math.ceil(width * .15);
+		var height = game.cache.getImage("house").height;
+		height = Math.ceil(height * .15);
 
 		// Create House Grid
 		group_houses = game.add.group();
@@ -39,7 +50,19 @@ Town.prototype =
 			}
 		}*/
 
-		makeHouse(group_houses);
+		//makeHouse(group_houses);
+		for(var i = 0; i < town.length; i++)
+		{
+			var row = town[i];
+			for(var j = 0; j < row.length; j++)
+			{
+				if(town[i][j] == 1)
+				{
+					makeHouse(group_houses, height, width, i, j);
+				}
+			}
+		}
+		game.world.sendToBack(group_houses);
 
 		// Create Text Overlay
 		game.add.text(0, 0, "Town \n Click to enter house.");
@@ -93,9 +116,9 @@ function initPlayer() {
 	return instance;
 }
 
-function makeHouse(group)
+function makeHouse(group, height, width, i, j)
 {
-	let house = new House(game, "house", this.player, 100);
+	let house = new House(game, "house", this.player, 100, height, width, i, j);
 	game.add.existing(house);
 	group.add(house);
 }
@@ -114,9 +137,9 @@ function goToInterior() {
 	game.state.start("Minigame_Wound");
 }
 
-function House(game, key, player, health)
+function House(game, key, player, health, height, width, i, j)
 {
-	Phaser.Sprite.call(this, game, (game.rnd.integerInRange(64, game.width - 64)), (game.rnd.integerInRange(64, game.height - 64)), key);
+	Phaser.Sprite.call(this, game, j * width, i * height, key);
 
 	this.anchor.set(0.5);
 	
