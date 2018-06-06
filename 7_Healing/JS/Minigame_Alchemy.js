@@ -16,6 +16,7 @@ Minigame_Alchemy.prototype =
 		this.load.image("stand_background", "stand_background.png");
 		this.load.image("stand_foreground", "stand_foreground.png");
 		this.load.image("burner", "burner.png");
+		this.load.image("spill", "spill.png");
 		this.load.spritesheet("liquid_bowl", "liquid_bowl.png", 113, 75);
 		this.load.spritesheet("liquid_bottle",  "liquid_bottle.png", 75, 113);
 		this.load.spritesheet("liquid_retort",  "liquid_retort.png", 150, 75);
@@ -345,6 +346,14 @@ class AlchemyContainer extends AlchemyObject {
 
 	set quantity(passedQuantity) {
 		this.amount = passedQuantity;
+		if (this.amount > 4) {
+			this.amount = 4;
+			let spill = layer_workzones.create(this.x, this.y, "spill");
+			spill.anchor.setTo(0.5, 0.5);
+			spill.tint = this.color.tint;
+			let tween = game.add.tween(spill).to({alpha : 0}, 1000 + Math.random() * 2000, Phaser.Easing.Linear.None, true);
+			tween.onComplete.add(function(){spill.kill()});
+		}
 		this.contents.frame = (passedQuantity <= 4) ? passedQuantity : 4;
 		return this;
 	}
