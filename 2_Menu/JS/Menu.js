@@ -13,7 +13,14 @@ Menu.prototype =
 
 	create: function()
 	{
+		layer_background = this.game.add.group();
 
+		// Make title Sprite
+		title = layer_background.create((game.camera.width / 2), (game.camera.height / 2), "title");
+		title.anchor.setTo(0.5, 0.5);
+
+	  // Add Backdrop
+		createBackdrop(this, "backdrop");
 	},
 
 	update: function()
