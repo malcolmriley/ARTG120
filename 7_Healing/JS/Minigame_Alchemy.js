@@ -136,16 +136,17 @@ function onReact(passedDraggedObject, passedReactingObject) {
 function onDrop(passedDraggedObject, passedCircleObject) {
 	let destinationX = passedCircleObject.x;
 	let destinationY = passedCircleObject.y;
-	let index = passedCircleObject.index;
-	if (passedCircleObject.workarea.isOccupied(passedCircleObject.index)) {
+	let occupied = passedCircleObject.workarea.isOccupied(passedCircleObject.index);
+	if (occupied) {
 		destinationX = passedDraggedObject.oldPos.x;
 		destinationY = passedDraggedObject.oldPos.y;
-		index = passedDraggedObject.workarea.index;
 	}
 	let tween = game.add.tween(passedDraggedObject).to({x : destinationX, y : destinationY}, 250, Phaser.Easing.Circular.InOut, true);
-	tween.onComplete.add(function(){
-		passedCircleObject.workarea.insert(passedDraggedObject, index);
-	});
+	if (!occupied) {
+		tween.onComplete.add(function(){
+			passedCircleObject.workarea.insert(passedDraggedObject, passedCircleObject.index);
+		});
+	}
 }
 
 function onReturn(passedSprite) {
