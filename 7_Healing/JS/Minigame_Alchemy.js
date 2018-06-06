@@ -106,19 +106,13 @@ function onReact(passedDraggedObject, passedReactingObject) {
 					break;
 			}
 			passedReactingObject.color = Color.combine(passedDraggedObject.color, passedReactingObject.color);
-			passedDraggedObject.quantity -= 1;
-			passedReactingObject.quantity += 1;
 		}
 		// Otherwise, fill it from the dragged object
 		else {
-			switch(passedReactingObject.objectType) {
-				default: // Fill container
-					passedReactingObject.color = passedDraggedObject.color;
-					passedDraggedObject.quantity -= 1;
-					passedReactingObject.quantity += 1;
-					break;
-			}
+			passedReactingObject.color = passedDraggedObject.color;
 		}
+		passedDraggedObject.quantity -= 1;
+		passedReactingObject.quantity += 1;
 	}
 	// If the dragged object does not have contents...
 	else {
