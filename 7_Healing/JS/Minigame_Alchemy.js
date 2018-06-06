@@ -401,7 +401,6 @@ class WorkArea {
 		this.position = new Phaser.Point(passedPositionX, passedPositionY);
 		this.quantity = passedQuantity;
 		this.spaces = [];
-		this.apparatus = [];
 
 		// Initialize member objects
 		let padding = 20;
@@ -411,6 +410,7 @@ class WorkArea {
 			centerAnchor(circleInstance);
 			circleInstance.workArea = this;
 			circleInstance.index = count;
+			circleInstance.apparatus = null;
 			circleInstance.x = passedPositionX + (count * (padding + circleInstance.width)) + (circleInstance.width / 2);
 			circleInstance.y = passedPositionY + (circleInstance.height / 2);
 			circleInstance.alpha = 0.4;
@@ -418,24 +418,27 @@ class WorkArea {
 		}
 	}
 
+	isOccupied(passedIndex) {
+		return (this.getArea(passedIndex).apparatus != null);
+	}
+
 	getArea(passedIndex) {
 		return this.spaces[passedIndex];
 	}
 
 	insert(passedObject, passedIndex, passedSetPosition) {
-		this.apparatus[passedIndex] = passedObject;
+		this.getArea(passedIndex).apparatus = passedObject;
 		if (passedObject.workarea) {
 			passedObject.workarea.reference.remove(passedObject.workarea.index);
 		}
 		passedObject.workarea = { reference : this, index : passedIndex };
-		passedObject.x = this.spaces[passedIndex].x;
-		passedObject.y = this.spaces[passedIndex].y;
+		passedObject.x = this.getArea(passedIndex).x;
+		passedObject.y = this.getArea(passedIndex).y;
 		storePosition(passedObject);
 		return passedObject;
 	}
 
 	remove(passedIndex) {
-		this.apparatus.workarea = null;
-		this.apparatus[passedIndex] = null;
+		this.getArea(passedIndex).apparatus = null;
 	}
 }
