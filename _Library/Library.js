@@ -1,4 +1,26 @@
 /**
+ * Utility function to create the "aged paper" pseudobackdrop.
+ *
+ * NOTE: This MUST be called AFTER creating all other needed groups, otherwise it won't work!
+ *
+ * passedContext - A reference to the current context (typically "this")
+ * passedSpriteKey - The key to use for the backdrop sprite
+ */
+function createBackdrop(passedContext, passedSpriteKey) {
+  passedContext.layer_paper = passedContext.game.add.group();
+  let paper = passedContext.layer_paper.create(0, 0, passedSpriteKey);
+  paper.blendMode = 2;
+}
+
+/**
+ * Utility function that returns, at random, one of the arguments passed to it.
+ */
+function choose() {
+  let index = Math.floor(Math.random() * (arguments.length));
+  return arguments[index];
+}
+
+/**
  * Convenience function to convert a sprite into a clickable button.
  *
  * passedSprite - The sprite to convert

@@ -12,6 +12,11 @@ bottle_break.wav      https://opengameart.org/content/breaking-bottle
 metal_ping_1.wav      https://opengameart.org/content/31-pings-and-metal-filing-sounds
 metal_ping_2.wav      https://opengameart.org/content/31-pings-and-metal-filing-sounds
 metal_ping_3.wav      https://opengameart.org/content/31-pings-and-metal-filing-sounds
+ominous.wav           https://freesound.org/people/bareform/sounds/218717/
+thump.wav             https://freesound.org/people/Kyster/sounds/140606/
 
 IMAGES                SOURCE
 old_paper.png         http://www.wildtextures.com/wp-content/uploads/2011/11/wildtextures-old-paper-texture-3.jpg
+
+FONTS
+IM Fell English       https://fonts.google.com/specimen/IM+Fell+English
