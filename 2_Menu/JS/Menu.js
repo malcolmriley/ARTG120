@@ -50,14 +50,15 @@ function createMenuButton(passedReference, passedPositionX, passedPositionY, pas
 	centerAnchor(buttonText);
 
 	// Generate event callbacks
+	let fadeTime = 75;
 	let onClick = function() {
 		game.state.start(passedState);
 	};
 	let onMouseOver = function(passedSprite, passedPointer) {
-		game.add.tween(buttonInstance).to({ alpha : 1.0 }, 75, Phaser.Easing.Linear.None, true);
+		game.add.tween(buttonInstance).to({ alpha : 1.0 }, fadeTime, Phaser.Easing.Linear.None, true);
 	};
 	let onMouseOut = function(passedSprite, passedPointer) {
-		game.add.tween(buttonInstance).to({ alpha : 0.0 }, 75, Phaser.Easing.Linear.None, true);
+		game.add.tween(buttonInstance).to({ alpha : 0.0 }, fadeTime, Phaser.Easing.Linear.None, true);
 	};
 
 	// Attach event callbacks
