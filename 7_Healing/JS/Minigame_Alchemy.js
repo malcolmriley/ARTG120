@@ -11,11 +11,26 @@ Minigame_Alchemy.prototype =
 		this.load.image("bottle_round", "bottle_round.png");
 		this.load.image("retort", "retort.png");
 		this.load.image("bottle_cork", "cork.png");
-		this.load.spritesheet("liquid_bowl", "liquid_bowl.png", 450, 300);
-		this.load.spritesheet("liquid_bottle",  "liquid_bottle.png", 300, 450);
-		this.load.spritesheet("liquid_retort",  "liquid_retort.png", 600, 300);
+		this.load.image("table", "table.png");
+		this.load.image("shelf", "shelf.png");
+		this.load.image("stand_background", "stand_background.png");
+		this.load.image("stand_foreground", "stand_foreground.png");
+		this.load.image("burner", "burner.png");
+		this.load.image("spill", "spill.png");
+		this.load.spritesheet("liquid_bowl", "liquid_bowl.png", 113, 75);
+		this.load.spritesheet("liquid_bottle",  "liquid_bottle.png", 75, 113);
+		this.load.spritesheet("liquid_retort",  "liquid_retort.png", 150, 75);
 
-		spriteScale = 0.25; // TODO: Remove when final asset size is determined
+		// Load Sounds
+		this.load.path = "../_Assets/sounds/";
+		this.load.audio("pour", "water_pour.wav");
+		this.load.audio("cork", "cork_out.wav");
+		this.load.audio("clink_0", "bottle_clink_0.wav");
+		this.load.audio("clink_1", "bottle_clink_1.wav");
+		this.load.audio("metal_ping_1", "metal_ping_1.wav");
+		this.load.audio("metal_ping_2", "metal_ping_2.wav");
+		this.load.audio("metal_ping_3", "metal_ping_3.wav");
+		this.load.audio("bottle_break", "bottle_break.wav");
 
 		// Define colors
 		Color = Object.freeze(new AlchemyColors());
@@ -28,92 +43,130 @@ Minigame_Alchemy.prototype =
 
 		// Add render groups for use as "render layers"
 		layer_background = this.game.add.group();
-		layer_midground = this.game.add.group();
-		layer_foreground = this.game.add.group();
+		layer_workzones = this.game.add.group();
+		layer_apparatus = this.game.add.group();
 		layer_paper = this.game.add.group();
 
 	  // Add Backdrop
 	  paper = layer_paper.create(0, 0, "backdrop");
 		paper.blendMode = 2;
 
-		// Add "ingredients" reserve
-		ingredients = new WorkArea(50, 125, 3, "Ingredients");
-
-		// Add "equipment" reserve
-		equipment = new WorkArea(50, 275, 3, "Equipment");
+		// Add "reagents" reserve
+		workzone_shelf = new WorkArea(140, 135, 5);
 
 		// Add "work area"
-		workzone = new WorkArea(50, 550, 5);
+		workzone_table = new WorkArea(140, 475, 5);
+
+		// Add table and shelves
+		table = layer_background.create(0, 415, "table");
+		shelf = layer_background.create(100, 120, "shelf");
 
 		// Add test containers
-		bottle = initObject(new AlchemyBottle(layer_midground, Color.RED, 3), workzone, 3, this);
-		bowl = initObject(new AlchemyBowl(layer_midground, Color.BLUE, 2), workzone, 2, this);
-		retort = initObject(new AlchemyRetort(layer_midground, Color.GREEN, 4), workzone, 1, this);
+		bottle = workzone_shelf.insert(new AlchemyBottle(Color.RED, 4), 1);
+		bowl = workzone_shelf.insert(new AlchemyBowl(Color.BLUE, 4), 2);
+		retort = workzone_shelf.insert(new AlchemyRetort(Color.GREEN, 4), 3);
+		burner = workzone_table.insert(new AlchemyStand(), 1);
+
+		// Create Sounds
+		sound_clink = new RandomizedSound(game, "clink_0", "clink_1");
+		sound_ping = new RandomizedSound(game, "metal_ping_1", "metal_ping_2", "metal_ping_3");
+		sound_pour = game.add.audio("pour");
+		sound_uncork = game.add.audio("cork");
+		sound_break = game.add.audio("bottle_break");
 	},
 
 	update: function()
 	{
-
-	}
-}
-
-function beginDragAlchemy(passedObject, passedPointer) {
-	// Bring dragged sprite to foreground
-	layer_foreground.add(passedObject, false);
-	layer_midground.remove(passedObject, false);
-}
-
-function endDragAlchemy(passedObject, passedPointer) {
-	// Return dragged sprite to midground
-	layer_midground.add(passedObject, false);
-	layer_foreground.remove(passedObject, false);
-
-	// Perform reaction, or drop onto empty workspace
-	let reaction = false;
-	let insert = false;
-
-	// If the object was dropped on another alchemy object, perform a reaction
-	reaction = game.physics.arcade.overlap(passedObject, layer_midground, onReact);
-	if (!reaction) {
-		// If the object was NOT dropped on another alchemy object, but was dropped on a workspace space, insert it there.
-		insert = game.physics.arcade.overlap(passedObject, layer_background, onDrop);
-	}
-	if ((!reaction) && (!insert)) {
-		// If the object was NOT dropped on another alchemy object or a workspace, return it to its previous position.
-		onReturn(passedObject);
+		layer_apparatus.forEach(function(object){
+			if (object.onUpdate) {
+				object.onUpdate();
+			}
+		});
 	}
 }
 
 function onReact(passedDraggedObject, passedReactingObject) {
-	console.log("REACTION!");
+	let shouldReturn = true;
+	let sound = null;
+	if (passedReactingObject.objectType == "stand_background") {
+		if (!passedReactingObject.installed) {
+			passedReactingObject.addElement(passedDraggedObject);
+			sound = sound_ping;
+			shouldReturn = false;
+		}
+	}
+	// If the dragged object has contents...
+	else if (passedDraggedObject.quantity > 0) {
+		// If the receiving object has contents, perform a reaction
+		if (passedReactingObject.quantity > 0) {
+			switch(passedDraggedObject.objectType) {
+				case "bottle_round":
+					// Play pour sound
+					sound = sound_pour;
+					break;
+			}
+			passedReactingObject.color = Color.combine(passedDraggedObject.color, passedReactingObject.color);
+		}
+		// Otherwise, fill it from the dragged object
+		else {
+			passedReactingObject.color = passedDraggedObject.color;
+		}
+		passedDraggedObject.quantity -= 1;
+		passedReactingObject.quantity += 1;
+	}
+	// If the dragged object does not have contents...
+	else {
+
+	}
+
+	// Play sound if appropriate
+	if (sound) {
+		sound.play();
+	}
+
+	// Return dragged object to original location
+	if (shouldReturn) {
+		onReturn(passedDraggedObject);
+	}
 }
 
 function onDrop(passedDraggedObject, passedCircleObject) {
-	passedCircleObject.workArea.insert(passedDraggedObject, passedCircleObject.index);
-	let tween = game.add.tween(passedDraggedObject).to({x : passedCircleObject.x, y : passedCircleObject.y}, 250, Phaser.Easing.Circular.InOut, true);
-	tween.onComplete.add(function(){ storePosition(passedDraggedObject); });
+	let destinationX = passedCircleObject.x;
+	let destinationY = passedCircleObject.y;
+	let occupied = passedCircleObject.workarea.isOccupied(passedCircleObject.index);
+	if (occupied) {
+		destinationX = passedDraggedObject.oldPos.x;
+		destinationY = passedDraggedObject.oldPos.y;
+	}
+	let tween = game.add.tween(passedDraggedObject).to({x : destinationX, y : destinationY}, 250, Phaser.Easing.Circular.InOut, true);
+	if (!occupied) {
+		tween.onComplete.add(function(){
+			passedCircleObject.workarea.insert(passedDraggedObject, passedCircleObject.index);
+		});
+	}
 }
 
 function onReturn(passedSprite) {
 	let tween = game.add.tween(passedSprite).to({x : passedSprite.oldPos.x, y : passedSprite.oldPos.y}, 500, Phaser.Easing.Circular.InOut, true);
 }
 
-/**
- * Convenience function for initializing AlchemyObject instances.
- *
- * Makes them draggable, and adds them to the passed work area at the passed index.
- *
- * passedObject - The AlchemyObject to initialize
- * passedWorkArea - The WorkArea object to add them to
- * passedIndex - The index of the WorkArea to add them to
- * passedReference - The context from which this AlchemyObject has been initialized (typically "this")
- */
-function initObject(passedObject, passedWorkArea, passedIndex, passedReference) {
-	makeDraggable(passedObject.container, passedReference, beginDragAlchemy, endDragAlchemy);
-	passedObject.setPosition(passedWorkArea.getArea(passedIndex).x, passedWorkArea.getArea(passedIndex).y);
-	passedWorkArea.insert(passedObject.container, passedIndex, true);
-	storePosition(passedObject.container);
-	return passedObject;
+function onFall(passedSprite) {
+	if (spritesOverlap(passedSprite, table) || spritesOverlap(passedSprite, shelf)) {
+		onReturn(passedSprite);
+	}
+	else {
+		passedSprite.body.gravity.y = 1200;
+		passedSprite.inputEnabled = false;
+		let breakIt = function() {
+			if (passedSprite.workarea) {
+				passedSprite.workarea.reference.remove(passedSprite.workarea.index);
+			}
+			passedSprite.kill();
+			sound_break.play();
+		}
+		passedSprite.checkWorldBounds = true;
+		passedSprite.events.onOutOfBounds.add(breakIt, this);
+	}
 }
 
 class AlchemyColors {
@@ -133,26 +186,28 @@ class AlchemyColors {
 		this.colorArray = [this.RED, this.ORANGE, this.YELLOW, this.GREEN, this.BLUE, this.INDIGO, this.VIOLET, this.MAGENTA];
 	}
 
-	static get(passedIndex) {
-		return this.colorArray[(passedIndex % this.colorArray.length)];
+	get(passedIndex) {
+		let modulo = (passedIndex % this.colorArray.length);
+		let index = (passedIndex >= 0) ? modulo : (this.colorArray.length - Math.abs(modulo));
+		return this.colorArray[index];
 	}
 
-	static invert(passedColor) {
+	invert(passedColor) {
 		let calculatedIndex = passedColor.index + (Math.floor(this.colorArray.length / 2));
 		return this.get(calculatedIndex);
 	}
 
-	static combine(passedFirstColor, passedSecondColor) {
+	combine(passedFirstColor, passedSecondColor) {
 		let calculatedIndex = Math.floor((passedFirstColor.index + passedSecondColor.index) / 2);
 		return this.get(calculatedIndex);
 	}
 
-	static split(passedColor) {
+	split(passedColor) {
 		let instance = { first : this.get(passedColor.index - 1), second : this.get(passedColor.index + 1)};
 		return instance;
 	}
 
-	static rotate(passedColor, passedDirection) {
+	rotate(passedColor, passedDirection) {
 		return this.get(passedColor.index + passedDirection);
 	}
 }
@@ -166,16 +221,64 @@ class AlchemyColors {
  * passedColor - The tint to use for the contained material (should be a spritesheet or equivalent)
  * passedQuantity - The initial quantity to fill this container with
  */
-class AlchemyObject {
+class AlchemyObject extends Phaser.Sprite {
 	constructor(passedGroup, passedContainer, passedContents, passedColor, passedQuantity) {
+		// Due Diligence
+		super(game, 0, 0, passedContainer);
+		game.add.existing(this);
+		passedGroup.add(this);
+		game.physics.arcade.enable(this);
+
+		// Set local properties
+		this.anchor.setTo(0.5, 0.9);
 		this.group = passedGroup;
-		this.container = this.initElement(passedContainer);
-		this.contents = this.addElement(passedContents);
-		game.physics.arcade.enable(this.container);
-		if ((passedQuantity != undefined) && (passedColor != undefined)) {
-			this.quantity = passedQuantity;
-			this.color = passedColor;
+
+		// Define callbacks
+		let beginDrag = function(passedObject, passedPointer) {
+			if (passedObject.workarea) {
+				passedObject.workarea.reference.remove(passedObject.workarea.index);
+				passedObject.workarea = null;
+			}
+			if (passedObject.parent.removeElement) {
+				passedObject.parent.removeElement(passedObject);
+			}
+			else {
+				passedObject.parent.removeChild(passedObject);
+			}
+			passedGroup.add(passedObject);
 		}
+		let endDrag = function(passedObject, passedPointer) {
+			// Perform reaction, or drop onto empty workspace
+			let reaction = false;
+			let insert = false;
+
+			// If the object was dropped on another alchemy object, perform a reaction
+			reaction = game.physics.arcade.overlap(passedObject, layer_apparatus, onReact);
+			if (!reaction) {
+				// If the object was NOT dropped on another alchemy object, but was dropped on a workspace space, insert it there.
+				insert = game.physics.arcade.overlap(passedObject, layer_workzones, onDrop);
+			}
+			if ((!reaction) && (!insert)) {
+				// If the object was NOT dropped on another alchemy object or a workspace, return it to its previous position.
+				onFall(passedObject);
+			}
+		}
+		let mouseOver = function(passedObject, passedPointer)  {
+			// Play clinking sound
+			sound_clink.play();
+
+			// Do tilt effect
+			let randomAngle = (0.5 - Math.random()) * 10;
+			let tween = game.add.tween(this).from({angle : randomAngle}, 50, Phaser.Easing.Linear.None, true);
+			tween.onComplete.add(function(){ this.angle = 0 }, this);
+		}
+		let mouseOut = function(passedObject, passedPointer)  {
+			// TODO:
+		}
+
+		// Attach callbacks
+		makeDraggable(this, this, beginDrag, endDrag);
+		makeMouseover(this, this, mouseOver, mouseOut);
 	}
 
 	initElement(passedKey, passedXPosition, passedYPosition) {
@@ -184,22 +287,42 @@ class AlchemyObject {
 			instance.x = passedXPosition;
 			instance.y = passedYPosition;
 		}
-		instance.anchor.x = 0.5;
-		instance.anchor.y = 1;
+		instance.anchor.setTo(this.anchor.x, this.anchor.y);
 		return instance;
 	}
 
-	addElement(passedKey, passedXPosition, passedYPosition) {
-		let instance = this.initElement(passedKey, passedXPosition, passedYPosition);
-		this.container.addChild(instance);
-		this.container.scale.setTo(spriteScale, spriteScale); // TODO: Remove when final asset size is determined
-		return instance;
+	addElement(passedObject, passedXPosition, passedYPosition) {
+		passedObject.x = 0;
+		passedObject.y = -70;
+		this.addChild(passedObject);
+		return passedObject;
 	}
 
-	setPosition(passedXPosition, passedYPosition) {
-			this.container.x = passedXPosition;
-			this.container.y = passedYPosition;
-			return this;
+	removeElement(passedObject) {
+		this.removeChild(passedObject);
+		return passedObject;
+	}
+
+	onUpdate() {
+
+	}
+
+	get objectType() {
+		return this.key;
+	}
+}
+
+class AlchemyContainer extends AlchemyObject {
+	constructor(passedGroup, passedContainer, passedContents, passedColor, passedQuantity) {
+		super(passedGroup, passedContainer);
+
+		this.contents = this.addChild(this.initElement(passedContents));
+
+		// Set properties of contents if defined
+		if ((passedQuantity != undefined) && (passedColor != undefined)) {
+			this.quantity = passedQuantity;
+			this.color = passedColor;
+		}
 	}
 
 	get color() {
@@ -217,36 +340,112 @@ class AlchemyObject {
 
 	set quantity(passedQuantity) {
 		this.amount = passedQuantity;
-		this.contents.frame = passedQuantity;
+		if (this.amount > 4) {
+			this.amount = 4;
+			let spill = layer_workzones.create(this.x, this.y, "spill");
+			spill.anchor.setTo(0.5, 0.5);
+			spill.tint = this.color.tint;
+			let tween = game.add.tween(spill).to({alpha : 0}, 1000 + Math.random() * 2000, Phaser.Easing.Linear.None, true);
+			tween.onComplete.add(function(){spill.kill()});
+		}
+		this.contents.frame = (passedQuantity <= 4) ? passedQuantity : 4;
 		return this;
 	}
 }
 
-class AlchemyBottle extends AlchemyObject {
-	constructor(passedGroup, passedColor, passedQuantity) {
-		super(passedGroup, "bottle_round", "liquid_bottle", passedColor, passedQuantity);
+class AlchemyStand extends AlchemyObject {
+	constructor() {
+		super(layer_apparatus, "stand_background");
+		this.burner = this.addChild(this.initElement("burner"));
+		this.anchor.y = 0.8;
+		this.frontlegs = this.addChild(this.initElement("stand_foreground"));
+		this.installed = null;
+		this.progress = 0;
+	}
+
+	addElement(passedObject) {
+		super.addElement(passedObject);
+		this.body.setSize(75, 75, 19, 50);
+		super.addChild(this.frontlegs);
+		this.installed = passedObject;
+		this.progress = 1;
+	}
+
+	removeElement(passedObject) {
+		super.removeElement(passedObject);
+		this.body.setSize(113, 125, 0, 0);
+		this.installed = null;
+		this.progress = 1;
+	}
+
+	onUpdate() {
+		if (this.installed && this.workarea) {
+			if (this.installed.quantity > 0) {
+				this.progress += 1;
+				if ((this.progress % 120) == 0) {
+					this.progress = 0;
+					let color = this.installed.color;
+					switch(this.installed.objectType) {
+						case "bottle_round":
+							this.installed.color = Color.rotate(color, 1);
+							break;
+						case "bowl":
+							this.installed.color = Color.rotate(color, -1);
+							break;
+						case "retort":
+							let apparatus = this.workarea.reference.getArea(this.installed.facing + this.workarea.index).apparatus;
+							if (apparatus) {
+								if (apparatus.quantity > 0) {
+									apparatus.color = Color.combine(Color.invert(color), apparatus.color);
+								}
+								else {
+									apparatus.color = Color.invert(color);
+								}
+								apparatus.quantity += 1;
+							}
+							break;
+					}
+					this.installed.quantity -= 1;
+				}
+			}
+		}
+	}
+}
+
+class AlchemyBottle extends AlchemyContainer {
+	constructor(passedColor, passedQuantity) {
+		super(layer_apparatus, "bottle_round", "liquid_bottle", passedColor, passedQuantity);
 		// Set bottle-specific properties
-		this.cork = this.addElement("bottle_cork", 0, -415);
-		this.container.body.setSize(300, 300, 0, 150);
+		this.cork = this.addChild(this.initElement("bottle_cork", 0, -95));
+		this.body.setSize(75, 75, 0, 38);
 	}
 }
 
-class AlchemyBowl extends AlchemyObject {
-	constructor(passedGroup, passedColor, passedQuantity) {
-		super(passedGroup, "bowl", "liquid_bowl", passedColor, passedQuantity);
+class AlchemyBowl extends AlchemyContainer {
+	constructor(passedColor, passedQuantity) {
+		super(layer_apparatus, "bowl", "liquid_bowl", passedColor, passedQuantity);
 		// set bowl-specific properties
-		this.container.body.setSize(300, 300, 75, 0);
+		this.body.setSize(75, 75, 20, 0);
 	}
 }
 
-class AlchemyRetort extends AlchemyObject {
-	constructor(passedGroup, passedColor, passedQuantity) {
-		super(passedGroup, "retort", "liquid_retort", passedColor, passedQuantity);
+class AlchemyRetort extends AlchemyContainer {
+	constructor(passedColor, passedQuantity) {
+		super(layer_apparatus, "retort", "liquid_retort", passedColor, passedQuantity);
 		// Set retort-specific properties
-		this.container.anchor.x = 0.25;
+		this.anchor.x = 0.25;
 		this.contents.anchor.x = 0.25;
-		this.container.body.setSize(300, 300, 0, 0);
+		this.body.setSize(75, 75, 0, 0);
 		this.facing = 1;
+	}
+
+	get direction() {
+		return this.facing;
+	}
+
+	set direction(passedValue) {
+		this.facing = (passedValue < 0) ? -1 : 1;
+		this.scale.x = this.facing;
 	}
 }
 
@@ -256,36 +455,32 @@ class AlchemyRetort extends AlchemyObject {
  * passedPositionX - The x position of the work area in total
  * passedPositionY - The y position of the work area in total
  * passedQuantity - The number of "spaces" in the work area
- * The remaining parameters are optional:
- * passedLabel - A textual lable for this work area
  */
 class WorkArea {
-	constructor(passedPositionX, passedPositionY, passedQuantity, passedLabel) {
+	constructor(passedPositionX, passedPositionY, passedQuantity) {
 		// Initialize member fields
 		this.position = new Phaser.Point(passedPositionX, passedPositionY);
 		this.quantity = passedQuantity;
 		this.spaces = [];
-		this.apparatus = [];
 
 		// Initialize member objects
 		let padding = 20;
 		for (let count = 0; count < passedQuantity; count += 1) {
-			let circleInstance = layer_background.create(0, 0, "circle");
+			let circleInstance = layer_workzones.create(0, 0, "circle");
 			game.physics.arcade.enable(circleInstance);
 			centerAnchor(circleInstance);
-			circleInstance.workArea = this;
+			circleInstance.workarea = this;
 			circleInstance.index = count;
-			circleInstance.scale.setTo(spriteScale, spriteScale); // TODO: Remove when final asset size is determined
+			circleInstance.apparatus = null;
 			circleInstance.x = passedPositionX + (count * (padding + circleInstance.width)) + (circleInstance.width / 2);
 			circleInstance.y = passedPositionY + (circleInstance.height / 2);
 			circleInstance.alpha = 0.4;
 			this.spaces[count] = circleInstance;
 		}
-		// TODO: Better font?
-		if (passedLabel != undefined) {
-			this.textLabel = game.add.text(passedPositionX, passedPositionY + (2 * padding), passedLabel);
-			layer_background.add(this.textLabel);
-		}
+	}
+
+	isOccupied(passedIndex) {
+		return (this.getArea(passedIndex).apparatus != null);
 	}
 
 	getArea(passedIndex) {
@@ -293,7 +488,18 @@ class WorkArea {
 	}
 
 	insert(passedObject, passedIndex) {
-		this.apparatus[passedIndex] = passedObject;
-		passedObject.oldArea = this;
+		this.getArea(passedIndex).apparatus = passedObject;
+		if (passedObject.workarea) {
+			passedObject.workarea.reference.remove(passedObject.workarea.index);
+		}
+		passedObject.workarea = { reference : this, index : passedIndex };
+		passedObject.x = this.getArea(passedIndex).x;
+		passedObject.y = this.getArea(passedIndex).y;
+		storePosition(passedObject);
+		return passedObject;
+	}
+
+	remove(passedIndex) {
+		this.getArea(passedIndex).apparatus = null;
 	}
 }
