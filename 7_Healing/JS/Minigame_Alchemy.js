@@ -87,8 +87,15 @@ Minigame_Alchemy.prototype =
 function onReact(passedDraggedObject, passedReactingObject) {
 	let shouldReturn = true;
 	let sound = null;
+	if (passedReactingObject.objectType == "stand_background") {
+		if (!passedReactingObject.installed) {
+			passedReactingObject.addElement(passedDraggedObject);
+			sound = sound_ping;
+			shouldReturn = false;
+		}
+	}
 	// If the dragged object has contents...
-	if (passedDraggedObject.quantity > 0) {
+	else if (passedDraggedObject.quantity > 0) {
 		// If the receiving object has contents, perform a reaction
 		if (passedReactingObject.quantity > 0) {
 			switch(passedDraggedObject.objectType) {
@@ -102,13 +109,6 @@ function onReact(passedDraggedObject, passedReactingObject) {
 		// Otherwise, fill it from the dragged object
 		else {
 			switch(passedReactingObject.objectType) {
-				case "stand_background":
-					if (!passedReactingObject.installed) {
-						passedReactingObject.addElement(passedDraggedObject);
-						sound = sound_ping;
-						shouldReturn = false;
-					}
-					break;
 				default: // Fill container
 					passedReactingObject.color = passedDraggedObject.color;
 					passedDraggedObject.quantity -= 1;
