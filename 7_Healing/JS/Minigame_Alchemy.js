@@ -185,7 +185,9 @@ class AlchemyColors {
 	}
 
 	get(passedIndex) {
-		return this.colorArray[(passedIndex % this.colorArray.length)];
+		let modulo = (passedIndex % this.colorArray.length);
+		let index = (passedIndex >= 0) ? modulo : (this.colorArray.length - Math.abs(modulo));
+		return this.colorArray[index];
 	}
 
 	invert(passedColor) {
