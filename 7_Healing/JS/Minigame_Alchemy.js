@@ -354,20 +354,24 @@ class AlchemyStand extends AlchemyObject {
 		this.burner = this.addChild(this.initElement("burner"));
 		this.anchor.y = 0.8;
 		this.frontlegs = this.addChild(this.initElement("stand_foreground"));
-		this.installed = false;
+		this.installed = null;
+		this.progress = 0;
 	}
 
 	addElement(passedObject) {
 		super.addElement(passedObject);
 		this.body.setSize(75, 75, 19, 50);
 		super.addChild(this.frontlegs);
-		this.installed = true;
+		this.installed = passedObject;
+		this.progress = 1;
 	}
 
 	removeElement(passedObject) {
 		super.removeElement(passedObject);
 		this.body.setSize(113, 125, 0, 0);
-		this.installed = false;
+		this.installed = null;
+		this.progress = 1;
+	}
 	}
 }
 
