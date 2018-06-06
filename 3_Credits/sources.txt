@@ -15,3 +15,6 @@ metal_ping_3.wav      https://opengameart.org/content/31-pings-and-metal-filing-
 
 IMAGES                SOURCE
 old_paper.png         http://www.wildtextures.com/wp-content/uploads/2011/11/wildtextures-old-paper-texture-3.jpg
+
+FONTS
+IM Fell English       https://fonts.google.com/specimen/IM+Fell+English
