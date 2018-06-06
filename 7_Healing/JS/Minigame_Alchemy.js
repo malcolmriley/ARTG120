@@ -130,9 +130,17 @@ function onReact(passedDraggedObject, passedReactingObject) {
 }
 
 function onDrop(passedDraggedObject, passedCircleObject) {
-	let tween = game.add.tween(passedDraggedObject).to({x : passedCircleObject.x, y : passedCircleObject.y}, 250, Phaser.Easing.Circular.InOut, true);
+	let destinationX = passedCircleObject.x;
+	let destinationY = passedCircleObject.y;
+	let index = passedCircleObject.index;
+	if (passedCircleObject.workarea.isOccupied(passedCircleObject.index)) {
+		destinationX = passedDraggedObject.oldPos.x;
+		destinationY = passedDraggedObject.oldPos.y;
+		index = passedDraggedObject.workarea.index;
+	}
+	let tween = game.add.tween(passedDraggedObject).to({x : destinationX, y : destinationY}, 250, Phaser.Easing.Circular.InOut, true);
 	tween.onComplete.add(function(){
-		passedCircleObject.workArea.insert(passedDraggedObject, passedCircleObject.index);
+		passedCircleObject.workarea.insert(passedDraggedObject, index);
 	});
 }
 
@@ -223,6 +231,9 @@ class AlchemyObject extends Phaser.Sprite {
 
 		// Define callbacks
 		let beginDrag = function(passedObject, passedPointer) {
+			if (passedObject.workarea) {
+				passedObject.workarea.reference.remove(passedObject.workarea.index);
+			}
 			if (passedObject.parent.removeElement) {
 				passedObject.parent.removeElement(passedObject);
 			}
@@ -405,7 +416,7 @@ class WorkArea {
 			let circleInstance = layer_workzones.create(0, 0, "circle");
 			game.physics.arcade.enable(circleInstance);
 			centerAnchor(circleInstance);
-			circleInstance.workArea = this;
+			circleInstance.workarea = this;
 			circleInstance.index = count;
 			circleInstance.apparatus = null;
 			circleInstance.x = passedPositionX + (count * (padding + circleInstance.width)) + (circleInstance.width / 2);
