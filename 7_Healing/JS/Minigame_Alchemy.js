@@ -76,7 +76,11 @@ Minigame_Alchemy.prototype =
 
 	update: function()
 	{
-
+		layer_apparatus.forEach(function(object){
+			if (object.onUpdate) {
+				object.onUpdate();
+			}
+		});
 	}
 }
 
@@ -298,6 +302,10 @@ class AlchemyObject extends Phaser.Sprite {
 	removeElement(passedObject) {
 		this.removeChild(passedObject);
 		return passedObject;
+	}
+
+	onUpdate() {
+
 	}
 
 	get objectType() {
