@@ -374,6 +374,39 @@ class AlchemyStand extends AlchemyObject {
 		this.installed = null;
 		this.progress = 1;
 	}
+
+	onUpdate() {
+		if (this.installed && this.workarea) {
+			if (this.installed.quantity > 0) {
+				this.progress += 1;
+				if ((this.progress % 120) == 0) {
+					this.progress = 0;
+					let color = this.installed.color;
+					switch(this.installed.objectType) {
+						case "bottle_round":
+							this.installed.color = Color.rotate(color, 1);
+							break;
+						case "bowl":
+							this.installed.color = Color.rotate(color, -1);
+							break;
+						case "retort":
+							let dripIndex = (this.installed.facing + this.workarea.index);
+							if (this.workarea.reference.isOccupied(dripIndex)) {
+								let apparatus = this.workarea.reference.getArea(dripIndex).apparatus;
+								if (apparatus.quantity > 0) {
+									apparatus.color = Color.combine(Color.invert(color), apparatus.color);
+								}
+								else {
+									apparatus.color = color;
+								}
+								apparatus.quantity += 1;
+							}
+							break;
+					}
+					this.installed.quantity -= 1;
+				}
+			}
+		}
 	}
 }
 
