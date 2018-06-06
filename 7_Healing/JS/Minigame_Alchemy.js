@@ -390,9 +390,8 @@ class AlchemyStand extends AlchemyObject {
 							this.installed.color = Color.rotate(color, -1);
 							break;
 						case "retort":
-							let dripIndex = (this.installed.facing + this.workarea.index);
-							if (this.workarea.reference.isOccupied(dripIndex)) {
-								let apparatus = this.workarea.reference.getArea(dripIndex).apparatus;
+							let apparatus = this.workarea.reference.getArea(this.installed.facing + this.workarea.index).apparatus;
+							if (apparatus) {
 								if (apparatus.quantity > 0) {
 									apparatus.color = Color.combine(Color.invert(color), apparatus.color);
 								}
