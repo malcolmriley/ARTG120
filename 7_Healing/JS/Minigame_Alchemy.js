@@ -423,7 +423,7 @@ class WorkArea {
 		return this.spaces[passedIndex];
 	}
 
-	insert(passedObject, passedIndex, passedSetPosition) {
+	insert(passedObject, passedIndex) {
 		this.getArea(passedIndex).apparatus = passedObject;
 		if (passedObject.workarea) {
 			passedObject.workarea.reference.remove(passedObject.workarea.index);
