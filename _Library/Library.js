@@ -12,6 +12,14 @@ function createBackdrop(passedGameReference) {
 }
 
 /**
+ * Utility function that returns, at random, one of the arguments passed to it.
+ */
+function choose() {
+  let index = Math.floor(Math.random() * (arguments.length));
+  return arguments[index];
+}
+
+/**
  * Convenience function to convert a sprite into a clickable button.
  *
  * passedSprite - The sprite to convert
