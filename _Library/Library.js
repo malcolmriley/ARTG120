@@ -1,4 +1,17 @@
 /**
+ * Utility function to create the "aged paper" pseudobackdrop.
+ *
+ * NOTE: This MUST be called AFTER creating all other needed groups, otherwise it won't work!
+ *
+ * passedGameReference - A reference to the current Phaser.Game object
+ */
+function createBackdrop(passedGameReference) {
+  layer_paper = passedGameReference.add.group();
+  paper = layer_paper.create(0, 0, "backdrop");
+  paper.blendMode = 2;
+}
+
+/**
  * Convenience function to convert a sprite into a clickable button.
  *
  * passedSprite - The sprite to convert
