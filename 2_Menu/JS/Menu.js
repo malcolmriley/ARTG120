@@ -39,3 +39,27 @@ Menu.prototype =
 		
 	}
 }
+
+function createMenuButton(passedReference, passedPositionX, passedPositionY, passedGroup, passedSpriteKey, passedState) {
+	let buttonInstance = passedGroup.create(passedPositionX, passedPositionY, "button");
+	let buttonText = passedGroup.create(passedPositionX, passedPositionY, passedSpriteKey);
+	buttonInstance.alpha = 0;
+	centerAnchor(buttonInstance);
+	centerAnchor(buttonText);
+
+	// Generate event callbacks
+	let onClick = function() {
+		game.state.start(passedState);
+	};
+	let onMouseOver = function(passedSprite, passedPointer) {
+		game.add.tween(buttonInstance).to({ alpha : 1.0 }, 75, Phaser.Easing.Linear.None, true);
+	};
+	let onMouseOut = function(passedSprite, passedPointer) {
+		game.add.tween(buttonInstance).to({ alpha : 0.0 }, 75, Phaser.Easing.Linear.None, true);
+	};
+
+	// Attach event callbacks
+	makeButton(buttonInstance, passedReference, onClick);
+	makeMouseover(buttonInstance, passedReference, onMouseOver, onMouseOut);
+	return buttonInstance;
+}
