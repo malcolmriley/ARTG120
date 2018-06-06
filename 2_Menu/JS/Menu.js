@@ -10,12 +10,20 @@ Menu.prototype =
 		this.load.image("text_credits", "text_credits.png");
 		this.load.image("text_play", "text_play.png");
 
+		this.load.path = "../_Assets/sounds/";
+		this.load.audio("thump", "thump.wav");
+		this.load.audio("ominous", "ominous.wav");
+
 		this.load.path = ""; // TODO: Remove when Town is finalized.
 	},
 
 	create: function()
 	{
 		layer_background = this.game.add.group();
+
+		// Load Sounds
+		sound_click = game.add.audio("ominous");
+		sound_mouseover = game.add.audio("thump");
 
 		// Set up temp variables
 		let elementPadding = 50;
@@ -53,9 +61,11 @@ function createMenuButton(passedReference, passedPositionX, passedPositionY, pas
 	let fadeTime = 75;
 	let onClick = function() {
 		game.state.start(passedState);
+		sound_click.play();
 	};
 	let onMouseOver = function(passedSprite, passedPointer) {
 		game.add.tween(buttonInstance).to({ alpha : 1.0 }, fadeTime, Phaser.Easing.Linear.None, true);
+		sound_mouseover.play();
 	};
 	let onMouseOut = function(passedSprite, passedPointer) {
 		game.add.tween(buttonInstance).to({ alpha : 0.0 }, fadeTime, Phaser.Easing.Linear.None, true);
