@@ -10,7 +10,11 @@ Load.prototype =
 		this.loader = new LoadHelper(this.game, "progressbar_background", "progressbar");
 
 		// Add tasks to loader
-		this.loader.addTask(this, loadTextures, "../_Assets/images/", function(){ return (this.game.load.hasLoaded) ? 1.0 : (this.game.load.progressFloat / 100); });
+		let defaultProgress = function() function(){ return (this.game.load.hasLoaded) ? 1.0 : (this.game.load.progressFloat / 100); };
+		this.loader.addTask(this, loadTextures, "../_Assets/images/", defaultProgress);
+		this.loader.addTask(this, loadAudio, "../_Assets/sounds/", defaultProgress);
+
+		// TODO: Add task for loading web fonts?
 
 		// Perform all load tasks
 		this.loader.addOnComplete(this, function(){ game.stage.backgroundColor = "#FFFFFF"; this.game.state.start("Menu"); });
@@ -29,6 +33,10 @@ Load.prototype =
 }
 
 function loadTextures() {
+
+}
+
+function loadAudio() {
 
 }
 
@@ -54,9 +62,9 @@ class LoadHelper {
 
 	loadAll() {
 		this.tasks.forEach(function(task){
-			this.reference_game.load.path = task.path;
+			task.game.load.path = task.path;
 			task.load();
-			this.reference_game.load.path = "";
+			task.game.load.path = "";
 		});
 	}
 
@@ -66,7 +74,13 @@ class LoadHelper {
 
 	addTask(passedReference, passedTask, passedPath, passedProgressFunction, passedLoadWeight) {
 		let taskWeight = (passedLoadWeight) ? passedLoadWeight : 1.0;
-		this.tasks[this.tasks.length] = { load : passedTask.bind(passedReference), path : passedPath, progress : passedProgressFunction.bind(passedReference), weight : taskWeight };
+		this.tasks[this.tasks.length] = {
+			game : this.reference_game,
+			load : passedTask.bind(passedReference),
+			path : passedPath,
+			progress : passedProgressFunction.bind(passedReference),
+			weight : taskWeight
+		};
 		this.weight_total += taskWeight;
 	}
 
