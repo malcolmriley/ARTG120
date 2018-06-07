@@ -1,7 +1,9 @@
 var town = [
 	[0, 0, 0, 0, 0, 0, 0],
 	[0, 1, 2, 1, 2, 1, 0],
+	[0, 2, 2, 2, 2, 2, 0],
 	[0, 1, 2, 1, 2, 1, 0],
+	[0, 2, 2, 2, 2, 2, 0],
 	[0, 1, 2, 1, 2, 1, 0],
 	[0, 0, 0, 0, 0, 0, 0]
 ];
@@ -20,8 +22,8 @@ Town.prototype =
 
 	create: function()
 	{
+
 		game.physics.startSystem(Phaser.Physics.ARCADE);
-		game.world.setBounds(0, 0, 1920, 600);
 		game.stage.backgroundColor = '#f0f0f0';
 
 		// Load sounds
@@ -29,26 +31,16 @@ Town.prototype =
 
 		// Create Player
 		this.player = initPlayer();
+		//scaleDown(this.player);
 
 		var width = game.cache.getImage("house").width;
-		width = Math.ceil(width * .15);
+		width = Math.ceil(width * .10);
 		var height = game.cache.getImage("house").height;
-		height = Math.ceil(height * .15);
+		height = Math.ceil(height * .10);
 
 		// Create House Grid
-		group_houses = game.add.group();
-		/*
-		let startX = 200;
-		let startY = 30;
-		for(let row = 0; row < 3; row += 1) {
-			for (let column = 0; column < 3; column += 1) {
-				let house = group_houses.create(0, 0, "house");
-				scaleDown(house, this); // Set initial sprite scaling
-				house.x = startX + row * (10 + house.width);
-				house.y = startY + column * (10 + house.width);
-				makeButton(house, this, goToInterior, scaleUp, scaleDown);
-			}
-		}*/
+		//this.group_houses = game.add.group();
+		this.group_houses = game.add.group();
 
 		//makeHouse(group_houses);
 		for(var i = 0; i < town.length; i++)
@@ -58,17 +50,15 @@ Town.prototype =
 			{
 				if(town[i][j] == 1)
 				{
-					makeHouse(group_houses, height, width, i, j);
+					makeHouse(this.group_houses, height, width, i, j, this.player);
 				}
 			}
 		}
-		game.world.sendToBack(group_houses);
 
+		game.world.sendToBack(this.group_houses);
+		game.physics.arcade.enable(this.group_houses);
 		// Create Text Overlay
 		game.add.text(0, 0, "Town \n Click to enter house.");
-
-		// Make cursors for player control
-		this.cursors = game.input.keyboard.createCursorKeys();
 	},
 
 	update: function()
@@ -80,22 +70,18 @@ Town.prototype =
 		if(game.input.keyboard.isDown(Phaser.Keyboard.A))
 		{
 			this.player.x -= 5;
-			//player.scale.set(-.1,.1);
 		}
 		else if(game.input.keyboard.isDown(Phaser.Keyboard.D))
 		{
 			this.player.x += 5;
-			//player.scale.set(.1);
 		}
 		if(game.input.keyboard.isDown(Phaser.Keyboard.W))
 		{
 			this.player.y -= 5;
-			//player.scale.set(-.1,.1);
 		}
 		else if(game.input.keyboard.isDown(Phaser.Keyboard.S))
 		{
 			this.player.y += 5;
-			//player.scale.set(.1);
 		}
 		else {
 			this.player.body.velocity.x = 0;
@@ -110,15 +96,15 @@ Town.prototype =
 function initPlayer() {
 	let instance = game.add.sprite(0, 0, "character");
   	game.physics.arcade.enable(instance);
-	instance.scale.setTo(0.1, 0.1);
+	instance.scale.setTo(0.05, 0.05);
 	instance.enableBody = true;
 	instance.body.collideWorldBounds=true;
 	return instance;
 }
 
-function makeHouse(group, height, width, i, j)
+function makeHouse(group, height, width, i, j, player)
 {
-	let house = new House(game, "house", this.player, 100, height, width, i, j);
+	let house = new House(game, "house", player, 100, height, width, i, j);
 	game.add.existing(house);
 	group.add(house);
 }
@@ -128,7 +114,7 @@ function scaleUp(passedSprite, passedReference) {
 }
 
 function scaleDown(passedSprite) {
-	passedSprite.scale.setTo(0.15, 0.15)
+	passedSprite.scale.setTo(0.10, 0.10)
 }
 
 function goToInterior() {
@@ -145,11 +131,31 @@ function House(game, key, player, health, height, width, i, j)
 	
 	game.physics.enable(this);
 	this.body.collideWorldBounds = true;
+	this.enableBody = true;
+
+	this.player = player;
+
 
 	scaleDown(this);
 
-	this.hp = game.add.text(this.x, (this.y - (this.width / 2) - 20),'Health: ' + health);
+	this.hp = game.add.text(this.x, (this.y - (this.width / 2) - 20),'Health: ' + health, {font: "20px"});
 }
 
 House.prototype = Object.create(Phaser.Sprite.prototype);
 House.prototype.constructor = House;
+
+House.prototype.update = function()
+{
+	if(game.physics.arcade.overlap(this, this.player))
+	{
+			this.scale.setTo(.2);
+			if(game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR))
+			{
+				console.log("Change states here");
+			}
+	}
+	else
+	{
+		scaleDown(this);
+	}
+}
