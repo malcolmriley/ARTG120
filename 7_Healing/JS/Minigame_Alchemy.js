@@ -33,7 +33,7 @@ Minigame_Alchemy.prototype =
 		this.load.audio("bottle_break", "bottle_break.wav");
 
 		// Define colors
-		Color = Object.freeze(new AlchemyColors());
+		AlchemyColor = Object.freeze(new AlchemyColors());
 	},
 
 	create: function()
@@ -61,11 +61,23 @@ Minigame_Alchemy.prototype =
 		table = layer_background.create(0, 415, "table");
 		shelf = layer_background.create(100, 120, "shelf");
 
-		// Add test containers
-		bottle = workzone_shelf.insert(new AlchemyBottle(Color.RED, 4), 1);
-		bowl = workzone_shelf.insert(new AlchemyBowl(Color.BLUE, 4), 2);
-		retort = workzone_shelf.insert(new AlchemyRetort(Color.GREEN, 4), 3);
-		burner = workzone_table.insert(new AlchemyStand(), 1);
+		// Define Objective
+		objective = defineObjective();
+    let text = game.add.text((game.camera.width / 2), 20, "Create a " + getQuantityText(objective.quantity) + " of " + objective.color.name + " potion.", { align: "center" });
+    text.anchor.setTo(0.5, 0.5);
+
+		// Add equipment. You get: 1 Stand, 1 Bowl
+		workzone_table.insert(new AlchemyStand(), 0);
+		workzone_shelf.insert(new AlchemyBowl(), 0);
+		workzone_shelf.insert(new AlchemyRetort(), 1);
+
+		// Add ingredients. You get: 3 randomly filled potion bottles.
+		let firstColor = AlchemyColor.randomNotIncluding(objective.color);
+		let secondColor = AlchemyColor.randomNotIncluding(objective.color);
+		let thirdColor = AlchemyColor.randomNotIncluding(objective.color);
+		workzone_shelf.insert(new AlchemyBottle(firstColor, 4), 2);
+		workzone_shelf.insert(new AlchemyBottle(secondColor, 4), 3);
+		workzone_shelf.insert(new AlchemyBottle(thirdColor, 4), 4);
 
 		// Create Sounds
 		sound_clink = new RandomizedSound(game, "clink_0", "clink_1");
@@ -77,12 +89,57 @@ Minigame_Alchemy.prototype =
 
 	update: function()
 	{
+		let totalVolume = 0;
 		layer_apparatus.forEach(function(object){
 			if (object.onUpdate) {
 				object.onUpdate();
+				if (object.quantity) {
+					totalVolume += object.quantity;
+				}
+				// See if the objective is fulfilled anywhere in the workspace
+				if (checkObjective(object, objective)) {
+					// TODO: Win state goes here.
+					console.log("WIN");
+				}
 			}
 		});
+		// If there isn't enough volume to make a potion, you lose
+		if (objective) {
+			if (totalVolume < objective.quantity) {
+				// TODO: Lose state goes here.
+				console.log("LOSE");
+			}
+		}
 	}
+}
+
+function getQuantityText(passedQuantity) {
+	switch(passedQuantity) {
+		case 1:
+			return "one-quarter dose"
+			break;
+		case 2:
+			return "one-half dose"
+			break;
+		case 3:
+			return "three-quarter dose"
+			break;
+		case 4:
+			return "full dose";
+			break;
+	}
+	return "dose"; // Just in case.
+}
+
+function defineObjective() {
+	let objective_color = AlchemyColor.random();
+	let objective_quantity = Math.floor(Math.random() * 4) + 1;
+	let instance = { color : objective_color, quantity : objective_quantity };
+	return instance;
+}
+
+function checkObjective(passedAlchemyObject, passedObjective) {
+	return (passedAlchemyObject.color == passedObjective.color) && (passedAlchemyObject.quantity >= passedObjective.quantity);
 }
 
 function onReact(passedDraggedObject, passedReactingObject) {
@@ -105,7 +162,7 @@ function onReact(passedDraggedObject, passedReactingObject) {
 					sound = sound_pour;
 					break;
 			}
-			passedReactingObject.color = Color.combine(passedDraggedObject.color, passedReactingObject.color);
+			passedReactingObject.color = AlchemyColor.combine(passedDraggedObject.color, passedReactingObject.color);
 		}
 		// Otherwise, fill it from the dragged object
 		else {
@@ -161,7 +218,7 @@ function onFall(passedSprite) {
 			if (passedSprite.workarea) {
 				passedSprite.workarea.reference.remove(passedSprite.workarea.index);
 			}
-			passedSprite.kill();
+			passedSprite.destroy();
 			sound_break.play();
 		}
 		passedSprite.checkWorldBounds = true;
@@ -171,19 +228,34 @@ function onFall(passedSprite) {
 
 class AlchemyColors {
 	constructor() {
-		let init = function(passedIndex, passedColor) {
-			let instance = { index : passedIndex, tint : passedColor};
+		let init = function(passedIndex, passedColor, passedName) {
+			let instance = { index : passedIndex, tint : passedColor, name : passedName};
 			return instance;
 		};
-		this.RED = init(0, 0xB50000);
-		this.ORANGE = init(1, 0xC55500);
-		this.YELLOW = init(2, 0xFFBA1A);
-		this.GREEN = init(3, 0x5C8D1A);
-		this.BLUE = init(4, 0x0030B5);
-		this.INDIGO = init(5, 0x5956B5);
-		this.VIOLET = init(6, 0x8627FF);
-		this.MAGENTA = init(7, 0x862768);
+		this.RED = init(0, 0xB50000, "red");
+		this.ORANGE = init(1, 0xC55500, "orange");
+		this.YELLOW = init(2, 0xFFBA1A, "yellow");
+		this.GREEN = init(3, 0x5C8D1A, "green");
+		this.BLUE = init(4, 0x0030B5, "blue");
+		this.INDIGO = init(5, 0x5956B5, "indigo");
+		this.VIOLET = init(6, 0x8627FF, "violet");
+		this.MAGENTA = init(7, 0x862768, "magenta");
 		this.colorArray = [this.RED, this.ORANGE, this.YELLOW, this.GREEN, this.BLUE, this.INDIGO, this.VIOLET, this.MAGENTA];
+	}
+
+	randomFrom(passedArray) {
+		let index = Math.floor(Math.random() * passedArray.length);
+		return passedArray[index];
+	}
+
+	random() {
+		return this.randomFrom(this.colorArray);
+	}
+
+
+	randomNotIncluding(passedColor) {
+		let tempArray = this.colorArray.filter(function(color){ return (color != passedColor); });
+		return this.randomFrom(tempArray);
 	}
 
 	get(passedIndex) {
@@ -323,6 +395,9 @@ class AlchemyContainer extends AlchemyObject {
 			this.quantity = passedQuantity;
 			this.color = passedColor;
 		}
+		else {
+			this.quantity = 0;
+		}
 	}
 
 	get color() {
@@ -387,19 +462,20 @@ class AlchemyStand extends AlchemyObject {
 					let color = this.installed.color;
 					switch(this.installed.objectType) {
 						case "bottle_round":
-							this.installed.color = Color.rotate(color, 1);
+							this.installed.color = AlchemyColor.rotate(color, 1);
 							break;
 						case "bowl":
-							this.installed.color = Color.rotate(color, -1);
+							this.installed.color = AlchemyColor.rotate(color, -1);
 							break;
 						case "retort":
-							let apparatus = this.workarea.reference.getArea(this.installed.facing + this.workarea.index).apparatus;
+							let circle = this.workarea.reference.getArea(this.installed.facing + this.workarea.index);
+							let apparatus = (circle) ? circle.apparatus : null;
 							if (apparatus) {
 								if (apparatus.quantity > 0) {
-									apparatus.color = Color.combine(Color.invert(color), apparatus.color);
+									apparatus.color = AlchemyColor.combine(AlchemyColor.invert(color), apparatus.color);
 								}
 								else {
-									apparatus.color = Color.invert(color);
+									apparatus.color = AlchemyColor.invert(color);
 								}
 								apparatus.quantity += 1;
 							}
@@ -409,6 +485,10 @@ class AlchemyStand extends AlchemyObject {
 				}
 			}
 		}
+	}
+
+	get quantity() {
+		return (this.installed) ? this.installed.quantity : 0;
 	}
 }
 
