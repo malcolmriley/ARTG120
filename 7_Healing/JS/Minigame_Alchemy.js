@@ -63,7 +63,8 @@ Minigame_Alchemy.prototype =
 
 		// Define Objective
 		objective = defineObjective();
-		console.log(objective);
+    let text = game.add.text((game.camera.width / 2), 20, "Create a " + getQuantityText(objective.quantity) + " of " + objective.color.name + " potion.", { align: "center" });
+    text.anchor.setTo(0.5, 0.5);
 
 		// Add equipment. You get: 1 Stand, 1 Bowl
 		workzone_table.insert(new AlchemyStand(), 0);
@@ -110,6 +111,24 @@ Minigame_Alchemy.prototype =
 			}
 		}
 	}
+}
+
+function getQuantityText(passedQuantity) {
+	switch(passedQuantity) {
+		case 1:
+			return "one-quarter dose"
+			break;
+		case 2:
+			return "one-half dose"
+			break;
+		case 3:
+			return "three-quarter dose"
+			break;
+		case 4:
+			return "full dose";
+			break;
+	}
+	return "dose"; // Just in case.
 }
 
 function defineObjective() {
