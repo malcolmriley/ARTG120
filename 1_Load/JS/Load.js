@@ -33,11 +33,16 @@ Load.prototype =
 }
 
 function loadTextures() {
-
+	this.load.image("backdrop", "old_paper.png");
+	this.load.image("button", "button.png");
+	this.load.image("title", "title.png");
+	this.load.image("text_credits", "text_credits.png");
+	this.load.image("text_play", "text_play.png");
 }
 
 function loadAudio() {
-
+	this.load.audio("thump", "thump.wav");
+	this.load.audio("ominous", "ominous.wav");
 }
 
 class LoadHelper {
