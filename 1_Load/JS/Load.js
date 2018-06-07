@@ -8,12 +8,11 @@ Load.prototype =
 
 	create: function()
 	{
-		game.add.text(0, 0, 'Loading');
-		game.stage.backgroundColor = '#ffffff';
+
 	},
 
 	update: function()
 	{
-		game.state.start('Menu');
+		
 	}
 }
