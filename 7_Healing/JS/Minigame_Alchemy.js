@@ -33,7 +33,7 @@ Minigame_Alchemy.prototype =
 		this.load.audio("bottle_break", "bottle_break.wav");
 
 		// Define colors
-		Color = Object.freeze(new AlchemyColors());
+		AlchemyColor = Object.freeze(new AlchemyAlchemyColors());
 	},
 
 	create: function()
@@ -62,9 +62,9 @@ Minigame_Alchemy.prototype =
 		shelf = layer_background.create(100, 120, "shelf");
 
 		// Add test containers
-		bottle = workzone_shelf.insert(new AlchemyBottle(Color.RED, 4), 1);
-		bowl = workzone_shelf.insert(new AlchemyBowl(Color.BLUE, 4), 2);
-		retort = workzone_shelf.insert(new AlchemyRetort(Color.GREEN, 4), 3);
+		bottle = workzone_shelf.insert(new AlchemyBottle(AlchemyColor.RED, 4), 1);
+		bowl = workzone_shelf.insert(new AlchemyBowl(AlchemyColor.BLUE, 4), 2);
+		retort = workzone_shelf.insert(new AlchemyRetort(AlchemyColor.GREEN, 4), 3);
 		burner = workzone_table.insert(new AlchemyStand(), 1);
 
 		// Create Sounds
@@ -105,7 +105,7 @@ function onReact(passedDraggedObject, passedReactingObject) {
 					sound = sound_pour;
 					break;
 			}
-			passedReactingObject.color = Color.combine(passedDraggedObject.color, passedReactingObject.color);
+			passedReactingObject.color = AlchemyColor.combine(passedDraggedObject.color, passedReactingObject.color);
 		}
 		// Otherwise, fill it from the dragged object
 		else {
@@ -392,20 +392,20 @@ class AlchemyStand extends AlchemyObject {
 					let color = this.installed.color;
 					switch(this.installed.objectType) {
 						case "bottle_round":
-							this.installed.color = Color.rotate(color, 1);
+							this.installed.color = AlchemyColor.rotate(color, 1);
 							break;
 						case "bowl":
-							this.installed.color = Color.rotate(color, -1);
+							this.installed.color = AlchemyColor.rotate(color, -1);
 							break;
 						case "retort":
 							let circle = this.workarea.reference.getArea(this.installed.facing + this.workarea.index);
 							let apparatus = (circle) ? circle.apparatus : null;
 							if (apparatus) {
 								if (apparatus.quantity > 0) {
-									apparatus.color = Color.combine(Color.invert(color), apparatus.color);
+									apparatus.color = AlchemyColor.combine(AlchemyColor.invert(color), apparatus.color);
 								}
 								else {
-									apparatus.color = Color.invert(color);
+									apparatus.color = AlchemyColor.invert(color);
 								}
 								apparatus.quantity += 1;
 							}
