@@ -85,7 +85,9 @@ Minigame_Alchemy.prototype =
 		layer_apparatus.forEach(function(object){
 			if (object.onUpdate) {
 				object.onUpdate();
-				totalVolume += object.quantity;
+				if (object.quantity) {
+					totalVolume += object.quantity;
+				}
 				if (checkObjective(object, objective)) {
 					// TODO: Win state goes here.
 					console.log("A WINNER IS YOU");
