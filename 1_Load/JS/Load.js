@@ -3,6 +3,9 @@ Load.prototype =
 {
 	preload: function()
 	{
+		// Set Background Color
+		game.stage.backgroundColor = "#000000";
+
 		// Add loader
 		this.loader = new LoadHelper(this.game, "progressbar_background", "progressbar");
 
@@ -11,7 +14,7 @@ Load.prototype =
 
 		// Perform all load tasks
 		this.loader.loadAll();
-		this.loader.addOnComplete(this, function(){ this.game.state.start("Menu"); });
+		this.loader.addOnComplete(this, function(){ game.stage.backgroundColor = "#FFFFFF"; this.game.state.start("Menu"); });
 	},
 
 	create: function()
