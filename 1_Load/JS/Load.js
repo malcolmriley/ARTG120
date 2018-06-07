@@ -10,7 +10,7 @@ Load.prototype =
 		this.loader = new LoadHelper(this.game, "progressbar_background", "progressbar");
 
 		// Add tasks to loader
-		this.loader.addTask(this, loadTextures, function(){ return (this.game.load.hasLoaded) ? 1.0 : (this.game.load.progressFloat / 100); });
+		this.loader.addTask(this, loadTextures, "../_Assets/images/", function(){ return (this.game.load.hasLoaded) ? 1.0 : (this.game.load.progressFloat / 100); });
 
 		// Perform all load tasks
 		this.loader.loadAll();
@@ -39,6 +39,7 @@ class LoadHelper {
 			instance.anchor.setTo(0.5, 0.5);
 			return instance;
 		}
+		this.reference_game = passedGame;
 		this.sprite_background = initSprite(passedBackdropKey);
 		this.sprite_foreground = initSprite(passedForegroundKey);
 		this.fullwidth = this.sprite_foreground.width;
@@ -52,16 +53,20 @@ class LoadHelper {
 	}
 
 	loadAll() {
-		this.tasks.forEach(function(task){ task.load() });
+		this.tasks.forEach(function(task){
+			this.reference_game.load.path = task.path;
+			task.load();
+			this.reference_game.load.path = "";
+		});
 	}
 
 	addOnComplete(passedReference, passedCallback) {
 		this.onComplete = passedCallback.bind(passedReference);
 	}
 
-	addTask(passedReference, passedTask, passedProgressFunction, passedLoadWeight) {
+	addTask(passedReference, passedTask, passedPath, passedProgressFunction, passedLoadWeight) {
 		let taskWeight = (passedLoadWeight) ? passedLoadWeight : 1.0;
-		this.tasks[this.tasks.length] = { load : passedTask.bind(passedReference), progress : passedProgressFunction.bind(passedReference), weight : taskWeight };
+		this.tasks[this.tasks.length] = { load : passedTask.bind(passedReference), path : passedPath, progress : passedProgressFunction.bind(passedReference), weight : taskWeight };
 		this.weight_total += taskWeight;
 	}
 
