@@ -36,7 +36,6 @@ class LoadHelper {
 			instance.anchor.setTo(0.5, 0.5);
 			return instance;
 		}
-		this.reference_game = passedGame;
 		this.sprite_background = initSprite(passedBackdropKey);
 		this.sprite_foreground = initSprite(passedForegroundKey);
 		this.fullwidth = this.sprite_foreground.width;
