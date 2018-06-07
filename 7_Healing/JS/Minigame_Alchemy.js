@@ -213,9 +213,19 @@ class AlchemyColors {
 		this.colorArray = [this.RED, this.ORANGE, this.YELLOW, this.GREEN, this.BLUE, this.INDIGO, this.VIOLET, this.MAGENTA];
 	}
 
+	randomFrom(passedArray) {
+		let index = Math.floor(Math.random() * passedArray.length);
+		return passedArray[index];
+	}
+
 	random() {
-		let index = Math.floor(Math.random() * this.colorArray.length);
-		return this.colorArray[index];
+		return this.randomFrom(this.colorArray);
+	}
+
+
+	randomNotIncluding(passedColor) {
+		let tempArray = this.colorArray.filter(function(color){ return (color != passedColor); });
+		return this.randomFrom(tempArray);
 	}
 
 	get(passedIndex) {
