@@ -95,15 +95,19 @@ Minigame_Alchemy.prototype =
 				if (object.quantity) {
 					totalVolume += object.quantity;
 				}
+				// See if the objective is fulfilled anywhere in the workspace
 				if (checkObjective(object, objective)) {
 					// TODO: Win state goes here.
-					console.log("A WINNER IS YOU");
+					console.log("WIN");
 				}
 			}
 		});
-		if (totalVolume < objective.quantity) {
-			console.log("NOT ENOUGH");
-			// TODO: Lose state goes here.
+		// If there isn't enough volume to make a potion, you lose
+		if (objective) {
+			if (totalVolume < objective.quantity) {
+				// TODO: Lose state goes here.
+				console.log("LOSE");
+			}
 		}
 	}
 }
