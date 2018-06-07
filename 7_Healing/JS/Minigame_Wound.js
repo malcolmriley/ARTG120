@@ -5,7 +5,7 @@ Minigame_Wound.prototype =
 {
 	preload: function()
 	{
-		
+
 	},
 
 	create: function()
@@ -32,9 +32,7 @@ Minigame_Wound.prototype =
 
 		// create a mortar and pestle
 		mortar=game.add.sprite(50,500,"bowl");
-		mortar.scale.set(.2);
 		pestle=game.add.sprite(40,490,"pestle");
-		pestle.scale.set(.2);
 		pestle.angle=-30;
 
 		// enables inputs on mortar and calls functions when clicked
@@ -91,7 +89,6 @@ Minigame_Wound.prototype =
 		poultice=meds.create(100,520,"poultice");
 		poultice.anchor.set(.5,.5);
 		poultice.angle=Math.random()*360;
-		poultice.scale.set(.2);
 		// allows poultice to be draggable
 		poultice.inputEnabled=true;
 		poultice.input.enableDrag();
