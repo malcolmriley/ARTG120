@@ -4,11 +4,10 @@ Load.prototype =
 	preload: function()
 	{
 		// Add loader
-		this.testing = 0;
 		this.loader = new LoadHelper(this.game, "progressbar_background", "progressbar");
 
 		// Add tasks to loader
-		this.loader.addTask(this, loadTextures, function(){ return (this.testing / 1000); });
+		this.loader.addTask(this, loadTextures, function(){ return (this.game.loader.progressFloat / 100); });
 
 		// Perform all load tasks
 		this.loader.loadAll();
@@ -21,7 +20,6 @@ Load.prototype =
 
 	update: function()
 	{
-		this.testing += 1;
 		this.loader.update();
 	}
 }
