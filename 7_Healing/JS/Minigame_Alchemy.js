@@ -61,11 +61,22 @@ Minigame_Alchemy.prototype =
 		table = layer_background.create(0, 415, "table");
 		shelf = layer_background.create(100, 120, "shelf");
 
-		// Add test containers
-		bottle = workzone_shelf.insert(new AlchemyBottle(AlchemyColor.RED, 4), 1);
-		bowl = workzone_shelf.insert(new AlchemyBowl(AlchemyColor.BLUE, 4), 2);
-		retort = workzone_shelf.insert(new AlchemyRetort(AlchemyColor.GREEN, 4), 3);
-		burner = workzone_table.insert(new AlchemyStand(), 1);
+		// Define Objective
+		objective = defineObjective();
+		console.log(objective);
+
+		// Add equipment. You get: 1 Stand, 1 Bowl
+		workzone_table.insert(new AlchemyStand(), 0);
+		workzone_shelf.insert(new AlchemyBowl(), 0);
+		workzone_shelf.insert(new AlchemyRetort(), 1);
+
+		// Add ingredients. You get: 3 randomly filled potion bottles.
+		let firstColor = AlchemyColor.randomNotIncluding(objective.color);
+		let secondColor = AlchemyColor.randomNotIncluding(objective.color);
+		let thirdColor = AlchemyColor.randomNotIncluding(objective.color);
+		workzone_shelf.insert(new AlchemyBottle(firstColor, 4), 2);
+		workzone_shelf.insert(new AlchemyBottle(secondColor, 4), 3);
+		workzone_shelf.insert(new AlchemyBottle(thirdColor, 4), 4);
 
 		// Create Sounds
 		sound_clink = new RandomizedSound(game, "clink_0", "clink_1");
@@ -73,10 +84,6 @@ Minigame_Alchemy.prototype =
 		sound_pour = game.add.audio("pour");
 		sound_uncork = game.add.audio("cork");
 		sound_break = game.add.audio("bottle_break");
-
-		// Define Objective
-		objective = defineObjective();
-		console.log(objective);
 	},
 
 	update: function()
