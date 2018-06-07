@@ -186,7 +186,7 @@ function onFall(passedSprite) {
 			if (passedSprite.workarea) {
 				passedSprite.workarea.reference.remove(passedSprite.workarea.index);
 			}
-			passedSprite.kill();
+			passedSprite.destroy();
 			sound_break.play();
 		}
 		passedSprite.checkWorldBounds = true;
