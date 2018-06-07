@@ -13,8 +13,8 @@ Load.prototype =
 		this.loader.addTask(this, loadTextures, "../_Assets/images/", function(){ return (this.game.load.hasLoaded) ? 1.0 : (this.game.load.progressFloat / 100); });
 
 		// Perform all load tasks
-		this.loader.loadAll();
 		this.loader.addOnComplete(this, function(){ game.stage.backgroundColor = "#FFFFFF"; this.game.state.start("Menu"); });
+		this.loader.loadAll();
 	},
 
 	create: function()
