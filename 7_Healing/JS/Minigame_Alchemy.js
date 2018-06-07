@@ -186,6 +186,11 @@ class AlchemyColors {
 		this.colorArray = [this.RED, this.ORANGE, this.YELLOW, this.GREEN, this.BLUE, this.INDIGO, this.VIOLET, this.MAGENTA];
 	}
 
+	random() {
+		let index = Math.floor(Math.random * this.colorArray.length));
+		return this.colorArray[index];
+	}
+
 	get(passedIndex) {
 		let modulo = (passedIndex % this.colorArray.length);
 		let index = (passedIndex >= 0) ? modulo : (this.colorArray.length - Math.abs(modulo));
