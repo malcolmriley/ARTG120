@@ -33,16 +33,25 @@ Load.prototype =
 }
 
 function loadTextures() {
+	// Menu
 	this.load.image("backdrop", "old_paper.png");
 	this.load.image("button", "button.png");
 	this.load.image("title", "title.png");
 	this.load.image("text_credits", "text_credits.png");
 	this.load.image("text_play", "text_play.png");
+
+	// Town
+	game.load.image("character", "character.png");
+	game.load.image("house", "house.png");
 }
 
 function loadAudio() {
+	// Menu
 	this.load.audio("thump", "thump.wav");
 	this.load.audio("ominous", "ominous.wav");
+
+	// Town
+	this.load.audio("fx_door_creak", "door_open.wav");
 }
 
 class LoadHelper {
