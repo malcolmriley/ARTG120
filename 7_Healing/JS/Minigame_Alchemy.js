@@ -355,6 +355,9 @@ class AlchemyContainer extends AlchemyObject {
 			this.quantity = passedQuantity;
 			this.color = passedColor;
 		}
+		else {
+			this.quantity = 0;
+		}
 	}
 
 	get color() {
