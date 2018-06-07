@@ -3,35 +3,6 @@ Minigame_Alchemy.prototype =
 {
 	preload: function()
 	{
-    // Load Images
-		this.load.path = "../_Assets/images/";
-		this.load.image("backdrop", "old_paper.png");
-		this.load.image("circle", "circle.png");
-		this.load.image("bowl", "bowl.png");
-		this.load.image("bottle_round", "bottle_round.png");
-		this.load.image("retort", "retort.png");
-		this.load.image("bottle_cork", "cork.png");
-		this.load.image("table", "table.png");
-		this.load.image("shelf", "shelf.png");
-		this.load.image("stand_background", "stand_background.png");
-		this.load.image("stand_foreground", "stand_foreground.png");
-		this.load.image("burner", "burner.png");
-		this.load.image("spill", "spill.png");
-		this.load.spritesheet("liquid_bowl", "liquid_bowl.png", 113, 75);
-		this.load.spritesheet("liquid_bottle",  "liquid_bottle.png", 75, 113);
-		this.load.spritesheet("liquid_retort",  "liquid_retort.png", 150, 75);
-
-		// Load Sounds
-		this.load.path = "../_Assets/sounds/";
-		this.load.audio("pour", "water_pour.wav");
-		this.load.audio("cork", "cork_out.wav");
-		this.load.audio("clink_0", "bottle_clink_0.wav");
-		this.load.audio("clink_1", "bottle_clink_1.wav");
-		this.load.audio("metal_ping_1", "metal_ping_1.wav");
-		this.load.audio("metal_ping_2", "metal_ping_2.wav");
-		this.load.audio("metal_ping_3", "metal_ping_3.wav");
-		this.load.audio("bottle_break", "bottle_break.wav");
-
 		// Define colors
 		Color = Object.freeze(new AlchemyColors());
 	},
