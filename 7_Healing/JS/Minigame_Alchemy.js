@@ -446,6 +446,10 @@ class AlchemyStand extends AlchemyObject {
 			}
 		}
 	}
+
+	get quantity() {
+		return (this.installed) ? this.installed.quantity : 0;
+	}
 }
 
 class AlchemyBottle extends AlchemyContainer {
