@@ -187,7 +187,7 @@ class AlchemyColors {
 	}
 
 	random() {
-		let index = Math.floor(Math.random * this.colorArray.length);
+		let index = Math.floor(Math.random() * this.colorArray.length);
 		return this.colorArray[index];
 	}
 
