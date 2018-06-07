@@ -73,16 +73,41 @@ Minigame_Alchemy.prototype =
 		sound_pour = game.add.audio("pour");
 		sound_uncork = game.add.audio("cork");
 		sound_break = game.add.audio("bottle_break");
+
+		// Define Objective
+		objective = defineObjective();
+		console.log(objective);
 	},
 
 	update: function()
 	{
+		let totalVolume = 0;
 		layer_apparatus.forEach(function(object){
 			if (object.onUpdate) {
 				object.onUpdate();
+				totalVolume += object.quantity;
+				if (checkObjective(object, objective)) {
+					// TODO: Win state goes here.
+					console.log("A WINNER IS YOU");
+				}
 			}
 		});
+		if (totalVolume < objective.quantity) {
+			console.log("NOT ENOUGH");
+			// TODO: Lose state goes here.
+		}
 	}
+}
+
+function defineObjective() {
+	let objective_color = AlchemyColor.random();
+	let objective_quantity = Math.floor(Math.random() * 4) + 1;
+	let instance = { color : objective_color, quantity : objective_quantity };
+	return instance;
+}
+
+function checkObjective(passedAlchemyObject, passedObjective) {
+	return (passedAlchemyObject.color == passedObjective.color) && (passedAlchemyObject.quantity >= passedObjective.quantity);
 }
 
 function onReact(passedDraggedObject, passedReactingObject) {
