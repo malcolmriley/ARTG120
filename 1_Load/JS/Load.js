@@ -10,7 +10,7 @@ Load.prototype =
 		this.loader = new LoadHelper(this.game, "progressbar_background", "progressbar");
 
 		// Add tasks to loader
-		let defaultProgress = function() function(){ return (this.game.load.hasLoaded) ? 1.0 : (this.game.load.progressFloat / 100); };
+		let defaultProgress = function(){ return (this.game.load.hasLoaded) ? 1.0 : (this.game.load.progressFloat / 100); };
 		this.loader.addTask(this, loadTextures, "../_Assets/images/", defaultProgress);
 		this.loader.addTask(this, loadAudio, "../_Assets/sounds/", defaultProgress);
 
