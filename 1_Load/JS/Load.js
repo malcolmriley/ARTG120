@@ -11,6 +11,7 @@ Load.prototype =
 
 		// Perform all load tasks
 		this.loader.loadAll();
+		this.loader.addOnComplete(this, function(){ this.game.state.start("Menu"); });
 	},
 
 	create: function()
