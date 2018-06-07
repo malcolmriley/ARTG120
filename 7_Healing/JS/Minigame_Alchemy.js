@@ -33,7 +33,7 @@ Minigame_Alchemy.prototype =
 		this.load.audio("bottle_break", "bottle_break.wav");
 
 		// Define colors
-		AlchemyColor = Object.freeze(new AlchemyAlchemyColors());
+		AlchemyColor = Object.freeze(new AlchemyColors());
 	},
 
 	create: function()
