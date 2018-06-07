@@ -60,6 +60,16 @@ function loadTextures() {
 	this.load.spritesheet("liquid_bowl", "liquid_bowl.png", 113, 75);
 	this.load.spritesheet("liquid_bottle",  "liquid_bottle.png", 75, 113);
 	this.load.spritesheet("liquid_retort",  "liquid_retort.png", 150, 75);
+
+	// Wound
+	this.load.image("bg","old_paper.png");
+	this.load.image("wound0","wound_0.png");
+	this.load.image("wound1","wound_1.png");
+	this.load.image("wound2","wound_2.png");
+	this.load.image("wound3","wound_3.png");
+	this.load.image("bowl","bowl.png");
+	this.load.image("pestle","pestle.png");
+	this.load.image("poultice","resin_huge.png");
 }
 
 function loadAudio() {
@@ -79,6 +89,9 @@ function loadAudio() {
 	this.load.audio("metal_ping_2", "metal_ping_2.wav");
 	this.load.audio("metal_ping_3", "metal_ping_3.wav");
 	this.load.audio("bottle_break", "bottle_break.wav");
+
+	// Wound
+	this.load.audio('background', ['Midnightcem.ogg', "Midnightcem.wav"]);
 }
 
 class LoadHelper {
