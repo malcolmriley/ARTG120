@@ -7,7 +7,7 @@ Load.prototype =
 		this.loader = new LoadHelper(this.game, "progressbar_background", "progressbar");
 
 		// Add tasks to loader
-		this.loader.addTask(this, loadTextures, function(){ return (this.game.loader.progressFloat / 100); });
+		this.loader.addTask(this, loadTextures, function(){ return (this.game.load.progressFloat / 100); });
 
 		// Perform all load tasks
 		this.loader.loadAll();
