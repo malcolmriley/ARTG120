@@ -9,5 +9,6 @@ game.state.add('Town', Town);
 game.state.add('Minigame_Wound', Minigame_Wound);
 game.state.add("Minigame_Alchemy", Minigame_Alchemy);
 game.state.add('GameOver', GameOver);
+game.state.add('MiniGameOver', MiniGameOver);
 
 game.state.start('Boot');

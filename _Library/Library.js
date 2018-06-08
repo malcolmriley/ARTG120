@@ -21,6 +21,43 @@ function choose() {
 }
 
 /**
+ * Creates and returns a clickable "wide" button, the same style as used on the main menu.
+ *
+ * passedReference - A reference to the desired context (typically "this")
+ * passedPositionX - The X position to create the button at
+ * passedPositionY - The Y position to create the button at
+ * passedGroup - The group to create the button in
+ * passedSpriteKey - The key for the sprite to be emblazoned on the button
+ * passedClickAction - The action that will be exectuted when the button is clicked.
+ */
+function createMenuButton(passedReference, passedPositionX, passedPositionY, passedGroup, passedSpriteKey, passedClickAction) {
+	let buttonInstance = passedGroup.create(passedPositionX, passedPositionY, "button");
+	let buttonText = passedGroup.create(passedPositionX, passedPositionY, passedSpriteKey);
+	buttonInstance.alpha = 0;
+	centerAnchor(buttonInstance);
+	centerAnchor(buttonText);
+
+	// Generate event callbacks
+	let fadeTime = 75;
+	let onClick = function() {
+		sound_click.play();
+    passedClickAction.bind(passedReference)();
+	};
+	let onMouseOver = function(passedSprite, passedPointer) {
+		game.add.tween(buttonInstance).to({ alpha : 1.0 }, fadeTime, Phaser.Easing.Linear.None, true);
+		sound_mouseover.play();
+	};
+	let onMouseOut = function(passedSprite, passedPointer) {
+		game.add.tween(buttonInstance).to({ alpha : 0.0 }, fadeTime, Phaser.Easing.Linear.None, true);
+	};
+
+	// Attach event callbacks
+	makeButton(buttonInstance, passedReference, onClick);
+	makeMouseover(buttonInstance, passedReference, onMouseOver, onMouseOut);
+	return buttonInstance;
+}
+
+/**
  * Convenience function to convert a sprite into a clickable button.
  *
  * passedSprite - The sprite to convert

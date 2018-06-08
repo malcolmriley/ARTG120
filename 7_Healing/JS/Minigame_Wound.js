@@ -71,7 +71,7 @@ Minigame_Wound.prototype =
 		if(timer<0)
 		{
 			this.sound.stopAll();
-			this.state.start('GameOver');
+			this.state.start('MiniGameOver');
 		}
 
 		// goes back to town if cured

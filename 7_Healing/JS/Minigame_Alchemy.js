@@ -71,14 +71,14 @@ Minigame_Alchemy.prototype =
 				if (checkObjective(object, objective)) {
 					// TODO: Win state goes here.
 					console.log("WIN");
+					this.game.state.start("Town");
 				}
 			}
 		});
 		// If there isn't enough volume to make a potion, you lose
 		if (objective) {
 			if (totalVolume < objective.quantity) {
-				// TODO: Lose state goes here.
-				console.log("LOSE");
+				this.game.state.start("MiniGameOver");
 			}
 		}
 	}

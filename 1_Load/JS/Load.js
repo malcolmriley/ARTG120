@@ -23,7 +23,9 @@ Load.prototype =
 
 	create: function()
 	{
-
+		// Create global sound objects
+		sound_click = game.add.audio("ominous");
+		sound_mouseover = game.add.audio("thump");
 	},
 
 	update: function()
@@ -70,6 +72,12 @@ function loadTextures() {
 	this.image("bowl","bowl.png");
 	this.image("pestle","pestle.png");
 	this.image("poultice","resin_huge.png");
+
+	// Game Over
+	this.image("grave", "grave.png");
+	this.image("text_gameover", "text_gameover.png");
+	this.image("text_ded", "text_ded.png");
+	this.image("text_return", "text_return.png");
 }
 
 function loadAudio() {
