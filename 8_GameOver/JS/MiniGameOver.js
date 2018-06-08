@@ -1,5 +1,5 @@
-var GameOver = function(game) {};
-GameOver.prototype =
+var MiniGameOver = function(game) {};
+MiniGameOver.prototype =
 {
 	preload: function()
 	{
