@@ -20,6 +20,16 @@ function choose() {
   return arguments[index];
 }
 
+/**
+ * Creates and returns a clickable "wide" button, the same style as used on the main menu.
+ *
+ * passedReference - A reference to the desired context (typically "this")
+ * passedPositionX - The X position to create the button at
+ * passedPositionY - The Y position to create the button at
+ * passedGroup - The group to create the button in
+ * passedSpriteKey - The key for the sprite to be emblazoned on the button
+ * passedState - The state that the game will switch to if this button is clicked.
+ */
 function createMenuButton(passedReference, passedPositionX, passedPositionY, passedGroup, passedSpriteKey, passedState) {
 	let buttonInstance = passedGroup.create(passedPositionX, passedPositionY, "button");
 	let buttonText = passedGroup.create(passedPositionX, passedPositionY, passedSpriteKey);
