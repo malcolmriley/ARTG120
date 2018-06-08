@@ -72,6 +72,10 @@ function loadTextures() {
 	this.image("bowl","bowl.png");
 	this.image("pestle","pestle.png");
 	this.image("poultice","resin_huge.png");
+
+	// Game Over
+	this.image("grave", "grave.png");
+	this.image("text_gameover", "text_gameover.png");
 }
 
 function loadAudio() {
