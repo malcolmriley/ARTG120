@@ -8,7 +8,7 @@ GameOver.prototype =
 
 	create: function()
 	{
-		this.fadeDuration = 500;
+		this.fadeDuration = 600;
 		// Fade From Black
 		this.camera.flash("#000000", this.fadeDuration);
 
