@@ -8,8 +8,7 @@ Credits.prototype =
 
 	create: function()
 	{
-		game.add.text(0, 0, "Credits \n ESC: Return");
-		game.stage.backgroundColor = '#ffffff';
+		
 	},
 
 	update: function()
