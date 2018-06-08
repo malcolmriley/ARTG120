@@ -76,6 +76,8 @@ function loadTextures() {
 	// Game Over
 	this.image("grave", "grave.png");
 	this.image("text_gameover", "text_gameover.png");
+	this.image("text_ded", "text_ded.png");
+	this.image("text_return", "text_return.png");
 }
 
 function loadAudio() {
