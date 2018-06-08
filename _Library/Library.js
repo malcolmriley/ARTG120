@@ -28,9 +28,9 @@ function choose() {
  * passedPositionY - The Y position to create the button at
  * passedGroup - The group to create the button in
  * passedSpriteKey - The key for the sprite to be emblazoned on the button
- * passedState - The state that the game will switch to if this button is clicked.
+ * passedClickAction - The action that will be exectuted when the button is clicked.
  */
-function createMenuButton(passedReference, passedPositionX, passedPositionY, passedGroup, passedSpriteKey, passedState) {
+function createMenuButton(passedReference, passedPositionX, passedPositionY, passedGroup, passedSpriteKey, passedClickAction) {
 	let buttonInstance = passedGroup.create(passedPositionX, passedPositionY, "button");
 	let buttonText = passedGroup.create(passedPositionX, passedPositionY, passedSpriteKey);
 	buttonInstance.alpha = 0;
@@ -40,8 +40,8 @@ function createMenuButton(passedReference, passedPositionX, passedPositionY, pas
 	// Generate event callbacks
 	let fadeTime = 75;
 	let onClick = function() {
-		game.state.start(passedState);
 		sound_click.play();
+    passedClickAction.bind(passedReference)();
 	};
 	let onMouseOver = function(passedSprite, passedPointer) {
 		game.add.tween(buttonInstance).to({ alpha : 1.0 }, fadeTime, Phaser.Easing.Linear.None, true);
