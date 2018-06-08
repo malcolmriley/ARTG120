@@ -8,14 +8,13 @@ Credits.prototype =
 
 	create: function()
 	{
-		
+		// Add escape functionality
+		this.key_escape = this.game.input.keyboard.addKey(Phaser.Keyboard.ESC);
+		this.key_escape.onDown.add(function(){ game.state.start("Menu"); });
 	},
 
 	update: function()
 	{
-		if(game.input.keyboard.isDown(Phaser.Keyboard.ESC))
-		{
-			game.state.start('Menu');
-		}
+
 	}
 }
