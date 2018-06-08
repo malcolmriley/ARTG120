@@ -8,6 +8,10 @@ GameOver.prototype =
 
 	create: function()
 	{
+		this.fadeDuration = 500;
+		// Fade From Black
+		this.camera.flash("#000000", this.fadeDuration);
+
 		// Add UI Layer
 		layer_ui = this.game.add.group();
 
@@ -22,7 +26,12 @@ GameOver.prototype =
 		this.deathText = this.game.add.text(center_x, 30, "Death Toll: " + deathtoll, { align: "center" });
 		centerAnchor(this.deathText);
 
-		this.button_quit = createMenuButton(this, center_x, (this.grave.y + elementPadding + (this.grave.height / 2)), layer_ui, "text_gameover", "Menu");
+		let goToMenu = function() {
+			this.camera.fade("#000000", this.fadeDuration);
+			this.camera.onFadeComplete.add(function(){ this.game.state.start("Menu") });
+		};
+
+		this.button_quit = createMenuButton(this, center_x, (this.grave.y + elementPadding + (this.grave.height / 2)), layer_ui, "text_gameover", goToMenu);
 
 		// Add backdrop
 		createBackdrop(this, "backdrop");
@@ -31,5 +40,5 @@ GameOver.prototype =
 	update: function()
 	{
 
-	}
+	},
 }
