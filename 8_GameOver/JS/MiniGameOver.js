@@ -18,7 +18,7 @@ MiniGameOver.prototype =
 		this.grave = layer_ui.create(center_x, center_y, "grave");
 		centerAnchor(this.grave);
 
-		this.deathText = layer_ui.create(center_x, 20, "text_ded");
+		this.deathText = layer_ui.create(center_x, 30, "text_ded");
 		centerAnchor(this.deathText);
 
 		this.button_quit = createMenuButton(this, center_x, (this.grave.y + elementPadding + (this.grave.height / 2)), layer_ui, "text_return", "Town");
