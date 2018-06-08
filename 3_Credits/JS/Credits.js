@@ -18,8 +18,6 @@ Credits.prototype =
 		let center_x = (game.camera.width / 2);
 		let center_y = (game.camera.height / 2);
 
-		new CreditsObject(this.game, center_x, center_y, "TEST", "Did A Thing:\nAlsoDid:", "Firstname Lastname III\nArble Garble")
-
 		// Add backdrop
 		createBackdrop(this, "backdrop");
 	},
