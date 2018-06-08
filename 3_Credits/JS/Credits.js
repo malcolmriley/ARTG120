@@ -28,6 +28,12 @@ Credits.prototype =
 	}
 }
 
+/**
+ * Specialized object for managing blocks of credits, by automatically managing the position of three internal text objects.
+ *
+ * Makes a bold header, and two colunms of centered text below it.
+ * Altering the standard x, y, or alpha properties also alters that of the internal objects. Makes for nice tweening!
+ */
 class CreditsObject {
 	constructor(passedGameReference, passedXPosition, passedYPosition, passedHeader, passedLeftColumn, passedRightColumn) {
 		let headerStyle = {
