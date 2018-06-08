@@ -3,12 +3,7 @@ Town.prototype =
 {
 	preload: function()
 	{
-		// TODO: Swap for atlas version.
-		game.load.image("character", "../_Assets/images/character.png");
-		game.load.image("house", "../_Assets/images/house.png");
-
-		// Load door open sound
-		game.load.audio("fx_door_creak", "../_Assets/sounds/door_open.wav");
+		
 	},
 
 	create: function()

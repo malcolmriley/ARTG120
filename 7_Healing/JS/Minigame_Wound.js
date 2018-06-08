@@ -5,20 +5,7 @@ Minigame_Wound.prototype =
 {
 	preload: function()
 	{
-		// loads images
-		this.load.path='../_Assets/images/';
-		this.load.image("bg","old_paper.png");
-		this.load.image("wound0","wound_0.png");
-		this.load.image("wound1","wound_1.png");
-		this.load.image("wound2","wound_2.png");
-		this.load.image("wound3","wound_3.png");
-		this.load.image("bowl","bowl.png");
-		this.load.image("pestle","pestle.png");
-		this.load.image("poultice","resin_huge.png");
 
-		//load sound
-		this.load.path = '../_Assets/sounds/';
-		this.load.audio('background', ['Midnightcem.ogg', "Midnightcem.wav"]);
 	},
 
 	create: function()
@@ -34,20 +21,18 @@ Minigame_Wound.prototype =
 		wound.enableBody=true;
 		for(i=0;i<diff+5;i++)
 		{
-			
+
 			cut=wound.create(Math.random()*600+150,Math.random()*500+75,select[Math.floor(Math.random()*4)]);
 			cut.anchor.set(.5,.5);
 			cut.angle=Math.random()*360;
 			cut.scale.set(.3);
 			// change bounding box to be small and centered
-			cut.body.setSize(10,10,150,50);	
+			cut.body.setSize(10,10,150,50);
 		}
 
 		// create a mortar and pestle
 		mortar=game.add.sprite(50,500,"bowl");
-		mortar.scale.set(.2);
 		pestle=game.add.sprite(40,490,"pestle");
-		pestle.scale.set(.2);
 		pestle.angle=-30;
 
 		// enables inputs on mortar and calls functions when clicked
@@ -104,7 +89,6 @@ Minigame_Wound.prototype =
 		poultice=meds.create(100,520,"poultice");
 		poultice.anchor.set(.5,.5);
 		poultice.angle=Math.random()*360;
-		poultice.scale.set(.2);
 		// allows poultice to be draggable
 		poultice.inputEnabled=true;
 		poultice.input.enableDrag();

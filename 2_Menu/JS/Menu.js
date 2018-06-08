@@ -3,18 +3,7 @@ Menu.prototype =
 {
 	preload: function()
 	{
-		this.load.path = "../_Assets/images/";
-		this.load.image("backdrop", "old_paper.png");
-		this.load.image("button", "button.png");
-		this.load.image("title", "title.png");
-		this.load.image("text_credits", "text_credits.png");
-		this.load.image("text_play", "text_play.png");
-
-		this.load.path = "../_Assets/sounds/";
-		this.load.audio("thump", "thump.wav");
-		this.load.audio("ominous", "ominous.wav");
-
-		this.load.path = ""; // TODO: Remove when Town is finalized.
+		
 	},
 
 	create: function()
