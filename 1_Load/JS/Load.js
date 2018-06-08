@@ -23,7 +23,9 @@ Load.prototype =
 
 	create: function()
 	{
-
+		// Create global sound objects
+		sound_click = game.add.audio("ominous");
+		sound_mouseover = game.add.audio("thump");
 	},
 
 	update: function()

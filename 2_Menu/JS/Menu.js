@@ -9,11 +9,7 @@ Menu.prototype =
 	create: function()
 	{
 		layer_background = this.game.add.group();
-
-		// Load Sounds
-		sound_click = game.add.audio("ominous");
-		sound_mouseover = game.add.audio("thump");
-
+		
 		// Set up temp variables
 		let elementPadding = 50;
 		let center_x = (game.camera.width / 2);
