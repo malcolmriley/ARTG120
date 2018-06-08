@@ -18,6 +18,9 @@ GameOver.prototype =
 		this.grave = layer_ui.create(center_x, center_y, "grave");
 		centerAnchor(this.grave);
 
+		let deathtoll = 5849085; // TODO: Change when plugged into town.
+		this.deathText = this.game.add.text(center_x, 20, "Death Toll: " + deathtoll, { align: "center" });
+
 		this.button_quit = createMenuButton(this, center_x, (this.grave.y + elementPadding + (this.grave.height / 2)), layer_ui, "text_gameover", "Menu");
 
 		// Add backdrop
