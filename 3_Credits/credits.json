@@ -1,0 +1,13 @@
+{
+  "credits" : [
+    {
+      "header" : "Developers",
+      "column_left" : "Programming",
+      "column_right" : "Firstname Lastname"
+    },
+    {
+      "header" : "More Developers",
+      "column_left" : "Yeah there aren't any"
+    }
+  ]
+}
