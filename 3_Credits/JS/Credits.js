@@ -26,6 +26,15 @@ Credits.prototype =
 			instance.alpha = 0;
 			this.credits[index] = instance;
 		}
+
+		// Create timer
+		this.duration = 1000;
+		this.timer = this.game.time.create(false);
+		this.timer.loop(this.duration * 3.25, updateCredits.bind(this), this);
+		updateCredits.bind(this)();
+		this.timer.start();
+		this.index_credits = 0;
+
 		// Add backdrop
 		createBackdrop(this, "backdrop");
 	},
@@ -33,6 +42,23 @@ Credits.prototype =
 	update: function()
 	{
 
+	}
+}
+
+function updateCredits() {
+	let instance = this.credits[this.index_credits];
+	if (instance) {
+		let fadeIn = this.game.add.tween(instance).to({alpha : 1.0}, this.duration, Phaser.Easing.Linear.None, false);
+		let fadeOut = this.game.add.tween(instance).from({alpha : 1.0}, this.duration, Phaser.Easing.Linear.None, false, this.duration);
+		fadeIn.chain(fadeOut);
+		if (this.credits[this.index_credits + 1]) {
+			fadeOut.onComplete.add(function(object, tween){ object.destroy(); });
+		}
+		else {
+			fadeOut.onComplete.add(function(object, tween){ this.game.state.start("Menu")});
+		}
+		fadeIn.start();
+		this.index_credits += 1;
 	}
 }
 
