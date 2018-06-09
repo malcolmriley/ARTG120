@@ -1,5 +1,3 @@
-diff=0;
-
 var Minigame_Wound = function(game) {};
 Minigame_Wound.prototype =
 {
@@ -58,7 +56,7 @@ Minigame_Wound.prototype =
 		this.add.text(5,5,"Make poultices and apply to wounds.");
 
 		// local timer variable and prints
-		timer=diff+10;
+		timer=10;
 		timerText=this.add.text(600,5,'Time left : '+timer);
 	},
 
@@ -81,8 +79,6 @@ Minigame_Wound.prototype =
 		// goes back to town if cured
 		if(wound.countLiving()==0)
 		{
-			// increases difficulty with successes
-			diff+=Math.floor(Math.random()+1);
 			this.sound.stopAll();
 			this.state.start('Town');
 		}
