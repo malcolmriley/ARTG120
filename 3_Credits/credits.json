@@ -1,0 +1,64 @@
+{
+  "credits" : [
+    {
+      "header" : "1382"
+    },
+    {
+      "header" : "Created for CMPS120 and ARTG120",
+      "column_left" : "Spring Quarter, 2018"
+    },
+    {
+      "header" : "Developed by Team Placeholder Name"
+    },
+    {
+      "header" : "Put Your Name Here",
+      "column_left" : "Optional Left Column",
+      "column_right" : "Optional Right Column"
+    },
+    {
+      "header" : "Put Your Name Here",
+      "column_left" : "Optional Left Column",
+      "column_right" : "Optional Right Column"
+    },
+    {
+      "header" : "Art",
+      "column_left" : "Malcolm Riley"
+    },
+    {
+        "header" : "Door Opening Sound",
+        "column_left" : "https://opengameart.org/content/door-open-door-close"
+    },
+    {
+      "header" : "Water Pouring Sound",
+      "column_left" : "https://opengameart.org/content/running-water"
+    },
+    {
+        "header" : "Uncorking Sound",
+        "column_left" : "https://freesound.org/people/Kyster/sounds/140615/"
+    },
+    {
+        "header" : "Bottle Clinking Sound",
+        "column_left" : "https://freesound.org/people/Fugeni/sounds/416288/"
+    },
+    {
+        "header" : "Bottle Breaking Sound",
+        "column_left" : "https://opengameart.org/content/breaking-bottle"
+    },
+    {
+        "header" : "Metal Sounds",
+        "column_left" : "https://opengameart.org/content/31-pings-and-metal-filing-sounds"
+    },
+    {
+        "header" : "Ominous Sound",
+        "column_left" : "https://freesound.org/people/bareform/sounds/218717/"
+    },
+    {
+        "header" : "Old Paper Texture",
+        "column_left" : "http://www.wildtextures.com/wp-content/uploads/2011/11/wildtextures-old-paper-texture-3.jpg"
+    },
+    {
+        "header" : "IM Fell English Font",
+        "column_left" : "https://fonts.google.com/specimen/IM+Fell+English"
+    }
+  ]
+}
