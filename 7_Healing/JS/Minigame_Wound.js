@@ -5,7 +5,8 @@ Minigame_Wound.prototype =
 {
 	preload: function()
 	{
-
+		this.load.path='../_Assets/images/';
+		this.load.image("hand", "hand.png");
 	},
 
 	create: function()
@@ -16,23 +17,26 @@ Minigame_Wound.prototype =
 		// creates an array to hold different images
 		select=["wound0","wound1","wound2","wound3"];
 
+		arm=game.add.sprite(-20,100,"hand");
+		arm.scale.set(.6);
+
 		// creates group of 'wounds' and enable physics
 		wound=game.add.group()
 		wound.enableBody=true;
 		for(i=0;i<diff+5;i++)
 		{
-
 			cut=wound.create(Math.random()*600+150,Math.random()*500+75,select[Math.floor(Math.random()*4)]);
 			cut.anchor.set(.5,.5);
-			cut.angle=Math.random()*360;
 			cut.scale.set(.3);
 			// change bounding box to be small and centered
 			cut.body.setSize(10,10,150,50);
 		}
 
-		// create a mortar and pestle
-		mortar=game.add.sprite(50,500,"bowl");
-		pestle=game.add.sprite(40,490,"pestle");
+		// create a mortar and pestle on a table
+		table=game.add.sprite(25,480,"table");
+		table.scale.set(.2,.5);
+		mortar=game.add.sprite(50,470,"bowl");
+		pestle=game.add.sprite(40,460,"pestle");
 		pestle.angle=-30;
 
 		// enables inputs on mortar and calls functions when clicked
@@ -86,7 +90,7 @@ Minigame_Wound.prototype =
 
 	makePoultice: function()
 	{
-		poultice=meds.create(100,520,"poultice");
+		poultice=meds.create(110,490,"poultice");
 		poultice.anchor.set(.5,.5);
 		poultice.angle=Math.random()*360;
 		// allows poultice to be draggable
