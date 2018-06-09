@@ -3,7 +3,7 @@ Credits.prototype =
 {
 	preload: function()
 	{
-
+		this.game.load.json("credits", "../3_Credits/credits.json");
 	},
 
 	create: function()
@@ -18,6 +18,14 @@ Credits.prototype =
 		let center_x = (game.camera.width / 2);
 		let center_y = (game.camera.height / 2);
 
+		// Build Credits
+		this.credits = game.cache.getJSON("credits").credits;
+		for (let index = 0; index < this.credits.length; index += 1) {
+			let iteratedEntry = this.credits[index];
+			let instance = new CreditsObject(this.game, center_x, center_y, iteratedEntry.header, iteratedEntry.column_left, iteratedEntry.column_right);
+			instance.alpha = 0;
+			this.credits[index] = instance;
+		}
 		// Add backdrop
 		createBackdrop(this, "backdrop");
 	},
