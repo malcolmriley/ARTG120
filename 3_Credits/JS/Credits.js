@@ -63,6 +63,12 @@ class CreditsObject {
 		this.y = passedYPosition;
 	}
 
+	destroy() {
+		if (this.header) { this.header.destroy() };
+		if (this.column_left) { this.column_left.destroy() };
+		if (this.column_right) { this.column_right.destroy() };
+	}
+
 	set alpha(passedValue) {
 		if (this.header) { this.header.alpha = passedValue };
 		if (this.column_left) { this.column_left.alpha = passedValue };
