@@ -15,15 +15,18 @@ Minigame_Wound.prototype =
 		// creates an array to hold different images
 		select=["wound0","wound1","wound2","wound3"];
 
-		arm=game.add.sprite(-20,0,"hand");
+		arm=game.add.sprite(-20,50,"hand");
 		arm.scale.set(.6,1);
+		arm.angle=-2;
+		game.physics.arcade.enable(arm);
+		arm.body.setSize(750,170,600,135);
 
 		// creates group of 'wounds' and enable physics
 		wound=game.add.group()
 		wound.enableBody=true;
 		for(i=0;i<5;i++)
 		{
-			cut=wound.create(Math.random()*500+300,Math.random()*120+200,select[Math.floor(Math.random()*4)]);
+			cut=wound.create(Math.random()*380+380,Math.random()*120+200,select[Math.floor(Math.random()*4)]);
 			cut.anchor.set(.5,.5);
 			cut.scale.set(.3);
 			// change bounding box to be small and centered
@@ -56,7 +59,7 @@ Minigame_Wound.prototype =
 		this.add.text(5,5,"Make poultices and apply to wounds.");
 
 		// local timer variable and prints
-		timer=10;
+		timer=1000;
 		timerText=this.add.text(600,5,'Time left : '+timer);
 	},
 
