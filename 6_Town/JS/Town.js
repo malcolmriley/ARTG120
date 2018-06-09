@@ -100,7 +100,7 @@ function initPlayer() {
 	let instance = game.add.sprite(0, 0, "character");
   	game.physics.arcade.enable(instance);
 	instance.scale.setTo(0.05, 0.05);
-	instance.enableBody = true;
+	instance.body.enable = true;
 	instance.body.collideWorldBounds=true;
 	return instance;
 }
@@ -108,7 +108,7 @@ function initPlayer() {
 //this creates a house by calling the House prefab and adding it to house group
 function makeHouse(group, height, width, i, j, player)
 {
-	let house = new House(game, "house", player, 100, height, width, i, j);
+	let house = new House(game, "house", player, height, width, i, j);
 	game.add.existing(house);
 	group.add(house);
 }
@@ -140,50 +140,78 @@ function goToInterior() {
 }
 
 //Ahhhh yes the house prefab. No prefab folders because this is actually the only one so I just left it in here
-function House(game, key, player, health, height, width, i, j)
+function House(game, key, player, height, width, i, j)
 {
 	Phaser.Sprite.call(this, game, j * width, i * height, key);
 
 	this.anchor.set(0.5);
 	
-	game.physics.enable(this);
+	game.physics.arcade.enable(this, this.player);
 	this.body.collideWorldBounds = true;
-	this.enableBody = true;
+	this.body.enable = true;
+	this.body.immovable = true;
 
-	/**The reason player is being passed is because there are some things I want 
-	 * each house itself to individually do when they interact with a player that might cause 
-	 * some error if done using the entire house group
-	 */
+	this.maxHealth = 100;
+	this.health = 70;
+	this.takeDamage = game.rnd.integerInRange(2, 5);
+	this.alive = true;
+
 	this.player = player;
-
+	this.enter = false;
 
 	scaleDown(this);
 
-	this.hp = game.add.text(this.x, (this.y - (this.width / 2) - 20),'Health: ' + health, {font: "20px"});
+	this.hp = game.add.text(this.x, (this.y - (this.width / 2) - 20),'Health: ' + this.health, {font: "20px"});
 }
 
 House.prototype = Object.create(Phaser.Sprite.prototype);
 House.prototype.constructor = House;
 
+House.prototype.create = function()
+{
+	this.timer = game.time.create(false);
+	this.timer.loop(5000, damage, this);
+	this.timer.start();
+}
+
 House.prototype.update = function()
 {
-	/**Check to see if there is overlap between the player and this house
-	 * and if there is then scale up by .2 to let the player know they can
-	 * do something to this house i.e. enter it
-	 * 
-	 * Once they enter they then get sent to one of two minigames. When the player
-	 * walks away from the house it scales back down to normal
-	 */
-	if(game.physics.arcade.overlap(this, this.player))
+	//constantly kill and recreate HP text
+	this.hp.kill();
+	this.hp = game.add.text(this.x, (this.y - (this.width / 2) - 20),'Health: ' + this.health, {font: "20px"});
+
+	console.log(this.timer);
+	console.log(this.health);
+
+	//check for overlap and if house is alive scale up for funsies, and enter house to play minigame
+	if(game.physics.arcade.overlap(this, this.player) && this.alive == true)
 	{
-			this.scale.setTo(.2);
+			this.scale.setTo(.15);
 			if(game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR))
 			{
 				console.log("Change states here");
+				this.enter = true;
 			}
+
 	}
+	//scale down when no overlap
 	else
 	{
 		scaleDown(this);
+	}
+
+	//if house was entered and is no longer alive disable the physics body
+	if(this.enter == true && this.alive == false)
+	{
+		this.body.enable = false;
+	}
+}
+
+House.prototype.damage = function()
+{
+	this.health -= this.takeDamage;
+	if(this.health <= 0)
+	{
+		this.alive = false;
 	}
 }
