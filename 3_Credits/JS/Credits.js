@@ -78,7 +78,7 @@ class CreditsObject {
 		let normalStyle = {
 			font : "normal", // TODO
 			align : "center",
-			fontSize: 26,
+			fontSize: 20,
 		};
 		let makeIfPresent = function(passedText, passedStyle) {
 			if (passedText) {
