@@ -15,15 +15,15 @@ Minigame_Wound.prototype =
 		// creates an array to hold different images
 		select=["wound0","wound1","wound2","wound3"];
 
-		arm=game.add.sprite(-20,100,"hand");
-		arm.scale.set(.6);
+		arm=game.add.sprite(-20,0,"hand");
+		arm.scale.set(.6,1);
 
 		// creates group of 'wounds' and enable physics
 		wound=game.add.group()
 		wound.enableBody=true;
-		for(i=0;i<diff+5;i++)
+		for(i=0;i<5;i++)
 		{
-			cut=wound.create(Math.random()*600+150,Math.random()*500+75,select[Math.floor(Math.random()*4)]);
+			cut=wound.create(Math.random()*500+300,Math.random()*120+200,select[Math.floor(Math.random()*4)]);
 			cut.anchor.set(.5,.5);
 			cut.scale.set(.3);
 			// change bounding box to be small and centered
