@@ -15,7 +15,7 @@ Town.prototype =
 {
 	preload: function()
 	{
-		
+
 	},
 
 	create: function()
@@ -41,7 +41,7 @@ Town.prototype =
 		//House group
 		this.group_houses = game.add.group();
 
-		/*This right here reads in the array and creates an evenly 
+		/*This right here reads in the array and creates an evenly
 		spaced grid for houses*/
 		for(var i = 0; i < town.length; i++)
 		{
@@ -124,7 +124,7 @@ function House(game, key, player, height, width, i, j)
 	Phaser.Sprite.call(this, game, j * width, i * height, key);
 
 	this.anchor.set(0.5);
-	
+
 	game.physics.arcade.enable(this, this.player);
 	this.body.collideWorldBounds = true;
 	this.body.enable = true;
@@ -152,6 +152,7 @@ function goToInterior() {
 	soundfx_door.play();
 	// TODO: Transition to other minigames as well
 	game.state.start(choose("Minigame_Alchemy", "Minigame_Wound"));
+}
 
 House.prototype = Object.create(Phaser.Sprite.prototype);
 House.prototype.constructor = House;
@@ -186,7 +187,7 @@ House.prototype.update = function()
 	}
 }
 
-//gradual damage to house, once it dies kill its timer 
+//gradual damage to house, once it dies kill its timer
 var damage = function()
 {
 	this.health -= this.takeDamage;
