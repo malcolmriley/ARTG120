@@ -25,11 +25,12 @@ Minigame_Wound.prototype =
 
 		for(i=0;i<3;i++)
 		{
-			this.spawnCuts(select[Math.floor(Math.random()*4)]);
+			this.spawnCuts();
 		}
 
-		//timer=game.time.create(false);
-		//timer.loop(3000,this.spawnCuts(select[Math.floor(Math.random()*4)]);
+		counter=game.time.create(false);
+		counter.loop(3000,this.spawnCuts,this);
+		counter.start();
 
 		// create a mortar and pestle on a table
 		table=game.add.sprite(25,480,"table");
@@ -84,8 +85,12 @@ Minigame_Wound.prototype =
 		}
 	},
 
-	spawnCuts: function(img)
+	test:function(){console.log("TEST");},
+
+	spawnCuts: function()
 	{
+		img=select[Math.floor(Math.random()*4)];
+
 		cut=game.add.group();
 		cut.enableBody=true;
 
