@@ -23,14 +23,16 @@ Minigame_Wound.prototype =
 		// creates group to hold amount of wounds
 		wound=game.add.group()
 
+		// initially spawns 3 cuts
 		for(i=0;i<3;i++)
 		{
 			this.spawnCuts();
 		}
 
-		counter=game.time.create(false);
-		counter.loop(3000,this.spawnCuts,this);
-		counter.start();
+		// timer that spawns cuts every 3 seconds
+		timer=game.time.create(false);
+		timer.loop(3000,this.spawnCuts,this);
+		timer.start();
 
 		// create a mortar and pestle on a table
 		table=game.add.sprite(25,480,"table");
@@ -41,7 +43,7 @@ Minigame_Wound.prototype =
 
 		// enables inputs on mortar and calls functions when clicked
 		mortar.inputEnabled=true;
-		mortar.events.onInputDown.add(this.makePoultice,this);
+		mortar.events.onInputDown.add(this.spawnPoultice,this);
 
 		// creates group of meds and enable physics
 		meds=game.add.group();
@@ -55,23 +57,24 @@ Minigame_Wound.prototype =
 		back.blendMode=2;
 
 		// instructions text
-		this.add.text(5,5,"Make poultices and apply to wounds.");
+		//this.add.text(5,5,"Make poultices and apply to wounds.");
 
 		// local timer variable and prints
-		timer=1000;
-		timerText=this.add.text(600,5,'Time left : '+timer);
+		//timer=1000;
+		//timerText=this.add.text(600,5,'Time left : '+timer);
 	},
 
 	update: function()
 	{
+		// continuously checks each cut in wound
 		wound.forEach(this.checkWound,this);
 
 		// updates timer
-		timer-=1/60;
-		timerText.text='Time left: '+timer.toFixed(2);
+		//timer-=1/60;
+		//timerText.text='Time left: '+timer.toFixed(2);
 
-		// goes to game over screen when time runs out
-		if(timer<0)
+		// goes to game over screen when there are 5 cuts
+		if(wound.countLiving()==5)
 		{
 			this.sound.stopAll();
 			this.state.start('MiniGameOver');
@@ -85,56 +88,75 @@ Minigame_Wound.prototype =
 		}
 	},
 
-	test:function(){console.log("TEST");},
-
+	// function to spawn cuts
 	spawnCuts: function()
 	{
+		// chooses which of the wounds to spawn
 		img=select[Math.floor(Math.random()*4)];
 
+		// creates a cut group and enable physics
 		cut=game.add.group();
 		cut.enableBody=true;
 
-		temp=cut.create(Math.random()*380+380,Math.random()*120+200,img);
-		temp.anchor.set(.5,.5);
-		temp.scale.set(.3);
-		// change bounding box to be small and centered
-		temp.body.setSize(10,10,150,50);
+		// variables to hold random location on arm
+		randX=Math.random()*380+380;
+		randY=Math.random()*120+200;
 
+		for(j=0;j<Math.floor(Math.random()*4+4);j++)
+		{
+			temp=cut.create(randX,randY,img);
+			temp.anchor.set(.5,.5);
+			temp.scale.set(.3);
+			// change bounding box to be small and centered
+			temp.body.setSize(10,10,Math.random()*300,Math.random()*50+25);
+		}
+
+		// adds cut to number of wounds
 		wound.add(cut);
 	},
 
-	makePoultice: function()
+	// function to spawn poultices
+	spawnPoultice: function()
 	{
 		poultice=meds.create(110,490,"poultice");
 		poultice.anchor.set(.5,.5);
 		poultice.angle=Math.random()*360;
+
 		// gives poultice a random amount of uses
 		poultice.use=Math.floor(Math.random()*4+1);
+
 		// allows poultice to be draggable
 		poultice.inputEnabled=true;
 		poultice.input.enableDrag();
 	},
 
+	// function that applies to every cut
 	checkWound: function(cut)
 	{
+		// checks for overlap between poultices and cuts
+		game.physics.arcade.overlap(meds,cut,this.remove);
+
+		// destroys cut group when healed
 		if(cut.countLiving()==0)
 		{
 			cut.destroy();
 		}
-		game.physics.arcade.overlap(meds,cut,this.remove);
 	},
 
-	// removes sprites when they touch
+	// function that removes sprites when they touch
 	remove: function(poultice,cut)
 	{
+		// decrements poultice uses from healing cuts
 		if(poultice.use>0)
 		{
 			poultice.use-=1;
 		}
+		// removes poultice when used up
 		else
 		{
 			poultice.kill();
 		}
+		// removes a portion of the cut when healed
 		cut.kill();
 	}
 }
