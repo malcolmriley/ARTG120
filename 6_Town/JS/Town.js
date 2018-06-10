@@ -15,12 +15,7 @@ Town.prototype =
 {
 	preload: function()
 	{
-		// TODO: Swap for atlas version.
-		game.load.image("character", "../_Assets/images/character.png");
-		game.load.image("house", "../_Assets/images/house.png");
-
-		// Load door open sound
-		game.load.audio("fx_door_creak", "../_Assets/sounds/door_open.wav");
+		
 	},
 
 	create: function()
@@ -153,6 +148,11 @@ function House(game, key, player, height, width, i, j)
 	this.hp = game.add.text(this.x, (this.y - (this.width / 2) - 20),'Health: ' + this.health, {font: "20px"});
 }
 
+function goToInterior() {
+	soundfx_door.play();
+	// TODO: Transition to other minigames as well
+	game.state.start(choose("Minigame_Alchemy", "Minigame_Wound"));
+
 House.prototype = Object.create(Phaser.Sprite.prototype);
 House.prototype.constructor = House;
 
@@ -167,8 +167,8 @@ House.prototype.update = function()
 			this.scale.setTo(.15);
 			if(game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR))
 			{
-				console.log("Change states here");
 				this.enter = true;
+        goToInterior();
 			}
 
 	}

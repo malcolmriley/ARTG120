@@ -8,23 +8,29 @@ Menu.prototype =
 
 	create: function()
 	{
-		game.add.text(0, 0, 'Menu. \n ENTER: Start Game \n C: Credits \n Z: Controls');
-		game.stage.backgroundColor = '#ffffff';
+		layer_background = this.game.add.group();
+
+		// Set up temp variables
+		let elementPadding = 50;
+		let center_x = (game.camera.width / 2);
+		let center_y = (game.camera.height / 2);
+
+		// Make title Sprite
+		title = layer_background.create(center_x, (game.camera.height * 0.3), "title");
+		centerAnchor(title);
+
+		// Add buttons
+		button_play = createMenuButton(this, center_x, (title.y + elementPadding + (title.height / 2)), layer_background, "text_play", function(){ this.game.state.start("Town"); });
+		button_credits = createMenuButton(this, center_x, (button_play.y + elementPadding + button_play.height), layer_background, "text_credits", function(){ this.game.state.start("Credits")});
+
+		// TODO: Add names/course title to screen?
+
+	  // Add Backdrop
+		createBackdrop(this, "backdrop");
 	},
 
 	update: function()
 	{
-		if(game.input.keyboard.isDown(Phaser.Keyboard.ENTER))
-		{
-			game.state.start('Town');
-		}
-		else if(game.input.keyboard.isDown(Phaser.Keyboard.C))
-		{
-			game.state.start('Credits');
-		}
-		else if(game.input.keyboard.isDown(Phaser.Keyboard.Z))
-		{
-			game.state.start('Controls');
-		}
+
 	}
 }

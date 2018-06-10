@@ -8,21 +8,37 @@ GameOver.prototype =
 
 	create: function()
 	{
-		game.add.text(0, 0, "GameOver \n ENTER: Menu \n R: Town (Restart)");
-		game.stage.backgroundColor = '#ffffff';
+		this.fadeDuration = 600;
+		// Fade From Black
+		this.camera.flash("#000000", this.fadeDuration);
+
+		// Add UI Layer
+		layer_ui = this.game.add.group();
+
+		// Add screen elements
+		let elementPadding = 50;
+		let center_x = (game.camera.width / 2);
+		let center_y = (game.camera.height / 2);
+		this.grave = layer_ui.create(center_x, center_y, "grave");
+		centerAnchor(this.grave);
+
+		let deathtoll = 5849085; // TODO: Change when plugged into town.
+		this.deathText = this.game.add.text(center_x, 30, "Death Toll: " + deathtoll, { align: "center" });
+		centerAnchor(this.deathText);
+
+		let goToMenu = function() {
+			this.camera.fade("#000000", this.fadeDuration);
+			this.camera.onFadeComplete.add(function(){ this.game.state.start("Menu") });
+		};
+
+		this.button_quit = createMenuButton(this, center_x, (this.grave.y + elementPadding + (this.grave.height / 2)), layer_ui, "text_gameover", goToMenu);
+
+		// Add backdrop
+		createBackdrop(this, "backdrop");
 	},
 
 	update: function()
 	{
-		if(game.input.keyboard.isDown(Phaser.Keyboard.ENTER))
-		{
-			diff=0;
-			game.state.start('Menu');
-		}
-		else if(game.input.keyboard.isDown(Phaser.Keyboard.R))
-		{
-			diff=0;
-			game.state.start('Town');
-		}
-	}
+
+	},
 }
