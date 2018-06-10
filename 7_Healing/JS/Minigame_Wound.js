@@ -15,22 +15,22 @@ Minigame_Wound.prototype =
 		// creates an array to hold different images
 		select=["wound0","wound1","wound2","wound3"];
 
+		// creates arm sprite
 		arm=game.add.sprite(-20,50,"hand");
 		arm.scale.set(.6,1);
 		arm.angle=-2;
-		game.physics.arcade.enable(arm);
-		arm.body.setSize(750,170,600,135);
 
-		// creates group of 'wounds' and enable physics
+		// creates group to hold amount of wounds
 		wound=game.add.group()
-		wound.enableBody=true;
-		for(i=0;i<5;i++)
+
+		for(i=0;i<3;i++)
 		{
-			cut=wound.create(Math.random()*380+380,Math.random()*120+200,select[Math.floor(Math.random()*4)]);
-			cut.anchor.set(.5,.5);
-			cut.scale.set(.3);
-			// change bounding box to be small and centered
-			cut.body.setSize(10,10,150,50);
+			// creates a group of cuts and enable physics
+			cut=game.add.group();
+			cut.enableBody=true;
+			this.spawnCuts(cut,select[Math.floor(Math.random()*4)]);
+			// adds cut to number of wounds
+			wound.add(cut);
 		}
 
 		// create a mortar and pestle on a table
@@ -65,12 +65,11 @@ Minigame_Wound.prototype =
 
 	update: function()
 	{
+		wound.forEach(this.checkWound,this);
+
 		// updates timer
 		timer-=1/60;
 		timerText.text='Time left: '+timer.toFixed(2);
-
-		// checks for overlap between groups
-		this.game.physics.arcade.overlap(meds,wound,this.remove);
 
 		// goes to game over screen when time runs out
 		if(timer<0)
@@ -87,20 +86,47 @@ Minigame_Wound.prototype =
 		}
 	},
 
+	spawnCuts: function(container,img)
+	{
+		temp=container.create(Math.random()*380+380,Math.random()*120+200,img);
+		temp.anchor.set(.5,.5);
+		temp.scale.set(.3);
+		// change bounding box to be small and centered
+		temp.body.setSize(10,10,150,50);
+	},
+
 	makePoultice: function()
 	{
 		poultice=meds.create(110,490,"poultice");
 		poultice.anchor.set(.5,.5);
 		poultice.angle=Math.random()*360;
+		// gives poultice a random amount of uses
+		poultice.use=Math.floor(Math.random()*4+1);
 		// allows poultice to be draggable
 		poultice.inputEnabled=true;
 		poultice.input.enableDrag();
 	},
 
-	// removes sprites when they touch
-	remove: function(sprite1,sprite2)
+	checkWound: function(cut)
 	{
-		sprite1.kill();
-		sprite2.kill();
+		if(cut.countLiving()==0)
+		{
+			cut.destroy();
+		}
+		game.physics.arcade.overlap(meds,cut,this.remove);
+	},
+
+	// removes sprites when they touch
+	remove: function(poultice,cut)
+	{
+		if(poultice.use>0)
+		{
+			poultice.use-=1;
+		}
+		else
+		{
+			poultice.kill();
+		}
+		cut.kill();
 	}
 }
