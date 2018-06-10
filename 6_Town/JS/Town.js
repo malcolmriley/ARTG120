@@ -62,7 +62,7 @@ Town.prototype =
 		//give the houses group physics
 		game.physics.arcade.enable(this.group_houses);
 		// Create Text Overlay
-		game.add.text(0, 0, "Town \n Click to enter house.");
+		//game.add.text(0, 0, "Town \n Click to enter house.");
 	},
 
 	update: function()
@@ -152,7 +152,7 @@ function House(game, key, player, height, width, i, j)
 	this.body.immovable = true;
 
 	this.maxHealth = 100;
-	this.health = 70;
+	this.health = game.rnd.integerInRange(50, 70);
 	this.takeDamage = game.rnd.integerInRange(2, 5);
 	this.alive = true;
 
