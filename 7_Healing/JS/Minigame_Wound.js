@@ -25,13 +25,11 @@ Minigame_Wound.prototype =
 
 		for(i=0;i<3;i++)
 		{
-			// creates a group of cuts and enable physics
-			cut=game.add.group();
-			cut.enableBody=true;
-			this.spawnCuts(cut,select[Math.floor(Math.random()*4)]);
-			// adds cut to number of wounds
-			wound.add(cut);
+			this.spawnCuts(select[Math.floor(Math.random()*4)]);
 		}
+
+		//timer=game.time.create(false);
+		//timer.loop(3000,this.spawnCuts(select[Math.floor(Math.random()*4)]);
 
 		// create a mortar and pestle on a table
 		table=game.add.sprite(25,480,"table");
@@ -86,13 +84,18 @@ Minigame_Wound.prototype =
 		}
 	},
 
-	spawnCuts: function(container,img)
+	spawnCuts: function(img)
 	{
-		temp=container.create(Math.random()*380+380,Math.random()*120+200,img);
+		cut=game.add.group();
+		cut.enableBody=true;
+
+		temp=cut.create(Math.random()*380+380,Math.random()*120+200,img);
 		temp.anchor.set(.5,.5);
 		temp.scale.set(.3);
 		// change bounding box to be small and centered
 		temp.body.setSize(10,10,150,50);
+
+		wound.add(cut);
 	},
 
 	makePoultice: function()
