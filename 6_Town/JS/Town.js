@@ -7,6 +7,9 @@ var town = [
 	[0, 1, 2, 1, 2, 1, 0],
 	[0, 0, 0, 0, 0, 0, 0]
 ];
+
+var lostHouses = 0;
+var listMinigame = false;
 var Town = function(game) {};
 Town.prototype =
 {
@@ -90,9 +93,6 @@ Town.prototype =
 			this.player.body.velocity.y = 0;
 		}
 	}
-	// TODO: Enable travel to individual house
-	// House is a "button" right now for the simple fact of testing the functionality thereof.
-	// More likely, for the final implementation, the player will use some other control for entering an individual house.
 }
 
 //boilerplate for initializing a player
@@ -123,22 +123,6 @@ function scaleDown(passedSprite) {
 	passedSprite.scale.setTo(0.10, 0.10)
 }
 
-/* NOTE TO SELF: Make the scale functions more universal by allowing them to take in
-ant sclae factor. But also this can easily be done in one like, I don't know why we need these functions
-but I'm using them anyways so I guess I'll keep them for now
-*/
-
-/**This is supposed to be the function for entering a house
- * but I don't think there is much of a use for it because this is now being handeled in the 
- * House prefab update (but it can also be handeled in the main update; I guess whereever it 
- * will be more convenient in the end)
- */
-function goToInterior() {
-	soundfx_door.play();
-	// TODO: Transition to other minigames as well
-	game.state.start("Minigame_Wound");
-}
-
 //Ahhhh yes the house prefab. No prefab folders because this is actually the only one so I just left it in here
 function House(game, key, player, height, width, i, j)
 {
@@ -159,6 +143,7 @@ function House(game, key, player, height, width, i, j)
 	this.player = player;
 	this.enter = false;
 
+	//death clock, every 3 seconds damage function is called
 	this.timer = game.time.create(false);
 	this.timer.loop(3000, damage, this);
 	this.timer.start();
@@ -201,9 +186,12 @@ House.prototype.update = function()
 	if(this.enter == true && this.alive == false)
 	{
 		this.body.enable = false;
+		lostHouses++;
+		console.log(lostHouses);
 	}
 }
 
+//gradual damage to house, once it dies kill its timer 
 var damage = function()
 {
 	this.health -= this.takeDamage;
