@@ -159,6 +159,10 @@ function House(game, key, player, height, width, i, j)
 	this.player = player;
 	this.enter = false;
 
+	this.timer = game.time.create(false);
+	this.timer.loop(3000, damage, this);
+	this.timer.start();
+
 	scaleDown(this);
 
 	this.hp = game.add.text(this.x, (this.y - (this.width / 2) - 20),'Health: ' + this.health, {font: "20px"});
@@ -167,21 +171,14 @@ function House(game, key, player, height, width, i, j)
 House.prototype = Object.create(Phaser.Sprite.prototype);
 House.prototype.constructor = House;
 
-House.prototype.create = function()
-{
-	this.timer = game.time.create(false);
-	this.timer.loop(5000, damage, this);
-	this.timer.start();
-}
-
 House.prototype.update = function()
 {
 	//constantly kill and recreate HP text
 	this.hp.kill();
 	this.hp = game.add.text(this.x, (this.y - (this.width / 2) - 20),'Health: ' + this.health, {font: "20px"});
 
-	console.log(this.timer);
-	console.log(this.health);
+	//console.log(this.timer);
+	//console.log(this.health);
 
 	//check for overlap and if house is alive scale up for funsies, and enter house to play minigame
 	if(game.physics.arcade.overlap(this, this.player) && this.alive == true)
@@ -207,11 +204,13 @@ House.prototype.update = function()
 	}
 }
 
-House.prototype.damage = function()
+var damage = function()
 {
 	this.health -= this.takeDamage;
 	if(this.health <= 0)
 	{
 		this.alive = false;
+		this.timer.destroy();
+		this.health = 0;
 	}
 }
