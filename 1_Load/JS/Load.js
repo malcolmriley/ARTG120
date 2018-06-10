@@ -72,6 +72,7 @@ function loadTextures() {
 	this.image("bowl","bowl.png");
 	this.image("pestle","pestle.png");
 	this.image("poultice","resin_huge.png");
+	this.image("hand","hand.png");
 
 	// Game Over
 	this.image("grave", "grave.png");
@@ -100,6 +101,8 @@ function loadAudio() {
 
 	// Wound
 	this.audio('background', ['Midnightcem.ogg', "Midnightcem.wav"]);
+	this.audio("squirt","squirt.wav");
+	this.audio("cloth","cloth.wav");
 }
 
 class LoadHelper {

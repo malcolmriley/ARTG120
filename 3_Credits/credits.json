@@ -16,9 +16,8 @@
       "column_right" : "Optional Right Column"
     },
     {
-      "header" : "Put Your Name Here",
-      "column_left" : "Optional Left Column",
-      "column_right" : "Optional Right Column"
+      "header" : "Programming",
+      "column_left" : "Hung 'Mickey' Hinh"
     },
     {
       "header" : "Art",
@@ -51,6 +50,14 @@
     {
         "header" : "Ominous Sound",
         "column_left" : "https://freesound.org/people/bareform/sounds/218717/"
+    },
+    {
+        "header" : "Cloth/bandage Sound",
+        "column_left" : "http://soundbible.com/1798-Cloth.html"
+    },
+    {
+        "header" : "Squirt Sound",
+        "column_left" : "http://soundbible.com/828-Blood-Squirt.html"
     },
     {
         "header" : "Old Paper Texture",
