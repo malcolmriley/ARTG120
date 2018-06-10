@@ -158,12 +158,8 @@ House.prototype.constructor = House;
 
 House.prototype.update = function()
 {
-	//constantly kill and recreate HP text
-	this.hp.kill();
-	this.hp = game.add.text(this.x, (this.y - (this.width / 2) - 20),'Health: ' + this.health, {font: "20px"});
-
-	//console.log(this.timer);
-	//console.log(this.health);
+	//updates text
+	this.hp.setText('Health: ' + this.health, {font: "20px"});
 
 	//check for overlap and if house is alive scale up for funsies, and enter house to play minigame
 	if(game.physics.arcade.overlap(this, this.player) && this.alive == true)
@@ -187,7 +183,6 @@ House.prototype.update = function()
 	{
 		this.body.enable = false;
 		lostHouses++;
-		console.log(lostHouses);
 	}
 }
 
