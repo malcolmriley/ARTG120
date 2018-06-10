@@ -3,12 +3,14 @@ Minigame_Wound.prototype =
 {
 	preload: function()
 	{
-		this.load.path='../_Assets/images/';
-		this.load.image("hand", "hand.png");
+
 	},
 
 	create: function()
 	{
+		squirt=game.add.audio("squirt");
+		cloth=game.add.audio("cloth");
+
 		// enables physics system
 		this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -49,42 +51,36 @@ Minigame_Wound.prototype =
 		meds=game.add.group();
 		meds.enableBody=true;
 
-		music_background=this.add.audio('background');
-		music_background.play();
+		//music_background=this.add.audio('background');
+		//music_background.play();
+
+		counter=game.add.text(400,20,"Cuts:");
 
 		// add background
 		back=game.add.sprite(0,0,"bg");
 		back.blendMode=2;
-
-		// instructions text
-		//this.add.text(5,5,"Make poultices and apply to wounds.");
-
-		// local timer variable and prints
-		//timer=1000;
-		//timerText=this.add.text(600,5,'Time left : '+timer);
 	},
 
 	update: function()
 	{
+		counter.text="Cuts: "+wound.countLiving();
+
 		// continuously checks each cut in wound
 		wound.forEach(this.checkWound,this);
-
-		// updates timer
-		//timer-=1/60;
-		//timerText.text='Time left: '+timer.toFixed(2);
 
 		// goes to game over screen when there are 5 cuts
 		if(wound.countLiving()==5)
 		{
-			this.sound.stopAll();
-			this.state.start('MiniGameOver');
+			//this.sound.stopAll();
+			game.state.start('MiniGameOver');
 		}
 
 		// goes back to town if cured
 		if(wound.countLiving()==0)
 		{
-			this.sound.stopAll();
-			this.state.start('Town');
+			//this.sound.stopAll();
+			cloth.play();
+			game.state.start('Town');
 		}
 	},
 
@@ -118,6 +114,8 @@ Minigame_Wound.prototype =
 	// function to spawn poultices
 	spawnPoultice: function()
 	{
+		squirt.play();		
+
 		poultice=meds.create(110,490,"poultice");
 		poultice.anchor.set(.5,.5);
 		poultice.angle=Math.random()*360;
