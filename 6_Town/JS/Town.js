@@ -1,3 +1,6 @@
+health=[[100,100,100],[100,100,100],[100,100,100]];
+dead=0;
+
 var Town = function(game) {};
 Town.prototype =
 {
@@ -8,34 +11,36 @@ Town.prototype =
 
 	create: function()
 	{
-		game.stage.backgroundColor = '#f0f0f0';
+		// initializes physics and world
+		game.physics.startSystem(Phaser.Physics.ARCADE);
 
 		// Load sounds
 		soundfx_door = game.add.audio("fx_door_creak");
 
-		// Create House Grid
-		group_houses = game.add.group();
-		layer_foreground = game.add.group();
+		//Houses group
+		houses=game.add.group();
 
-		let startX = 200;
-		let startY = 30;
-		for(let row = 0; row < 3; row += 1) {
-			for (let column = 0; column < 3; column += 1) {
-				let house = group_houses.create(0, 0, "house");
-				scaleDown(house, this); // Set initial sprite scaling
-				house.x = startX + row * (10 + house.width);
-				house.y = startY + column * (10 + house.width);
-				makeButton(house, this, goToInterior);
-				makeMouseover(house, this, scaleUp, scaleDown);
+		for(i=0;i<health.length;i++)
+		{
+			for(j=0;j<health[i].length;j++)
+			{
+				house=houses.create(250*i+150,200*j+40,"house");
+				house.scale.set(.5);
+				house.row=i;
+				house.col=j;
+				house.hp=game.add.text(250*i+150,200*j+20,'health: '+health[i][j]);
 			}
 		}
 
 		// Create Player
-		player = initPlayer();
+		player=initPlayer();
 
-		// Create Text Overlay
-		game.add.text(0, 0, "Town \n Click to enter house.");
+		// enables physics bodies for all sprites
+		game.physics.arcade.enable([player,houses]);
+		player.body.collideWorldBounds=true;
 
+		createBackdrop(this, "backdrop");
+    
 		// Make cursors for player control
 		cursors = game.input.keyboard.createCursorKeys();
 
@@ -65,52 +70,87 @@ Town.prototype =
 
 	update: function()
 	{
-		// TODO: Better movement system. Right now, left takes precedence over right, and up over down
-		// Also, velocity is preserved in a really dumb way (doesn't reset until ALL keys are released)
-		// For now, the Swensen Bubblegum and Shoestring Method will have to do.
-		let playerSpeed = 150;
-		if (cursors.left.isDown) {
-			player.body.velocity.x = -playerSpeed;
+		//player movement
+		if(game.input.keyboard.isDown(Phaser.Keyboard.A))
+		{
+			player.x-=5;
+			player.scale.set(-1,1);
 		}
-		else if (cursors.right.isDown) {
-				player.body.velocity.x = playerSpeed;
+		else if(game.input.keyboard.isDown(Phaser.Keyboard.D))
+		{
+			player.x+=5;
+			player.scale.set(1);
 		}
-		else if (cursors.up.isDown) {
-			player.body.velocity.y = -playerSpeed;
+		if(game.input.keyboard.isDown(Phaser.Keyboard.W))
+		{
+			player.y-=5;
 		}
-		else if (cursors.down.isDown) {
-				player.body.velocity.y = playerSpeed;
+		else if(game.input.keyboard.isDown(Phaser.Keyboard.S))
+		{
+			player.y+=5;
 		}
-		else {
-			player.body.velocity.x = 0;
-			player.body.velocity.y = 0;
-		}
-	}
 
-	// TODO: Enable travel to individual house
-	// House is a "button" right now for the simple fact of testing the functionality thereof.
-	// More likely, for the final implementation, the player will use some other control for entering an individual house.
+		// checks if player inputs button when on house
+		game.physics.arcade.overlap(player,houses,this.checkInput);
+		// checks each house sprite and updates their properties
+		houses.forEach(this.updateHouse,this);
+
+		if(Math.random()<.2)
+		{
+			health[Math.floor(Math.random()*3)][Math.floor(Math.random()*3)]-=1;
+		}
+
+		// ends the game when enough has died
+		if(dead==5)
+		{
+			game.state.start('GameOver');
+		}
+
+	},
+
+	checkInput: function(player,house)
+	{
+		// checks if player is interacting with houses
+		if(game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR))
+		{
+			// simple function to play sound and begin minigames
+			goToInterior(house.row,house.col);
+		}
+	},
+
+	updateHouse: function(house)
+	{
+		// if house is dead
+		if(health[house.row][house.col]<1)
+		{
+			// disable interaction and remove text
+			house.body.enable=false;
+			house.hp.text='';
+			// increases death count when health hits 0
+			if(health[house.row][house.col]==0)
+			{
+				dead++;
+				// sets health to negative so dead doesn't increase for multiple ticks
+				health[house.row][house.col]=-1;	
+			}
+		}
+		else
+		{
+			// otherwise, update health text
+			house.hp.text='health: '+health[house.row][house.col];
+		}
+},
+//,render:function(){game.debug.body(this.player);game.debug.physicsGroup(group_houses);}
 }
 
+//boilerplate for initializing a player
 function initPlayer() {
-	let instance = game.add.sprite(0, 0, "character");
-  game.physics.arcade.enable(instance);
-	instance.scale.setTo(0.1, 0.1);
-	instance.enableBody = true;
-	instance.body.collideWorldBounds=true;
+	instance=game.add.sprite(50,250,"character");
+	instance.anchor.set(.5,0);
 	return instance;
 }
 
-function scaleUp(passedSprite, passedReference) {
-	passedSprite.scale.setTo(0.185, 0.185);
-}
-
-function scaleDown(passedSprite, passedReference) {
-	passedSprite.scale.setTo(0.15, 0.15)
-}
-
-function goToInterior() {
+function goToInterior(row,col) {
 	soundfx_door.play();
-	// TODO: Transition to other minigames as well
-	game.state.start(choose("Minigame_Alchemy", "Minigame_Wound"));
+	game.state.start(choose("Minigame_Alchemy", "Minigame_Wound"),true,false,row,col);
 }

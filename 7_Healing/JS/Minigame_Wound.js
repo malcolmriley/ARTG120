@@ -1,9 +1,10 @@
 var Minigame_Wound = function(game) {};
 Minigame_Wound.prototype =
 {
-	preload: function()
+	init: function(x,y)
 	{
-
+		row=x;
+		col=y;
 	},
 
 	create: function()
@@ -125,6 +126,13 @@ Minigame_Wound.prototype =
 			// goes to game over screen when there are 5 cuts
 			if(wound.countLiving()==5)
 			{
+        health[row][col]-=Math.floor(Math.random()*10)+10;
+			  // add to dead if happen to fail during minigame
+		  	if(health[num]<1)
+		  	{
+		  		dead++;	
+		  	}
+        
 				//this.sound.stopAll();
 				game.state.start('MiniGameOver');
 			}
@@ -132,6 +140,12 @@ Minigame_Wound.prototype =
 			// goes back to town if cured
 			if(wound.countLiving()==0)
 			{
+        health[row][col]+=Math.floor(Math.random()*10)+5;
+		  	// set a cap for mamximum health
+			  if(health[row][col]>100)
+	  		{
+	  			health[row][col]=100;
+  			}
 				//this.sound.stopAll();
 				cloth.play();
 				game.state.start('Town');
@@ -176,7 +190,7 @@ Minigame_Wound.prototype =
 		poultice.angle=Math.random()*360;
 
 		// gives poultice a random amount of uses
-		poultice.use=Math.floor(Math.random()*4+1);
+		poultice.use=Math.floor(Math.random()*4+3);
 
 		// allows poultice to be draggable
 		poultice.inputEnabled=true;
