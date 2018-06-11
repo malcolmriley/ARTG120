@@ -1,6 +1,12 @@
 var Minigame_Alchemy = function(game) {};
 Minigame_Alchemy.prototype =
 {
+	init: function(x,y)
+	{
+		row=x;
+		col=y;	
+	},
+
 	preload: function()
 	{
 		// Define colors
@@ -70,6 +76,13 @@ Minigame_Alchemy.prototype =
 				// See if the objective is fulfilled anywhere in the workspace
 				if (checkObjective(object, objective)) {
 					// TODO: Win state goes here.
+					health[row][col]+=Math.floor(Math.random()*10)+5;
+					// set a cap for mamximum health
+					if(health[row][col]>100)
+					{
+						health[row][col]=100;
+					}
+
 					console.log("WIN");
 					this.game.state.start("Town");
 				}
@@ -78,6 +91,13 @@ Minigame_Alchemy.prototype =
 		// If there isn't enough volume to make a potion, you lose
 		if (objective) {
 			if (totalVolume < objective.quantity) {
+				health[row][col]-=Math.floor(Math.random()*10)+10;
+				// add to dead if happen to fail during minigame
+				if(health[num]<1)
+				{
+					dead++;	
+				}
+
 				this.game.state.start("MiniGameOver");
 			}
 		}
