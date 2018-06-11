@@ -103,6 +103,7 @@ function makeDraggable(passedSprite, passedReference, passedDragStartAction, pas
  * passedMouseOutAction - The function to be executed when the mouse exits passedSprite
  */
 function makeMouseover(passedSprite, passedReference, passedMouseOverAction, passedMouseOutAction) {
+  passedSprite.inputEnabled = true;
   passedSprite.events.onInputOver.add(passedMouseOverAction.bind(passedReference));
   if (passedMouseOutAction != undefined) {
     passedSprite.events.onInputOut.add(passedMouseOutAction.bind(passedReference));
