@@ -93,7 +93,7 @@ Town.prototype =
 		if(game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR))
 		{
 			// simple function to play sound and begin minigames
-			goToInterior(house.row);
+			goToInterior(house.row,house.col);
 		}
 	},
 
@@ -141,7 +141,7 @@ function scaleDown(passedSprite) {
 
 //this.hp = game.add.text(this.x, (this.y - (this.width / 2) - 20),'Health: ' + this.health, {font: "20px"})
 
-function goToInterior(something) {
+function goToInterior(row,col) {
 	soundfx_door.play();
-	game.state.start(choose("Minigame_Alchemy", "Minigame_Wound"),true,false);
+	game.state.start(choose("Minigame_Alchemy", "Minigame_Wound"),true,false,row,col);
 }
