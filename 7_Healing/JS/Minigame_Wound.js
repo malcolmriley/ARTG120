@@ -53,33 +53,36 @@ Minigame_Wound.prototype =
 		counter=game.add.text(400,20,"Cuts:");
 
 		// Add Tutorial
-		this.splash = new TutorialSplash(this.game, layer_foreground);
-		let drawDiagram1 = function(passedData, passedScreen) {
-			passedData.sprite = this.game.add.sprite(0, 0, "ui_tutorial_wound_1");
-			centerAnchor(passedData.sprite);
-			passedScreen.addChild(passedData.sprite);
-		};
-		let drawDiagram2 = function(passedData, passedScreen) {
-			passedData.sprite = this.game.add.sprite(0, 0, "ui_tutorial_wound_2");
-			centerAnchor(passedData.sprite);
-			passedScreen.addChild(passedData.sprite);
-		};
-		let eraseDiagram = function(passedData, passedScreen) {
-			passedData.sprite.destroy();
-		};
-		this.splash.addDiagram(this, drawDiagram1, eraseDiagram);
-		this.splash.addDiagram(this, drawDiagram2, eraseDiagram);
-		this.splash.addOnComplete(this, function(){
-			// The tutorial is over!
-			this.tutorial = false;
+		if (!sessionStorage.getItem("tutorial_wound")) {
+			this.splash = new TutorialSplash(this.game, layer_foreground);
+			let drawDiagram1 = function(passedData, passedScreen) {
+				passedData.sprite = this.game.add.sprite(0, 0, "ui_tutorial_wound_1");
+				centerAnchor(passedData.sprite);
+				passedScreen.addChild(passedData.sprite);
+			};
+			let drawDiagram2 = function(passedData, passedScreen) {
+				passedData.sprite = this.game.add.sprite(0, 0, "ui_tutorial_wound_2");
+				centerAnchor(passedData.sprite);
+				passedScreen.addChild(passedData.sprite);
+			};
+			let eraseDiagram = function(passedData, passedScreen) {
+				passedData.sprite.destroy();
+			};
+			this.splash.addDiagram(this, drawDiagram1, eraseDiagram);
+			this.splash.addDiagram(this, drawDiagram2, eraseDiagram);
+			this.splash.addOnComplete(this, function(){
+				// The tutorial is over!
+				this.tutorial = false;
 
-			// Add timer that spawns cuts every 3 seconds
-			timer=game.time.create(false);
-			timer.loop(3000,this.spawnCuts,this);
-			timer.start();
-		});
-		this.splash.begin();
-		this.tutorial = true;
+				// Add timer that spawns cuts every 3 seconds
+				timer=game.time.create(false);
+				timer.loop(3000,this.spawnCuts,this);
+				timer.start();
+			});
+			this.splash.begin();
+			this.tutorial = true;
+			sessionStorage.setItem("tutorial_wound", true);
+		}
 
 		// add background
 		createBackdrop(this, "backdrop");
