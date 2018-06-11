@@ -23,7 +23,8 @@ Minigame_Wound.prototype =
 		arm.angle=-2;
 
 		// creates group to hold amount of wounds
-		wound=game.add.group()
+		wound=game.add.group();
+		layer_foreground = game.add.group();
 
 		// initially spawns 3 cuts
 		for(i=0;i<3;i++)
@@ -114,7 +115,7 @@ Minigame_Wound.prototype =
 	// function to spawn poultices
 	spawnPoultice: function()
 	{
-		squirt.play();		
+		squirt.play();
 
 		poultice=meds.create(110,490,"poultice");
 		poultice.anchor.set(.5,.5);
