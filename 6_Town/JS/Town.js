@@ -13,7 +13,6 @@ Town.prototype =
 	{
 		// initializes physics and world
 		game.physics.startSystem(Phaser.Physics.ARCADE);
-
 		// Load sounds
 		soundfx_door = game.add.audio("fx_door_creak");
 
@@ -35,6 +34,8 @@ Town.prototype =
 
 		// Create Player
 		player=initPlayer();
+
+		layer_foreground=game.add.group();
 
 		// enables physics bodies for all sprites
 		game.physics.arcade.enable([player,houses]);
