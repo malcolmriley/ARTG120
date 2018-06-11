@@ -85,6 +85,7 @@ function loadTextures() {
 	this.image("ui_tutorial_alchemy_1", "ui_tutorial_alchemy_1.png");
 	this.image("ui_tutorial_alchemy_2", "ui_tutorial_alchemy_2.png");
 	this.image("ui_tutorial_wound_1", "ui_tutorial_wound_1.png");
+	this.image("ui_tutorial_wound_2", "ui_tutorial_wound_2.png");
 	this.image("ui_tutorial", "ui_tutorial.png");
 	this.image("ui_x", "ui_x.png");
 }
