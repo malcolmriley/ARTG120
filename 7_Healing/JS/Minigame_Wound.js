@@ -128,7 +128,7 @@ Minigame_Wound.prototype =
 			{
         health[row][col]-=Math.floor(Math.random()*10)+10;
 			  // add to dead if happen to fail during minigame
-		  	if(health[num]<1)
+		  	if(health[row][col]<1)
 		  	{
 		  		dead++;	
 		  	}
