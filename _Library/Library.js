@@ -148,6 +148,14 @@ function spritesOverlap(passedFirstSprite, passedSecondSprite) {
     return Phaser.Rectangle.intersects(passedFirstSprite.getBounds(), passedSecondSprite.getBounds());
 }
 
+/**
+ * TutorialSplash utility class. Basically a sequence of splashes that the player may click through, but it can be used
+ * for nearly anything. Call addDiagram to add funcitons that will be executed when the tutorial is clicked through.
+ *
+ * passedGame - A reference to the game object
+ * The remaining parameter is optional:
+ * passedGroup - The group to add this TutorialSplash to.
+ */
 class TutorialSplash extends Phaser.Sprite {
   constructor(passedGame, passedGroup) {
     super(passedGame, (passedGame.camera.width / 2), (passedGame.camera.height / 2), "ui_tutorial");
