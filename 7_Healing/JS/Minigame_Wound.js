@@ -93,7 +93,6 @@ Minigame_Wound.prototype =
 				// The tutorial is over!
 				sessionStorage.setItem("tutorial_wound", true);
 				this.tutorial = false;
-				this.addTimer();
 			});
 			this.splash.begin();
 			this.tutorial = true;
