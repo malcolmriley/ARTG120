@@ -15,6 +15,8 @@ Town.prototype =
 
 		// Create House Grid
 		group_houses = game.add.group();
+		layer_foreground = game.add.group();
+
 		let startX = 200;
 		let startY = 30;
 		for(let row = 0; row < 3; row += 1) {
