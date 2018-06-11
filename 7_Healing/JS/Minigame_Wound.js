@@ -92,7 +92,7 @@ Minigame_Wound.prototype =
 		// continuously checks each cut in wound
 		wound.forEach(this.checkWound,this);
 
-		// Don't
+		// Don't do checks during tutorial
 		if (!this.tutorial) {
 			// goes to game over screen when there are 5 cuts
 			if(wound.countLiving()==5)
