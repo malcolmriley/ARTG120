@@ -189,6 +189,9 @@ class TutorialSplash extends Phaser.Sprite {
         this.diagram_index += 1;
       }
       else {
+        if (this.onComplete) {
+          this.onComplete();
+        }
         this.destroy();
       }
     }
@@ -204,6 +207,10 @@ class TutorialSplash extends Phaser.Sprite {
       begin : (passedOnCreate) ? passedOnCreate.bind(passedReference) : {},
       end : (passedOnDestroy) ? passedOnDestroy.bind(passedReference) : {}
     }
+  }
+
+  addOnComplete(passedReference, passedOnComplete) {
+    this.onComplete = passedOnComplete.bind(passedReference);
   }
 
   begin() {
