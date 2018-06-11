@@ -4,7 +4,7 @@ Boot.prototype =
 	preload: function()
 	{
 			// Load stuff needed for load screen
-			this.load.path = "../_Assets/images/";
+			this.load.path = "_Assets/images/";
       this.game.load.image("progressbar", "progressbar.png");
       this.game.load.image("progressbar_background", "progressbar_background.png");
 
