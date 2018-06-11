@@ -29,17 +29,17 @@ Town.prototype =
 		soundfx_door = game.add.audio("fx_door_creak");
 
 		// Create Player
-		this.player = initPlayer();
+		player = initPlayer();
 
 		/*grab the width and height of the house image to
 		use for positioning houses in a grid, round numbers*/
 		var width = game.cache.getImage("house").width;
-		width = Math.ceil(width * .10);
+		width = Math.ceil(width * .5);
 		var height = game.cache.getImage("house").height;
-		height = Math.ceil(height * .10);
+		height = Math.ceil(height * .3);
 
 		//House group
-		this.group_houses = game.add.group();
+		group_houses = game.add.group();
 
 		/*This right here reads in the array and creates an evenly
 		spaced grid for houses*/
@@ -50,15 +50,15 @@ Town.prototype =
 			{
 				if(town[i][j] == 1)
 				{
-					makeHouse(this.group_houses, height, width, i, j, this.player);
+					makeHouse(group_houses, height, width, i, j, player);
 				}
 			}
 		}
 
 		//send the houses to back b/c they appear above player
-		game.world.sendToBack(this.group_houses);
+		game.world.sendToBack(group_houses);
 		//give the houses group physics
-		game.physics.arcade.enable(this.group_houses);
+		game.physics.arcade.enable(group_houses);
 		// Create Text Overlay
 		//game.add.text(0, 0, "Town \n Click to enter house.");
 	},
@@ -66,35 +66,35 @@ Town.prototype =
 	update: function()
 	{
 		//player movement
-		let playerSpeed = 150;
 		if(game.input.keyboard.isDown(Phaser.Keyboard.A))
 		{
-			this.player.x -= 5;
+			player.x -= 5;
 		}
 		else if(game.input.keyboard.isDown(Phaser.Keyboard.D))
 		{
-			this.player.x += 5;
+			player.x += 5;
 		}
 		if(game.input.keyboard.isDown(Phaser.Keyboard.W))
 		{
-			this.player.y -= 5;
+			player.y -= 5;
 		}
 		else if(game.input.keyboard.isDown(Phaser.Keyboard.S))
 		{
-			this.player.y += 5;
+			player.y += 5;
 		}
 		else {
-			this.player.body.velocity.x = 0;
-			this.player.body.velocity.y = 0;
+			player.body.velocity.x = 0;
+			player.body.velocity.y = 0;
 		}
 	}
+//,render:function(){game.debug.body(this.player);game.debug.physicsGroup(group_houses);}
 }
 
 //boilerplate for initializing a player
 function initPlayer() {
 	let instance = game.add.sprite(0, 0, "character");
   	game.physics.arcade.enable(instance);
-	instance.scale.setTo(0.05, 0.05);
+	instance.scale.setTo(1);
 	instance.body.enable = true;
 	instance.body.collideWorldBounds=true;
 	return instance;
@@ -110,12 +110,12 @@ function makeHouse(group, height, width, i, j, player)
 
 //a function to scale up a sprite
 function scaleUp(passedSprite, passedReference) {
-	passedSprite.scale.setTo(0.185, 0.185);
+	passedSprite.scale.setTo(.6);
 }
 
 //a function to scale down a sprite
 function scaleDown(passedSprite) {
-	passedSprite.scale.setTo(0.10, 0.10)
+	passedSprite.scale.setTo(.4);
 }
 
 //Ahhhh yes the house prefab. No prefab folders because this is actually the only one so I just left it in here
@@ -126,9 +126,9 @@ function House(game, key, player, height, width, i, j)
 	this.anchor.set(0.5);
 
 	game.physics.arcade.enable(this, this.player);
-	this.body.collideWorldBounds = true;
+	//this.body.collideWorldBounds = true;
 	this.body.enable = true;
-	this.body.immovable = true;
+	//this.body.immovable = true;
 
 	this.maxHealth = 100;
 	this.health = game.rnd.integerInRange(50, 70);
@@ -148,10 +148,13 @@ function House(game, key, player, height, width, i, j)
 	this.hp = game.add.text(this.x, (this.y - (this.width / 2) - 20),'Health: ' + this.health, {font: "20px"});
 }
 
-function goToInterior() {
+function goToInterior(something) {
 	soundfx_door.play();
 	// TODO: Transition to other minigames as well
-	game.state.start(choose("Minigame_Alchemy", "Minigame_Wound"));
+	group_houses.visible=false;
+	group_houses.forEach(function(house){house.hp.visible=false;},this);
+	player.visible=false;
+	game.state.start(choose("Minigame_Alchemy", "Minigame_Wound"),false,false,something);
 }
 
 House.prototype = Object.create(Phaser.Sprite.prototype);
@@ -165,11 +168,11 @@ House.prototype.update = function()
 	//check for overlap and if house is alive scale up for funsies, and enter house to play minigame
 	if(game.physics.arcade.overlap(this, this.player) && this.alive == true)
 	{
-			this.scale.setTo(.15);
+			this.scale.setTo(.6);
 			if(game.input.keyboard.justPressed(Phaser.Keyboard.SPACEBAR))
 			{
 				this.enter = true;
-        goToInterior();
+        goToInterior(group_houses);
 			}
 
 	}
