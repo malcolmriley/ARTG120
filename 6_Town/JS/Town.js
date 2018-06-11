@@ -3,7 +3,7 @@ Town.prototype =
 {
 	preload: function()
 	{
-		
+
 	},
 
 	create: function()
@@ -38,6 +38,26 @@ Town.prototype =
 
 		// Make cursors for player control
 		cursors = game.input.keyboard.createCursorKeys();
+
+		// Add Tutorial
+		this.splash = new TutorialSplash(this.game, layer_foreground);
+		let style = { align: "center", wordWrapWidth : 300 };
+		let drawText1 = function(passedData, passedScreen) {
+			passedData.sprite = this.game.add.text(0, 0, "The King sent me here\nto cure the villagers.", style);
+			centerAnchor(passedData.sprite);
+			passedScreen.addChild(passedData.sprite);
+		};
+		let drawText2 = function(passedData, passedScreen) {
+			passedData.sprite = this.game.add.text(0, 0, "I'll have to keep them alive\nby tending their wounds\nand by prepapring\ncurative elixirs.", style);
+			centerAnchor(passedData.sprite);
+			passedScreen.addChild(passedData.sprite);
+		}
+		let eraseIntro = function(passedData, passedScreen) {
+			passedData.sprite.destroy();
+		};
+		this.splash.addDiagram(this, drawText1, eraseIntro);
+		this.splash.addDiagram(this, drawText2, eraseIntro);
+		this.splash.begin();
 	},
 
 	update: function()
