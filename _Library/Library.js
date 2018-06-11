@@ -148,6 +148,65 @@ function spritesOverlap(passedFirstSprite, passedSecondSprite) {
     return Phaser.Rectangle.intersects(passedFirstSprite.getBounds(), passedSecondSprite.getBounds());
 }
 
+class TutorialSplash extends Phaser.Sprite {
+  constructor(passedGame, passedGroup) {
+    super(passedGame, (passedGame.camera.width / 2), (passedGame.camera.height / 2), "ui_tutorial");
+    // Configure splash
+    passedGame.add.existing(this);
+    passedGroup.add(this);
+    this.anchor.setTo(0.35, 0.5);
+
+    // Configure diagrams
+    this.diagram = [];
+    this.diagram_index = 0;
+
+    // Configure escape button
+    this.exit = passedGame.add.sprite(145, -90, "ui_x");
+    let onMouseOver = function(passedSprite, passedPointer) {
+      passedSprite.scale.setTo(1.15, 1.15);
+    };
+    let onMouseOut = function(passedSprite, passedPointer) {
+      passedSprite.scale.setTo(1.0, 1.0);
+    };
+    let onClick = function(passedSprite, passedPointer) {
+      let currentDiagram = this.diagram[this.diagram_index];
+      let nextDiagram = this.diagram[this.diagram_index + 1];
+      if (currentDiagram) {
+        currentDiagram.end(currentDiagram.data, this);
+      }
+      if (nextDiagram) {
+        nextDiagram.begin(nextDiagram.data, this);
+        this.diagram_index += 1;
+      }
+      else {
+        this.destroy();
+      }
+    }
+    this.addChild(this.exit);
+    makeButton(this.exit, this, onClick);
+    makeMouseover(this.exit, this, onMouseOver, onMouseOut);
+    centerAnchor(this.exit);
+  }
+
+  addDiagram(passedReference, passedOnCreate, passedOnDestroy, passedData) {
+    this.diagram[this.diagram.length] = {
+      data : (passedData) ? passedData : {},
+      begin : passedOnCreate.bind(passedReference),
+      end : passedOnDestroy.bind(passedReference)
+    }
+  }
+
+  begin() {
+    let diagram = this.diagram[this.diagram_index];
+    diagram.begin(diagram.data, this);
+  }
+
+  destroy() {
+    super.destroy();
+    this.exit.destroy();
+  }
+}
+
 /**
  * Special class for randomizing sound playback, for use with sound effects.
  *
