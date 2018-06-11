@@ -81,7 +81,7 @@ function loadTextures() {
 	this.image("text_return", "text_return.png");
 
 	// Tutorials
-	this.spritesheet("ui_mouse", "ui_mouse.png");
+	this.spritesheet("ui_mouse", "ui_mouse.png", 60, 80);
 	this.image("ui_tutorial_alchemy_1", "ui_tutorial_alchemy_1.png");
 	this.image("ui_tutorial_alchemy_2", "ui_tutorial_alchemy_2.png");
 	this.image("ui_tutorial_wound_1", "ui_tutorial_wound_1.png");
