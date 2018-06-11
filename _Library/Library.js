@@ -171,7 +171,7 @@ class TutorialSplash extends Phaser.Sprite {
     this.diagram_index = 0;
 
     // Configure escape button
-    this.exit = passedGame.add.sprite(145, -90, "ui_x");
+    this.exit = passedGame.add.sprite(165, -100, "ui_x");
     let onMouseOver = function(passedSprite, passedPointer) {
       passedSprite.scale.setTo(1.15, 1.15);
       sound_mouseover.play();
