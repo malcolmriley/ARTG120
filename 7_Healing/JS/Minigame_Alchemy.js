@@ -56,6 +56,25 @@ Minigame_Alchemy.prototype =
 		sound_pour = game.add.audio("pour");
 		sound_uncork = game.add.audio("cork");
 		sound_break = game.add.audio("bottle_break");
+
+		// Add Tutorial
+		this.splash = new TutorialSplash(this.game, layer_apparatus);
+		let drawDiagram1 = function(passedData, passedScreen) {
+			passedData.sprite = this.game.add.sprite(0, 0, "ui_tutorial_alchemy_1");
+			centerAnchor(passedData.sprite);
+			passedScreen.addChild(passedData.sprite);
+		};
+		let drawDiagram2 = function(passedData, passedScreen) {
+			passedData.sprite = this.game.add.sprite(0, 0, "ui_tutorial_alchemy_2");
+			centerAnchor(passedData.sprite);
+			passedScreen.addChild(passedData.sprite);
+		};
+		let eraseDiagram = function(passedData, passedScreen) {
+			passedData.sprite.destroy();
+		};
+		this.splash.addDiagram(this, drawDiagram1, eraseDiagram);
+		this.splash.addDiagram(this, drawDiagram2, eraseDiagram);
+		this.splash.begin();
 	},
 
 	update: function()
