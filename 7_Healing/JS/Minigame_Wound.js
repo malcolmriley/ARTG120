@@ -91,12 +91,12 @@ Minigame_Wound.prototype =
 			this.splash.addDiagram(this, drawDiagram2, eraseDiagram);
 			this.splash.addOnComplete(this, function(){
 				// The tutorial is over!
+				sessionStorage.setItem("tutorial_wound", true);
 				this.tutorial = false;
 				this.addTimer();
 			});
 			this.splash.begin();
 			this.tutorial = true;
-			sessionStorage.setItem("tutorial_wound", true);
 		}
 		else {
 			this.addTimer();
