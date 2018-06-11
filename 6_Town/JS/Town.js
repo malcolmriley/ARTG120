@@ -18,6 +18,7 @@ Town.prototype =
 
 		//Houses group
 		houses=game.add.group();
+		layer_foreground = game.add.group();
 
 		for(i=0;i<health.length;i++)
 		{
@@ -41,7 +42,7 @@ Town.prototype =
 		player.body.collideWorldBounds=true;
 
 		createBackdrop(this, "backdrop");
-    
+
 		// Make cursors for player control
 		cursors = game.input.keyboard.createCursorKeys();
 
@@ -132,7 +133,7 @@ Town.prototype =
 			{
 				dead++;
 				// sets health to negative so dead doesn't increase for multiple ticks
-				health[house.row][house.col]=-1;	
+				health[house.row][house.col]=-1;
 			}
 		}
 		else
