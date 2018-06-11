@@ -174,6 +174,7 @@ class TutorialSplash extends Phaser.Sprite {
     this.exit = passedGame.add.sprite(145, -90, "ui_x");
     let onMouseOver = function(passedSprite, passedPointer) {
       passedSprite.scale.setTo(1.15, 1.15);
+      sound_mouseover.play();
     };
     let onMouseOut = function(passedSprite, passedPointer) {
       passedSprite.scale.setTo(1.0, 1.0);
@@ -194,6 +195,7 @@ class TutorialSplash extends Phaser.Sprite {
         }
         this.destroy();
       }
+      sound_click.play();
     }
     this.addChild(this.exit);
     makeButton(this.exit, this, onClick);
