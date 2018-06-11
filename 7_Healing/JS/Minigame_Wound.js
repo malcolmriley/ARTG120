@@ -136,7 +136,7 @@ Minigame_Wound.prototype =
 		poultice.angle=Math.random()*360;
 
 		// gives poultice a random amount of uses
-		poultice.use=Math.floor(Math.random()*4+1);
+		poultice.use=Math.floor(Math.random()*4+3);
 
 		// allows poultice to be draggable
 		poultice.inputEnabled=true;
