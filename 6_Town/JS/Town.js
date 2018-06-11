@@ -38,9 +38,6 @@ Town.prototype =
 		// enables physics bodies for all sprites
 		game.physics.arcade.enable([player,houses]);
 
-		// adds text to display deaths
-		toll=game.add.text(10,10,"Deaths: "+dead);
-
 		createBackdrop(this, "backdrop");
 	},
 
@@ -70,9 +67,6 @@ Town.prototype =
 		game.physics.arcade.overlap(player,houses,this.checkInput);
 		// checks each house sprite and updates their properties
 		houses.forEach(this.updateHouse,this);
-
-		// updates death toll text
-		toll.text="Deaths: "+dead;
 
 		if(Math.random()<.2)
 		{
