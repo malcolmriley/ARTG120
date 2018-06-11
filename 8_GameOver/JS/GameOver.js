@@ -33,6 +33,10 @@ GameOver.prototype =
 
 		this.button_quit = createMenuButton(this, center_x, (this.grave.y + elementPadding + (this.grave.height / 2)), layer_ui, "text_gameover", goToMenu);
 
+		// resets town
+		health=[[100,100,100],[100,100,100],[100,100,100]];
+		dead=0;
+
 		// Add backdrop
 		createBackdrop(this, "backdrop");
 	},
