@@ -19,8 +19,7 @@ Minigame_Alchemy.prototype =
 		layer_paper = this.game.add.group();
 
 	  // Add Backdrop
-	  paper = layer_paper.create(0, 0, "backdrop");
-		paper.blendMode = 2;
+		createBackdrop(this, "backdrop");
 
 		// Add "reagents" reserve
 		workzone_shelf = new WorkArea(140, 135, 5);

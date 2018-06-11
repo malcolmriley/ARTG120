@@ -58,8 +58,7 @@ Minigame_Wound.prototype =
 		counter=game.add.text(400,20,"Cuts:");
 
 		// add background
-		back=game.add.sprite(0,0,"bg");
-		back.blendMode=2;
+		createBackdrop(this, "backdrop");
 	},
 
 	update: function()
