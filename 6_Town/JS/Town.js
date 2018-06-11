@@ -80,7 +80,7 @@ Town.prototype =
 		}
 
 		// ends the game when enough has died
-		if(dead==3)
+		if(dead==5)
 		{
 			game.state.start('GameOver');
 		}
