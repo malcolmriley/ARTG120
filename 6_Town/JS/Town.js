@@ -37,6 +37,7 @@ Town.prototype =
 
 		// enables physics bodies for all sprites
 		game.physics.arcade.enable([player,houses]);
+		player.body.collideWorldBounds=true;
 
 		createBackdrop(this, "backdrop");
 	},
@@ -122,18 +123,6 @@ function initPlayer() {
 	instance.anchor.set(.5,0);
 	return instance;
 }
-
-//a function to scale up a sprite
-function scaleUp(passedSprite, passedReference) {
-	passedSprite.scale.setTo(.6);
-}
-
-//a function to scale down a sprite
-function scaleDown(passedSprite) {
-	passedSprite.scale.setTo(.4);
-}
-
-//this.hp = game.add.text(this.x, (this.y - (this.width / 2) - 20),'Health: ' + this.health, {font: "20px"})
 
 function goToInterior(row,col) {
 	soundfx_door.play();
