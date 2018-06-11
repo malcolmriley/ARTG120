@@ -73,19 +73,25 @@ Minigame_Wound.prototype =
 			this.splash.addOnComplete(this, function(){
 				// The tutorial is over!
 				this.tutorial = false;
-
-				// Add timer that spawns cuts every 3 seconds
-				timer=game.time.create(false);
-				timer.loop(3000,this.spawnCuts,this);
-				timer.start();
+				this.addTimer();
 			});
 			this.splash.begin();
 			this.tutorial = true;
 			sessionStorage.setItem("tutorial_wound", true);
 		}
+		else {
+			this.addTimer();
+		}
 
 		// add background
 		createBackdrop(this, "backdrop");
+	},
+
+	addTimer: function() {
+		// Add timer that spawns cuts every 3 seconds
+		timer=game.time.create(false);
+		timer.loop(3000,this.spawnCuts,this);
+		timer.start();
 	},
 
 	update: function()
