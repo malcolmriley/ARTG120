@@ -103,6 +103,7 @@ function makeDraggable(passedSprite, passedReference, passedDragStartAction, pas
  * passedMouseOutAction - The function to be executed when the mouse exits passedSprite
  */
 function makeMouseover(passedSprite, passedReference, passedMouseOverAction, passedMouseOutAction) {
+  passedSprite.inputEnabled = true;
   passedSprite.events.onInputOver.add(passedMouseOverAction.bind(passedReference));
   if (passedMouseOutAction != undefined) {
     passedSprite.events.onInputOut.add(passedMouseOutAction.bind(passedReference));
@@ -145,6 +146,84 @@ function storePosition(passedObject) {
  */
 function spritesOverlap(passedFirstSprite, passedSecondSprite) {
     return Phaser.Rectangle.intersects(passedFirstSprite.getBounds(), passedSecondSprite.getBounds());
+}
+
+/**
+ * TutorialSplash utility class. Basically a sequence of splashes that the player may click through, but it can be used
+ * for nearly anything. Call addDiagram to add funcitons that will be executed when the tutorial is clicked through.
+ *
+ * passedGame - A reference to the game object
+ * The remaining parameter is optional:
+ * passedGroup - The group to add this TutorialSplash to.
+ */
+class TutorialSplash extends Phaser.Sprite {
+  constructor(passedGame, passedGroup) {
+    super(passedGame, (passedGame.camera.width / 2), (passedGame.camera.height / 2), "ui_tutorial");
+    // Configure splash
+    passedGame.add.existing(this);
+    if (passedGroup) {
+      passedGroup.add(this);
+    }
+    this.anchor.setTo(0.35, 0.5);
+
+    // Configure diagrams
+    this.diagram = [];
+    this.diagram_index = 0;
+
+    // Configure escape button
+    this.exit = passedGame.add.sprite(165, -100, "ui_x");
+    let onMouseOver = function(passedSprite, passedPointer) {
+      passedSprite.scale.setTo(1.15, 1.15);
+      sound_mouseover.play();
+    };
+    let onMouseOut = function(passedSprite, passedPointer) {
+      passedSprite.scale.setTo(1.0, 1.0);
+    };
+    let onClick = function(passedSprite, passedPointer) {
+      let currentDiagram = this.diagram[this.diagram_index];
+      let nextDiagram = this.diagram[this.diagram_index + 1];
+      if (currentDiagram) {
+        currentDiagram.end(currentDiagram.data, this);
+      }
+      if (nextDiagram) {
+        nextDiagram.begin(nextDiagram.data, this);
+        this.diagram_index += 1;
+      }
+      else {
+        if (this.onComplete) {
+          this.onComplete();
+        }
+        this.destroy();
+      }
+      sound_click.play();
+    }
+    this.addChild(this.exit);
+    makeButton(this.exit, this, onClick);
+    makeMouseover(this.exit, this, onMouseOver, onMouseOut);
+    centerAnchor(this.exit);
+  }
+
+  addDiagram(passedReference, passedOnCreate, passedOnDestroy, passedData) {
+    this.diagram[this.diagram.length] = {
+      data : (passedData) ? passedData : {},
+      begin : (passedOnCreate) ? passedOnCreate.bind(passedReference) : {},
+      end : (passedOnDestroy) ? passedOnDestroy.bind(passedReference) : {}
+    }
+  }
+
+  addOnComplete(passedReference, passedOnComplete) {
+    this.onComplete = passedOnComplete.bind(passedReference);
+  }
+
+  begin() {
+    let diagram = this.diagram[this.diagram_index];
+    diagram.begin(diagram.data, this);
+  }
+
+  destroy() {
+    super.destroy();
+    this.exit.destroy();
+  }
 }
 
 /**

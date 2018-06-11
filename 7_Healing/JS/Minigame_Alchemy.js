@@ -25,8 +25,7 @@ Minigame_Alchemy.prototype =
 		layer_paper = this.game.add.group();
 
 	  // Add Backdrop
-	  paper = layer_paper.create(0, 0, "backdrop");
-		paper.blendMode = 2;
+		createBackdrop(this, "backdrop");
 
 		// Add "reagents" reserve
 		workzone_shelf = new WorkArea(140, 135, 5);
@@ -62,6 +61,49 @@ Minigame_Alchemy.prototype =
 		sound_pour = game.add.audio("pour");
 		sound_uncork = game.add.audio("cork");
 		sound_break = game.add.audio("bottle_break");
+
+		// Add Tutorial
+		if (!sessionStorage.getItem("tutorial_alchemy")) {
+			this.splash = new TutorialSplash(this.game, layer_apparatus);
+			let drawDiagram1 = function(passedData, passedScreen) {
+				// Add splash
+				passedData.sprite = this.game.add.sprite(0, 0, "ui_tutorial_alchemy_1");
+				centerAnchor(passedData.sprite);
+				passedScreen.addChild(passedData.sprite);
+
+				// Add cursor cue
+				passedData.cursor = this.game.add.sprite(0, 100, "ui_mouse");
+				passedData.cursor.frame = 1;
+				let tween = this.game.add.tween(passedData.cursor).from({x : -100}, 800, Phaser.Easing.Linear.None, true);
+				tween.loop(true);
+				centerAnchor(passedData.cursor);
+				passedScreen.addChild(passedData.cursor);
+			};
+			// Yes yes, yucky copypaste. I don't have time to fix it.
+			// You, future person, will have plenty of time and you'll do it much better than I did.
+			let drawDiagram2 = function(passedData, passedScreen) {
+				// Add splash
+				passedData.sprite = this.game.add.sprite(0, 0, "ui_tutorial_alchemy_2");
+				centerAnchor(passedData.sprite);
+				passedScreen.addChild(passedData.sprite);
+
+				// Add cursor cue
+				passedData.cursor = this.game.add.sprite(0, 100, "ui_mouse");
+				passedData.cursor.frame = 1;
+				let tween = this.game.add.tween(passedData.cursor).from({x : -100}, 800, Phaser.Easing.Linear.None, true);
+				tween.loop(true);
+				centerAnchor(passedData.cursor);
+				passedScreen.addChild(passedData.cursor);
+			};
+			let eraseDiagram = function(passedData, passedScreen) {
+				passedData.sprite.destroy();
+				passedData.cursor.destroy();
+			};
+			this.splash.addDiagram(this, drawDiagram1, eraseDiagram);
+			this.splash.addDiagram(this, drawDiagram2, eraseDiagram);
+			this.splash.begin();
+			sessionStorage.setItem("tutorial_alchemy", true);
+		}
 	},
 
 	update: function()

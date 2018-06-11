@@ -24,18 +24,14 @@ Minigame_Wound.prototype =
 		arm.angle=-2;
 
 		// creates group to hold amount of wounds
-		wound=game.add.group()
+		wound=game.add.group();
+		layer_foreground = game.add.group();
 
 		// initially spawns 3 cuts
 		for(i=0;i<3;i++)
 		{
 			this.spawnCuts();
 		}
-
-		// timer that spawns cuts every 3 seconds
-		timer=game.time.create(false);
-		timer.loop(3000,this.spawnCuts,this);
-		timer.start();
 
 		// create a mortar and pestle on a table
 		table=game.add.sprite(25,480,"table");
@@ -57,9 +53,65 @@ Minigame_Wound.prototype =
 
 		counter=game.add.text(400,20,"Cuts:");
 
+		// Add Tutorial
+		if (!sessionStorage.getItem("tutorial_wound")) {
+			this.splash = new TutorialSplash(this.game, layer_foreground);
+			let drawDiagram1 = function(passedData, passedScreen) {
+				// Add splash
+				passedData.sprite = this.game.add.sprite(0, 0, "ui_tutorial_wound_1");
+				centerAnchor(passedData.sprite);
+				passedScreen.addChild(passedData.sprite);
+
+				// Add cursor cue
+				passedData.cursor = this.game.add.sprite(-85, 100, "ui_mouse");
+				passedData.cursor.frame = 1;
+				let anim = passedData.cursor.animations.add("click");
+				passedData.cursor.animations.play("click", 1.25, true);
+				centerAnchor(passedData.cursor);
+				passedScreen.addChild(passedData.cursor);
+			};
+			let drawDiagram2 = function(passedData, passedScreen) {
+				// Add splash
+				passedData.sprite = this.game.add.sprite(0, 0, "ui_tutorial_wound_2");
+				centerAnchor(passedData.sprite);
+				passedScreen.addChild(passedData.sprite);
+
+				// Add cursor cue
+				passedData.cursor = this.game.add.sprite(50, 100, "ui_mouse");
+				passedData.cursor.frame = 1;
+				let tween = this.game.add.tween(passedData.cursor).from({x : -150}, 1200, Phaser.Easing.Linear.None, true);
+				tween.loop(true);
+				centerAnchor(passedData.cursor);
+				passedScreen.addChild(passedData.cursor);
+			};
+			let eraseDiagram = function(passedData, passedScreen) {
+				passedData.sprite.destroy();
+				passedData.cursor.destroy();
+			};
+			this.splash.addDiagram(this, drawDiagram1, eraseDiagram);
+			this.splash.addDiagram(this, drawDiagram2, eraseDiagram);
+			this.splash.addOnComplete(this, function(){
+				// The tutorial is over!
+				sessionStorage.setItem("tutorial_wound", true);
+				this.tutorial = false;
+				this.addTimer();
+			});
+			this.splash.begin();
+			this.tutorial = true;
+		}
+		else {
+			this.addTimer();
+		}
+
 		// add background
-		back=game.add.sprite(0,0,"bg");
-		back.blendMode=2;
+		createBackdrop(this, "backdrop");
+	},
+
+	addTimer: function() {
+		// Add timer that spawns cuts every 3 seconds
+		timer=game.time.create(false);
+		timer.loop(3000,this.spawnCuts,this);
+		timer.start();
 	},
 
 	update: function()
@@ -69,33 +121,35 @@ Minigame_Wound.prototype =
 		// continuously checks each cut in wound
 		wound.forEach(this.checkWound,this);
 
-		// goes to game over screen when there are 5 cuts
-		if(wound.countLiving()==5)
-		{
-			health[row][col]-=Math.floor(Math.random()*10)+10;
-			// add to dead if happen to fail during minigame
-			if(health[num]<1)
+		// Don't do checks during tutorial
+		if (!this.tutorial) {
+			// goes to game over screen when there are 5 cuts
+			if(wound.countLiving()==5)
 			{
-				dead++;	
+        health[row][col]-=Math.floor(Math.random()*10)+10;
+			  // add to dead if happen to fail during minigame
+		  	if(health[num]<1)
+		  	{
+		  		dead++;	
+		  	}
+        
+				//this.sound.stopAll();
+				game.state.start('MiniGameOver');
 			}
 
-			//this.sound.stopAll();
-			game.state.start('MiniGameOver');
-		}
-
-		// goes back to town if cured
-		if(wound.countLiving()==0)
-		{
-			health[row][col]+=Math.floor(Math.random()*10)+5;
-			// set a cap for mamximum health
-			if(health[row][col]>100)
+			// goes back to town if cured
+			if(wound.countLiving()==0)
 			{
-				health[row][col]=100;
+        health[row][col]+=Math.floor(Math.random()*10)+5;
+		  	// set a cap for mamximum health
+			  if(health[row][col]>100)
+	  		{
+	  			health[row][col]=100;
+  			}
+				//this.sound.stopAll();
+				cloth.play();
+				game.state.start('Town');
 			}
-
-			//this.sound.stopAll();
-			cloth.play();
-			game.state.start('Town');
 		}
 	},
 
@@ -129,7 +183,7 @@ Minigame_Wound.prototype =
 	// function to spawn poultices
 	spawnPoultice: function()
 	{
-		squirt.play();		
+		squirt.play();
 
 		poultice=meds.create(110,490,"poultice");
 		poultice.anchor.set(.5,.5);
