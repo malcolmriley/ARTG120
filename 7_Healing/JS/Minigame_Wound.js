@@ -56,17 +56,36 @@ Minigame_Wound.prototype =
 		if (!sessionStorage.getItem("tutorial_wound")) {
 			this.splash = new TutorialSplash(this.game, layer_foreground);
 			let drawDiagram1 = function(passedData, passedScreen) {
+				// Add splash
 				passedData.sprite = this.game.add.sprite(0, 0, "ui_tutorial_wound_1");
 				centerAnchor(passedData.sprite);
 				passedScreen.addChild(passedData.sprite);
+
+				// Add cursor cue
+				passedData.cursor = this.game.add.sprite(-85, 100, "ui_mouse");
+				passedData.cursor.frame = 1;
+				let anim = passedData.cursor.animations.add("click");
+				passedData.cursor.animations.play("click", 1.25, true);
+				centerAnchor(passedData.cursor);
+				passedScreen.addChild(passedData.cursor);
 			};
 			let drawDiagram2 = function(passedData, passedScreen) {
+				// Add splash
 				passedData.sprite = this.game.add.sprite(0, 0, "ui_tutorial_wound_2");
 				centerAnchor(passedData.sprite);
 				passedScreen.addChild(passedData.sprite);
+
+				// Add cursor cue
+				passedData.cursor = this.game.add.sprite(50, 100, "ui_mouse");
+				passedData.cursor.frame = 1;
+				let tween = this.game.add.tween(passedData.cursor).from({x : -150}, 1200, Phaser.Easing.Linear.None, true);
+				tween.loop(true);
+				centerAnchor(passedData.cursor);
+				passedScreen.addChild(passedData.cursor);
 			};
 			let eraseDiagram = function(passedData, passedScreen) {
 				passedData.sprite.destroy();
+				passedData.cursor.destroy();
 			};
 			this.splash.addDiagram(this, drawDiagram1, eraseDiagram);
 			this.splash.addDiagram(this, drawDiagram2, eraseDiagram);
