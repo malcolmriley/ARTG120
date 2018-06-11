@@ -3,7 +3,7 @@ Town.prototype =
 {
 	preload: function()
 	{
-		
+
 	},
 
 	create: function()
@@ -15,6 +15,8 @@ Town.prototype =
 
 		// Create House Grid
 		group_houses = game.add.group();
+		layer_foreground = game.add.group();
+
 		let startX = 200;
 		let startY = 30;
 		for(let row = 0; row < 3; row += 1) {
@@ -36,6 +38,29 @@ Town.prototype =
 
 		// Make cursors for player control
 		cursors = game.input.keyboard.createCursorKeys();
+
+		// Add Tutorial
+		if (!sessionStorage.getItem("tutorial_main")) {
+			this.splash = new TutorialSplash(this.game, layer_foreground);
+			let style = { align: "center", wordWrapWidth : 300 };
+			let drawText1 = function(passedData, passedScreen) {
+				passedData.sprite = this.game.add.text(0, 0, "The King sent me here\nto cure the villagers.", style);
+				centerAnchor(passedData.sprite);
+				passedScreen.addChild(passedData.sprite);
+			};
+			let drawText2 = function(passedData, passedScreen) {
+				passedData.sprite = this.game.add.text(0, 0, "I'll have to keep them alive\nby tending their wounds\nand by prepapring\ncurative elixirs.", style);
+				centerAnchor(passedData.sprite);
+				passedScreen.addChild(passedData.sprite);
+			}
+			let eraseIntro = function(passedData, passedScreen) {
+				passedData.sprite.destroy();
+			};
+			this.splash.addDiagram(this, drawText1, eraseIntro);
+			this.splash.addDiagram(this, drawText2, eraseIntro);
+			this.splash.begin();
+			sessionStorage.setItem("tutorial_main", true);
+		}
 	},
 
 	update: function()
