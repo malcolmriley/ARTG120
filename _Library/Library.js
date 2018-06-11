@@ -161,7 +161,9 @@ class TutorialSplash extends Phaser.Sprite {
     super(passedGame, (passedGame.camera.width / 2), (passedGame.camera.height / 2), "ui_tutorial");
     // Configure splash
     passedGame.add.existing(this);
-    passedGroup.add(this);
+    if (passedGroup) {
+      passedGroup.add(this);
+    }
     this.anchor.setTo(0.35, 0.5);
 
     // Configure diagrams
@@ -199,8 +201,8 @@ class TutorialSplash extends Phaser.Sprite {
   addDiagram(passedReference, passedOnCreate, passedOnDestroy, passedData) {
     this.diagram[this.diagram.length] = {
       data : (passedData) ? passedData : {},
-      begin : passedOnCreate.bind(passedReference),
-      end : passedOnDestroy.bind(passedReference)
+      begin : (passedOnCreate) ? passedOnCreate.bind(passedReference) : {},
+      end : (passedOnDestroy) ? passedOnDestroy.bind(passedReference) : {}
     }
   }
 
