@@ -22,7 +22,7 @@ GameOver.prototype =
 		this.grave = layer_ui.create(center_x, center_y, "grave");
 		centerAnchor(this.grave);
 
-		let deathtoll = 5849085; // TODO: Change when plugged into town.
+		let deathtoll = game.rnd.integerInRange(4000, 10000);
 		this.deathText = this.game.add.text(center_x, 30, "Death Toll: " + deathtoll, { align: "center" });
 		centerAnchor(this.deathText);
 
