@@ -79,6 +79,14 @@ function loadTextures() {
 	this.image("text_gameover", "text_gameover.png");
 	this.image("text_ded", "text_ded.png");
 	this.image("text_return", "text_return.png");
+
+	// Tutorials
+	this.spritesheet("ui_mouse", "ui_mouse.png");
+	this.image("ui_tutorial_alchemy_1", "ui_tutorial_alchemy_1.png");
+	this.image("ui_tutorial_alchemy_2", "ui_tutorial_alchemy_2.png");
+	this.image("ui_tutorial_wound_1", "ui_tutorial_wound_1.png");
+	this.image("ui_tutorial", "ui_tutorial.png");
+	this.image("ui_x", "ui_x.png");
 }
 
 function loadAudio() {
